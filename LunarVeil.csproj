@@ -10,7 +10,33 @@
 
 	<!-- References -->
 	<ItemGroup>
-		
+	  <Folder Include="Content\Items\ModdedBiomeSets\CindersparkNDrakonic-Items\" />
+	  <Folder Include="Content\Items\ArmorSets\" />
+	  <Folder Include="Content\Items\ModdedBiomeSets\Govheil-Items\" />
+	  <Folder Include="Content\Items\ModdedBiomeSets\Dread-Items\" />
+	  <Folder Include="Content\Items\ModdedBiomeSets\BeeNMoth-Items\" />
+	  <Folder Include="Content\Items\ModdedBiomeSets\Geode-Items\" />
+	  <Folder Include="Content\Items\ModdedBiomeSets\Eto-Items\" />
+	  <Folder Include="Content\Items\VanillaBiomeSets\Mushroom-Items\" />
+	  <Folder Include="Content\Items\ModdedBiomeSets\Prisma-Items\" />
+	  <Folder Include="Content\Items\ModdedBiomeSets\Zeppelin-Items\" />
+	  <Folder Include="Content\Items\ModdedBiomeSets\Raah-Items\" />
+	  <Folder Include="Content\Items\ModdedBiomeSets\Rainforest-Items\" />
+	  <Folder Include="Content\Items\ModdedBiomeSets\Noxian-Items\" />
+	  <Folder Include="Content\Items\ModdedBiomeSets\WitchTown-Items\" />
+	  <Folder Include="Content\Items\ModdedBiomeSets\SoulPrison-Items\" />
+	  <Folder Include="Content\Items\ModdedBiomeSets\SirenCity-Items\" />
+	  <Folder Include="Content\Items\ModdedBiomeSets\Vaellus-Items\" />
+	  <Folder Include="Content\Items\MiscelleniousSets\" />
+	  <Folder Include="Content\Items\VanillaBiomeSets\Ice-Items\" />
+	  <Folder Include="Content\Items\VanillaBiomeSets\Desert-Items\" />
+	  <Folder Include="Content\Items\VanillaBiomeSets\Jungle-Items\" />
+	  <Folder Include="Content\Items\VanillaBiomeSets\Caverns-Items\" />
+	  <Folder Include="Content\Items\VanillaBiomeSets\Hell-Items\" />
+	  <Folder Include="Content\Items\VanillaBiomeSets\Forest-Items\" />
+	  <Folder Include="Content\Items\ModdedBiomeSets\GraniteCoreKeep-Items\" />
+	  <Folder Include="Content\Items\VanillaBiomeSets\Sky-Items\" />
+	  <Folder Include="Content\Items\VanillaBiomeSets\Ocean-Items\" />
 	</ItemGroup>
 
 </Project>
