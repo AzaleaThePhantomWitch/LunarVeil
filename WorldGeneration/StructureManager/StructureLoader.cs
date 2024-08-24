@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -127,7 +126,7 @@ namespace LunarVeil.WorldGeneration.StructureManager
                             ushort oldWallType = t.WallType;
                             int oldWallFrameX = t.WallFrameX;
                             int oldWallFrameY = t.WallFrameY;
-
+                            byte oldTileColor = t.TileColor;
                             bool makeOld = false;
                             t.ClearEverything();
                             //tile
@@ -175,6 +174,7 @@ namespace LunarVeil.WorldGeneration.StructureManager
                                 t.TileFrameNumber = reader.ReadInt32();
                                 t.TileFrameX = reader.ReadInt16();
                                 t.TileFrameY = reader.ReadInt16();
+                                t.TileColor = reader.ReadByte();
                                 bool Chest = reader.ReadBoolean();
                                 if (Chest)
                                 {
@@ -220,6 +220,7 @@ namespace LunarVeil.WorldGeneration.StructureManager
                                 t.WallType = oldWallType;
                                 t.WallFrameX = oldWallFrameX;
                                 t.WallFrameY = oldWallFrameY;
+                                t.TileColor = oldTileColor;
                             }
                         }
 
@@ -316,6 +317,9 @@ namespace LunarVeil.WorldGeneration.StructureManager
                                 writer.Write(t.TileFrameNumber);
                                 writer.Write(t.TileFrameX);
                                 writer.Write(t.TileFrameY);
+
+                                //Paint
+                                writer.Write(t.TileColor);
                                 bool Chest = false;
                                 foreach (Chest c in Main.chest)
                                 {
