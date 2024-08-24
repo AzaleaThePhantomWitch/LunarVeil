@@ -1,8 +1,4 @@
-Headers: {
-	SkiesToggle: Beautiful Skies
-	WatersToggle: Pretty Waters
-}
-
+Headers.Visuals: Visuals
 DisplayName: Lunar Veil Config
 
 SkiesToggle: {

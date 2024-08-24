@@ -1,0 +1,9 @@
+Fake: {
+	DisplayName: Fake
+	Tooltip:
+		'''
+		Template of an item
+		Replacing this tooltip is duty 
+		It's snowing on Mt.Fuji
+		'''
+}
