@@ -1,0 +1,3 @@
+displayName = Lunar Veil
+author = Scolon, Zenovia, AbleblockStudios
+version = 0.1
