@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,7 +17,7 @@ namespace LunarVeil.WorldGeneration.StructureManager
     public static class StructureLoader
     {
         static Point BottomLeft = null;
-        static Mod Mod = ModContent.GetInstance<Stellamod>();
+        static Mod Mod = ModContent.GetInstance<LunarVeil>();
 
         public static Rectangle ReadRectangle(string Path)
         {
