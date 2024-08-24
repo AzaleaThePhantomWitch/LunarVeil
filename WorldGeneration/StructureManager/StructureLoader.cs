@@ -16,7 +16,7 @@ namespace LunarVeil.WorldGeneration.StructureManager
     /// </summary>
     public static class StructureLoader
     {
-        static Point BottomLeft = null;
+        static Point? BottomLeft = null;
         static Mod Mod = ModContent.GetInstance<LunarVeil>();
 
         public static Rectangle ReadRectangle(string Path)
@@ -391,33 +391,34 @@ namespace LunarVeil.WorldGeneration.StructureManager
             writer.Write(tModTile.GetType().Name);
         }
     }
+
     public class ModelizingSaver : ModItem
     {
-        public override string Texture => ModContent.Request<Texture2D>("LunarVeil/WorldGeneration/StructureManager/WandSaver"); //I do not do spriting
+        public override string Texture => "LunarVeil/WorldGeneration/StructureManager/WandSaver"; //I do not do spriting
         public override void SetDefaults()
         {
             Item.CloneDefaults(ItemID.MagicConch);
             Item.useTime = Item.useAnimation = 15;
         }
-        public override bool UseItem(Player player)
-        {
 
+        public override bool? UseItem(Player player)
+        {
             StructureLoader.SaveStruct(Main.MouseWorld.ToTileCoordinates());
             return true;
         }
-
     }
+
     public class ModelizingPlacer : ModItem
     {
-        public override string Texture => ModContent.Request<Texture2D>("LunarVeil/WorldGeneration/StructureManager/Modelizer"); //I do not do spriting
+        public override string Texture => "LunarVeil/WorldGeneration/StructureManager/Modelizer"; //I do not do spriting
         public override void SetDefaults()
         {
             Item.CloneDefaults(ItemID.MagicConch);
             Item.useTime = Item.useAnimation = 15;
         }
-        public override bool UseItem(Player player)
-        {
 
+        public override bool? UseItem(Player player)
+        {
             StructureLoader.ReadStruct(Main.MouseWorld.ToTileCoordinates(), "SavedStruct");
             return true;
         }
