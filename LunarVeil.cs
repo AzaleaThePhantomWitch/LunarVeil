@@ -9,6 +9,17 @@ using Terraria;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
+using System.IO;
+using System.Reflection;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.GameContent.UI;
+using Terraria.GameContent.UI.Elements;
+using Terraria.ID;
+using Terraria.IO;
+using Terraria.UI;
+using Vector2 = Microsoft.Xna.Framework.Vector2;
+
 
 namespace LunarVeil
 {
@@ -25,12 +36,7 @@ namespace LunarVeil
 
      
 
-        public ModPacket GetPacket(MessageType type, int capacity)
-        {
-            ModPacket packet = GetPacket(capacity + 1);
-            packet.Write((byte)type);
-            return packet;
-        }
+     
 
         // this is alright, and i'll expand it so it can still be used, but really this shouldn't be used
         public static ModPacket WriteToPacket(ModPacket packet, byte msg, params object[] param)
@@ -56,8 +62,6 @@ namespace LunarVeil
             return packet;
         }
 
-        public override void HandlePacket(BinaryReader reader, int whoAmI) => StellaMultiplayer.HandlePacket(reader, whoAmI);
-
 
         public static Player PlayerExists(int whoAmI)
         {
@@ -82,5 +86,16 @@ namespace LunarVeil
         {
             LunarVeilUtils.UnloadOrderedLoadables();
         }
+
+        private void UnloadTile(int tileID)
+        {
+            TextureAssets.Tile[tileID] = ModContent.Request<Texture2D>($"Terraria/Images/Tiles_{tileID}");
+        }
+
+        private void UnloadWall(int wallID)
+        {
+            TextureAssets.Wall[wallID] = ModContent.Request<Texture2D>($"Terraria/Images/Wall_{wallID}");
+        }
+
     }
 }
