@@ -2,7 +2,7 @@
 
 Items: {
 	Fake: {
-		DisplayName: "Fake"
+		DisplayName: Fake
 		Tooltip:
 			'''
 			Template of an item
