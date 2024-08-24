@@ -8,10 +8,29 @@ namespace LunarVeil.Systems.Waters
 {
     internal class LavaAddon : WaterAddon
     {
-        public static ScreenTarget BackTarget = new(RenderFront, () => Main.LocalPlayer.ZoneUnderworldHeight, 1, (a) => Main.waterTarget.Size());
-        public static ScreenTarget FrontTarget = new(RenderBack, () => Main.LocalPlayer.ZoneUnderworldHeight, 1, (a) => Main.instance.backWaterTarget.Size());
+        public static bool ShouldShow
+        {
+            get
+            {
+                LunarVeilClientConfig clientConfig = ModContent.GetInstance<LunarVeilClientConfig>();
 
-        public override bool Visible => Main.LocalPlayer.ZoneUnderworldHeight;
+                //Don't show if waters
+                if (!clientConfig.WatersToggle)
+                    return false;
+                
+                //Don't show if not in underworld
+                if (!Main.LocalPlayer.ZoneUnderworldHeight)
+                    return false;
+
+                return true;
+            }
+        }
+
+
+        public static ScreenTarget BackTarget = new(RenderFront, () => ShouldShow, 1, (a) => Main.waterTarget.Size());
+        public static ScreenTarget FrontTarget = new(RenderBack, () => ShouldShow, 1, (a) => Main.instance.backWaterTarget.Size());
+
+        public override bool Visible => ShouldShow;
 
         public override Texture2D BlockTexture(Texture2D normal, int x, int y)
         {

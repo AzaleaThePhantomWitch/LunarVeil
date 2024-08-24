@@ -58,7 +58,11 @@ namespace LunarVeil.Systems.Skies
         }
 
         public override void Draw(SpriteBatch spriteBatch, float minDepth, float maxDepth)
-        {
+        {           
+            //Don't
+            LunarVeilClientConfig clientConfig = ModContent.GetInstance<LunarVeilClientConfig>();
+            if (!clientConfig.SkiesToggle)
+                return;
             if (maxDepth >= 0 && minDepth < 0)
             {
                 DrawFrontClouds(spriteBatch);

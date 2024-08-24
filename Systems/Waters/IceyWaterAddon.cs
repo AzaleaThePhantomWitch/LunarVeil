@@ -8,10 +8,26 @@ namespace LunarVeil.Systems.Waters
 {
     internal class IceyWaterAddon : WaterAddon
     {
-        public static ScreenTarget BackTarget = new(RenderFront, () => Main.LocalPlayer.ZoneSnow, 1, (a) => Main.waterTarget.Size());
-        public static ScreenTarget FrontTarget = new(RenderBack, () => Main.LocalPlayer.ZoneSnow, 1, (a) => Main.instance.backWaterTarget.Size());
+        public static bool ShouldShow
+        {
+            get
+            {
+                LunarVeilClientConfig clientConfig = ModContent.GetInstance<LunarVeilClientConfig>();
+                if (!clientConfig.WatersToggle)
+                    return false;
+                
+                //Don't show
+                if (!Main.LocalPlayer.ZoneSnow)
+                    return false;
 
-        public override bool Visible => Main.LocalPlayer.ZoneSnow;
+                return true;
+            }
+        }
+
+        public static ScreenTarget BackTarget = new(RenderFront, () => ShouldShow, 1, (a) => Main.waterTarget.Size());
+        public static ScreenTarget FrontTarget = new(RenderBack, () => ShouldShow, 1, (a) => Main.instance.backWaterTarget.Size());
+
+        public override bool Visible => ShouldShow;
 
         public override Texture2D BlockTexture(Texture2D normal, int x, int y)
         {

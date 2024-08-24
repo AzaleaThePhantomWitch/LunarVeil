@@ -8,10 +8,25 @@ namespace LunarVeil.Systems.Waters
 {
     internal class BasicWaterAddon : WaterAddon
     {
-        public static ScreenTarget BackTarget = new(RenderFront, () => Main.LocalPlayer.ZoneBeach, 1, (a) => Main.waterTarget.Size());
-        public static ScreenTarget FrontTarget = new(RenderBack, () => Main.LocalPlayer.ZoneBeach, 1, (a) => Main.instance.backWaterTarget.Size());
+        public static bool ShouldShow
+        {
+            get
+            {
+                LunarVeilClientConfig clientConfig = ModContent.GetInstance<LunarVeilClientConfig>();
+                if (!clientConfig.WatersToggle)
+                    return false;
 
-        public override bool Visible => Main.LocalPlayer.ZoneBeach;
+                if (!Main.LocalPlayer.ZoneBeach)
+                    return false;
+
+                return true;
+            }
+        }
+
+        public static ScreenTarget BackTarget = new(RenderFront, () => ShouldShow, 1, (a) => Main.waterTarget.Size());
+        public static ScreenTarget FrontTarget = new(RenderBack, () => ShouldShow, 1, (a) => Main.instance.backWaterTarget.Size());
+
+        public override bool Visible => ShouldShow;
 
         public override Texture2D BlockTexture(Texture2D normal, int x, int y)
         {

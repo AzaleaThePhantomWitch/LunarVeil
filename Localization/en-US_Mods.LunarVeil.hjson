@@ -11,3 +11,24 @@ Items: {
 			'''
 	}
 }
+
+Configs: {
+	LunarVeilClientConfig: {
+		DisplayName: Lunar Veil Client Config
+
+		Headers: {
+			SkiesToggle: Skies Toggle Header
+			WaterToggle: Water Toggle Header
+		}
+
+		SkiesToggle: {
+			Label: Skies Toggle
+			Tooltip: ""
+		}
+
+		WatersToggle: {
+			Label: Waters Toggle
+			Tooltip: ""
+		}
+	}
+}

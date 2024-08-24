@@ -1,0 +1,16 @@
+Headers: {
+	SkiesToggle: Beautiful Skies
+	WatersToggle: Pretty Waters
+}
+
+DisplayName: Lunar Veil Config
+
+SkiesToggle: {
+	Label: Beautiful Skies
+	Tooltip: Toggles new sky effects on and off.
+}
+
+WatersToggle: {
+	Label: Pretty Waters
+	Tooltip: Toggles new water effects on and off.
+}
