@@ -1,47 +1,83 @@
-﻿using MonoMod.Cil;
+﻿using Microsoft.Xna.Framework.Graphics;
+using MonoMod.Cil;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 using Terraria;
-using Terraria.GameContent;
-using Terraria.GameContent.UI.States;
+using Terraria.Map;
 using Terraria.ModLoader;
-using Terraria.WorldBuilding;
 
 namespace LunarVeil.WorldGeneration
 {
     internal class LunarVeilWorldExtender : ModSystem
     {
+        FieldInfo WorldGen_lastMaxTilesX;
+        FieldInfo WorldGen_lastMaxTilesY;
+
+
+        //We can set the world size to anything, 8400x2400 is large world
+        public int NewMaxTilesX => 8400;
+        public int NewMaxTilesY => 2400;
+
         public override void Load()
         {
-            base.Load();
-            IL_UIWorldCreation.FinishCreatingWorld += AddWorldSize;
+            //if (ModLoader.version < new Version(0, 10))
+            //{
+            //	throw new Exception("\nThis mod uses functionality only present in the latest tModLoader versions. Please update tModLoader to use this mod\n\n");
+            //}
+            IL_WorldGen.clearWorld += WorldGen_clearWorld;
+            WorldGen_lastMaxTilesX = typeof(WorldGen).GetField("lastMaxTilesX", BindingFlags.Static | BindingFlags.NonPublic);
+            WorldGen_lastMaxTilesY = typeof(WorldGen).GetField("lastMaxTilesY", BindingFlags.Static | BindingFlags.NonPublic);
         }
 
         public override void Unload()
         {
             base.Unload();
-            IL_UIWorldCreation.FinishCreatingWorld -= AddWorldSize;
+            IL_WorldGen.clearWorld -= WorldGen_clearWorld;
+        }
+        private void WorldGen_clearWorld(ILContext il)
+        {
+            var cursor = new ILCursor(il);
+            cursor.EmitDelegate<Action>(ClearWorld);
         }
 
-        private void AddWorldSize(ILContext il)
+        private void ClearWorld()
         {
-            var cursor = new ILCursor(il); 
-            cursor.TryGotoNext(n => n.MatchCall(typeof(WorldGen), "CreateNewWorld"));
-            cursor.Index -= 2;
-            cursor.EmitDelegate<Action>(EditWSize);
-        }
+            int lastMaxTilesX = (int)WorldGen_lastMaxTilesX.GetValue(null);
+            int lastMaxTilesY = (int)WorldGen_lastMaxTilesY.GetValue(null);
 
-        private void EditWSize()
-        {
-            //8400x2400 is large world
-            int tileWidth = 8400;
-            int tileHeight = 2400;
+            // TODO: investigate cpu/ram trade-off for reducing this later when regular-sized worlds loaded.
+            if (Main.maxTilesX > 8400 && Main.maxTilesX > lastMaxTilesX || Main.maxTilesY > 2400 && Main.maxTilesY > lastMaxTilesY)
+            {
+                // Goal: Increase limits, don't decrease anything lower than normal max for compatibility.
+                Main.maxTilesX = NewMaxTilesX;
+                Main.maxTilesY = NewMaxTilesY;
 
-            Main.maxTilesX = tileWidth;
-            Main.maxTilesY = tileHeight;
+                // TODO: dynamically change mapTargetX and Y to support any dimensions. (simple division.)
+                // Map render targets. -- ingame map number of images to write to. The textures themselves
+                Main.mapTargetX = 10; // change that 4 in vanilla to target-x
+                Main.mapTargetY = 4; // change that 
+                Main.instance.mapTarget = new RenderTarget2D[Main.mapTargetX, Main.mapTargetY];
+
+                int intendedMaxX = Math.Max(Main.maxTilesX + 1, 8401);
+                int intendedMaxY = Math.Max(Main.maxTilesY + 1, 2401);
+
+                // Individual map tiles
+                Main.Map = new WorldMap(intendedMaxX, intendedMaxY);
+
+                // Space for more tiles -- Actual tiles
+
+                Tilemap tileMap = (Tilemap)typeof(Tilemap).GetConstructor(
+                  BindingFlags.NonPublic | BindingFlags.Instance,
+                  null, new Type[] { typeof(ushort), typeof(ushort) }, null).Invoke(new object[]
+                  { (ushort)intendedMaxX, (ushort)intendedMaxY });
+                Main.tile = tileMap;
+
+                // Color for each tile
+
+                Main.initMap = new bool[Main.mapTargetX, Main.mapTargetY];
+                Main.mapWasContentLost = new bool[Main.mapTargetX, Main.mapTargetY];
+            }
+
         }
     }
 }
