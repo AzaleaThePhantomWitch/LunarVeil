@@ -122,12 +122,15 @@ namespace LunarVeil
                 TextureAssets.TreeTop[6] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/ForestTiles/TreeNormal1");
                 TextureAssets.TreeTop[7] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/ForestTiles/TreeNormal2");
                 TextureAssets.TreeTop[8] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/ForestTiles/TreeNormal2");
-                TextureAssets.TreeTop[9] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/ForestTiles/TreeNormal3");
+                TextureAssets.TreeTop[9] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/ForestTiles/TreeNormal1");
                 TextureAssets.TreeTop[10] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/ForestTiles/TreeNormal3");
 
                 TextureAssets.TreeBranch[0] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/ForestTiles/NormalTreeBranches");
                 TextureAssets.TreeBranch[6] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/ForestTiles/NormalTreeBranches");
                 TextureAssets.TreeBranch[7] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/ForestTiles/NormalTreeBranches");
+                TextureAssets.TreeBranch[8] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/ForestTiles/NormalTreeBranches");
+                TextureAssets.TreeBranch[9] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/ForestTiles/NormalTreeBranches");
+                TextureAssets.TreeBranch[10] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/ForestTiles/NormalTreeBranches");
                 //---------------------------------------------------
             }
 
