@@ -257,6 +257,8 @@ namespace LunarVeil
                 UnloadTile(TileID.Grass);
                 UnloadTile(TileID.Dirt);
                 UnloadTile(TileID.WoodBlock);
+                UnloadTile(TileID.GrayBrick);
+                UnloadTile(TileID.Stone);
             }
          }
 
