@@ -46,8 +46,8 @@ namespace LunarVeil.WorldGeneration
             int lastMaxTilesY = (int)WorldGen_lastMaxTilesY.GetValue(null);
 
             // TODO: investigate cpu/ram trade-off for reducing this later when regular-sized worlds loaded.
-            if (Main.maxTilesX > 8400 && Main.maxTilesX > lastMaxTilesX || Main.maxTilesY > 2400 && Main.maxTilesY > lastMaxTilesY)
-            {
+          //  if (Main.maxTilesX > 8400 && Main.maxTilesX > lastMaxTilesX || Main.maxTilesY > 2400 && Main.maxTilesY > lastMaxTilesY)
+          //  {
                 // Goal: Increase limits, don't decrease anything lower than normal max for compatibility.
                 Main.maxTilesX = NewMaxTilesX;
                 Main.maxTilesY = NewMaxTilesY;
@@ -76,7 +76,7 @@ namespace LunarVeil.WorldGeneration
 
                 Main.initMap = new bool[Main.mapTargetX, Main.mapTargetY];
                 Main.mapWasContentLost = new bool[Main.mapTargetX, Main.mapTargetY];
-            }
+           // }
 
         }
     }
