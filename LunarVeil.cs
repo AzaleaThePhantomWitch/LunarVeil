@@ -109,8 +109,12 @@ namespace LunarVeil
 
                 Main.instance.LoadTiles(TileID.ClayBlock);
                 TextureAssets.Tile[TileID.ClayBlock] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/ForestTiles/ClayTile");
+               
+                Main.instance.LoadTiles(TileID.GrayBrick);
+                TextureAssets.Tile[TileID.GrayBrick] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UndergroundTiles/StoneBrick");
 
-
+                Main.instance.LoadTiles(TileID.Stone);
+                TextureAssets.Tile[TileID.Stone] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UndergroundTiles/StoneREDO");
 
                 //Set tree tops
                 //Number inside is the one you're replacing, up to 31
@@ -241,7 +245,7 @@ namespace LunarVeil
             typeof(UIWorldCreationPreview).GetField("_BunnyNormalTexture", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(uiItem, ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/PreviewDifficultyNormal"));
             typeof(UIWorldCreationPreview).GetField("_BunnyCreativeTexture", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(uiItem, ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/PreviewDifficultyMJourny"));
 
-
+            typeof(UIWorldCreationPreview).GetField("_BorderTexture", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(uiItem, ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/PreviewBorder"));
         }
 
         public override void Unload()
@@ -253,6 +257,8 @@ namespace LunarVeil
                 UnloadTile(TileID.Grass);
                 UnloadTile(TileID.Dirt);
                 UnloadTile(TileID.WoodBlock);
+                UnloadTile(TileID.GrayBrick);
+                UnloadTile(TileID.Stone);
             }
          }
 
