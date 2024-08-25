@@ -104,6 +104,9 @@ namespace LunarVeil
 
                 Main.instance.LoadTiles(TileID.Grass);
                 TextureAssets.Tile[TileID.Grass] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/CourseGrass");
+
+                Main.instance.LoadTiles(TileID.ClayBlock);
+                TextureAssets.Tile[TileID.ClayBlock] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/ClayTile");
             }
 
 
