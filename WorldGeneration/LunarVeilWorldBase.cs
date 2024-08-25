@@ -20,38 +20,32 @@ namespace LunarVeil.WorldGeneration
 
         public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
         {
-            int SurfaceLeveling = tasks.FindIndex(genpass => genpass.Name.Equals("Terrain"));
-            tasks[SurfaceLeveling] = new PassLegacy("Jungle Temple", (progress, config) =>
+
+            // tasks[SurfaceLeveling] = new PassLegacy("Surface Redo", (progress, config) =>
+            //  {
+
+            //      new PassLegacy("Surface Redesign", NewSurfacing);
+            //   });
+            int SurfaceLeveling = tasks.FindIndex(genpass => genpass.Name.Equals("Reset"));
+            if (SurfaceLeveling != -1)
             {
-                
-                new PassLegacy("Surface Redesign", NewSurfacing);
-        });
+
+                //tasks.Insert(CathedralGen2 + 1, new PassLegacy("World Gen Virulent Structures", WorldGenVirulentStructures));
+                //	tasks.Insert(CathedralGen2 + 1, new PassLegacy("World Gen Virulent", WorldGenVirulent));
+
+                tasks.Insert(SurfaceLeveling + 1, new PassLegacy("Lunar Veil Resurface", NewSurfacing));
 
 
 
 
 
 
+            }
 
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         private void NewSurfacing(GenerationProgress progress, GameConfiguration configuration)
         {
-            progress.Message = "Making a new surface";
+            progress.Message = "Making a new surface level";
             Main.worldSurface = Main.maxTilesY / 2;
 
         }
