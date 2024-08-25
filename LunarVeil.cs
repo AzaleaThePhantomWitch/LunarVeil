@@ -19,6 +19,7 @@ using Terraria.ID;
 using Terraria.IO;
 using Terraria.UI;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
+using Terraria.GameContent.UI.States;
 
 
 namespace LunarVeil
@@ -132,6 +133,40 @@ namespace LunarVeil
                 TextureAssets.TreeBranch[9] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/ForestTiles/NormalTreeBranches");
                 TextureAssets.TreeBranch[10] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/ForestTiles/NormalTreeBranches");
                 //---------------------------------------------------
+
+
+
+
+
+
+
+                ///---------- UI Panels
+                ///
+                TextureAssets.InventoryBack = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/CategoryPanel");
+                TextureAssets.InventoryBack2 = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/CategoryPanel");
+                TextureAssets.InventoryBack3 = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/CategoryPanel");
+                TextureAssets.InventoryBack4 = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/CategoryPanel");
+                TextureAssets.InventoryBack5 = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/CategoryPanel");
+                TextureAssets.InventoryBack6 = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/CategoryPanel");
+                TextureAssets.InventoryBack7 = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/CategoryPanel");
+                TextureAssets.InventoryBack8 = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/CategoryPanel");
+                TextureAssets.InventoryBack9 = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/CategoryPanel");
+                TextureAssets.InventoryBack10 = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/CategoryPanelHot");
+                TextureAssets.InventoryBack11 = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/CategoryPanelHot");
+                TextureAssets.InventoryBack12 = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/CategoryPanelHot");
+                TextureAssets.InventoryBack13 = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/CategoryPanelHot");
+                TextureAssets.InventoryBack14 = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/CategoryPanelHot");
+                TextureAssets.InventoryBack15 = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/CategoryPanelHot");
+                TextureAssets.InventoryBack16 = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/CategoryPanelHot");
+                TextureAssets.InventoryBack17 = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/CategoryPanelHot");
+                TextureAssets.InventoryBack18 = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/CategoryPanelHot");
+                TextureAssets.InventoryBack19 = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/CategoryPanelHot");
+
+                TextureAssets.ScrollLeftButton = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/BackButton");
+                TextureAssets.ScrollRightButton = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/ForwardButton");
+
+                
+
             }
 
 
@@ -141,29 +176,78 @@ namespace LunarVeil
                 DrawWorldSelectItemOverlay(self, spriteBatch);
             };
 
+            On_UIWorldCreationPreview.DrawSelf += (orig, self, spriteBatch) =>
+            {
+                orig(self, spriteBatch);
+                DrawWorldPreview(self, spriteBatch);
+            };
+
 
             Instance = this;
         }
+
         private void DrawWorldSelectItemOverlay(UIWorldListItem uiItem, SpriteBatch spriteBatch)
-        {
-            //    bool data = uiItem.Data.TryGetHeaderData(ModContent.GetInstance<WorldLoadGen>(), out var _data);
+        {       
             UIElement WorldIcon = (UIElement)typeof(UIWorldListItem).GetField("_worldIcon", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(uiItem);
-            WorldFileData Data = (WorldFileData)typeof(AWorldListItem).GetField("_data", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(uiItem);
+            Asset<Texture2D> WorldPanel = (Asset<Texture2D>)typeof(UIWorldListItem).GetField("_innerPanelTexture", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(uiItem);
+
             WorldIcon.RemoveAllChildren();
 
 
+            Asset<Texture2D> worldPanelBG = WorldPanel;
+         
+            UIImage element2 = new UIImage(ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/InnerPanelBackgroundNew"))
+            {
+                Top = new StyleDimension(-0f, 0f),
+                Left = new StyleDimension(-0f, 0f),
+                IgnoresMouseInteraction = true
+            };
+
+            
             UIElement worldIcon = WorldIcon;
+
             UIImage element = new UIImage(ModContent.Request<Texture2D>("LunarVeil/Assets/Textures/Menu/LunarTree"))
             {
                 Top = new StyleDimension(-10f, 0f),
                 Left = new StyleDimension(-6f, 0f),
                 IgnoresMouseInteraction = true
             };
+
+
+
+
+
             worldIcon.Append(element);
+           
+
+        }
+        private void DrawWorldPreview(UIWorldCreationPreview uiItem, SpriteBatch spriteBatch)
+        {
+            typeof(UIWorldCreationPreview).GetField("_SizeSmallTexture", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(uiItem, ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/PreviewSizeWorldVeil"));
+            typeof(UIWorldCreationPreview).GetField("_SizeMediumTexture", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(uiItem, ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/PreviewSizeWorldVeil"));
+            typeof(UIWorldCreationPreview).GetField("_SizeLargeTexture", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(uiItem, ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/PreviewSizeWorldVeil"));
+
+            typeof(UIWorldCreationPreview).GetField("_EvilRandomTexture", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(uiItem, ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/PreviewBlankWorld"));
+            typeof(UIWorldCreationPreview).GetField("_EvilCorruptionTexture", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(uiItem, ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/PreviewBlankWorld"));
+            typeof(UIWorldCreationPreview).GetField("_EvilCrimsonTexture", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(uiItem, ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/PreviewBlankWorld"));
+
+
+            typeof(UIWorldCreationPreview).GetField("_BunnyMasterTexture", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(uiItem, ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/PreviewDifficultyMaster"));
+            typeof(UIWorldCreationPreview).GetField("_BunnyExpertTexture", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(uiItem, ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/PreviewDifficultyExpert"));
+            typeof(UIWorldCreationPreview).GetField("_BunnyNormalTexture", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(uiItem, ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/PreviewDifficultyNormal"));
+            typeof(UIWorldCreationPreview).GetField("_BunnyCreativeTexture", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(uiItem, ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/PreviewDifficultyMJourny"));
+
+
+
+
+
+
+
+
+
 
 
         }
-
 
         public override void Unload()
         {
