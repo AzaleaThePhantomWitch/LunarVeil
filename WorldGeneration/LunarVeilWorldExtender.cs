@@ -17,19 +17,20 @@ namespace LunarVeil.WorldGeneration
         public override void Load()
         {
             base.Load();
-            IL_WorldGen.setWorldSize += AddWorldSize;
+            IL_UIWorldCreation.FinishCreatingWorld += AddWorldSize;
         }
 
         public override void Unload()
         {
-            base.Unload();          
-            IL_WorldGen.setWorldSize -= AddWorldSize;
+            base.Unload();
+            IL_UIWorldCreation.FinishCreatingWorld -= AddWorldSize;
         }
 
         private void AddWorldSize(ILContext il)
         {
             var cursor = new ILCursor(il); 
-            cursor.Index += 2;
+            cursor.TryGotoNext(n => n.MatchCall(typeof(WorldGen), "CreateNewWorld"));
+            cursor.Index -= 2;
             cursor.EmitDelegate<Action>(EditWSize);
         }
 
@@ -41,10 +42,6 @@ namespace LunarVeil.WorldGeneration
 
             Main.maxTilesX = tileWidth;
             Main.maxTilesY = tileHeight;
-            Main.bottomWorld = Main.maxTilesY * 16;
-            Main.rightWorld = Main.maxTilesX * 16;
-            Main.maxSectionsX = Main.maxTilesX / 200;
-            Main.maxSectionsY = Main.maxTilesY / 150;
         }
     }
 }

@@ -142,6 +142,13 @@ namespace LunarVeil
 
                 ///---------- UI Panels
                 ///
+            
+                
+
+            }
+
+            if(!Main.dedServ && Main.netMode != NetmodeID.Server && ModContent.GetInstance<LunarVeilClientConfig>().VanillaUIRespritesToggle == true)
+            {
                 TextureAssets.InventoryBack = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/CategoryPanel");
                 TextureAssets.InventoryBack2 = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/CategoryPanel");
                 TextureAssets.InventoryBack3 = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/CategoryPanel");
@@ -164,24 +171,19 @@ namespace LunarVeil
 
                 TextureAssets.ScrollLeftButton = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/BackButton");
                 TextureAssets.ScrollRightButton = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/ForwardButton");
+               
+                On_UIWorldListItem.DrawSelf += (orig, self, spriteBatch) =>
+                {
+                    orig(self, spriteBatch);
+                    DrawWorldSelectItemOverlay(self, spriteBatch);
+                };
 
-                
-
+                On_UIWorldCreationPreview.DrawSelf += (orig, self, spriteBatch) =>
+                {
+                    orig(self, spriteBatch);
+                    DrawWorldPreview(self, spriteBatch);
+                };
             }
-
-
-            On_UIWorldListItem.DrawSelf += (orig, self, spriteBatch) =>
-            {
-                orig(self, spriteBatch);
-                DrawWorldSelectItemOverlay(self, spriteBatch);
-            };
-
-            On_UIWorldCreationPreview.DrawSelf += (orig, self, spriteBatch) =>
-            {
-                orig(self, spriteBatch);
-                DrawWorldPreview(self, spriteBatch);
-            };
-
 
             Instance = this;
         }
