@@ -7,3 +7,22 @@ Fake: {
 		It's snowing on Mt.Fuji
 		'''
 }
+
+ModelizingSaver: {
+	Tooltip:
+		'''
+		A modelizing saving structure item that will save a structure from the 
+		bottom left to top right!
+		Will appear in your tmod files and can be placed using the placer!
+		'''
+	DisplayName: Modelizing Saver
+}
+
+ModelizingPlacer: {
+	Tooltip:
+		'''
+		A modelizing placer that will place whatever saved structure you have in
+		your files to your cursor!
+		'''
+	DisplayName: Modelizing Placer
+}

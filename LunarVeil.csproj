@@ -10,6 +10,7 @@
 
 	<!-- References -->
 	<ItemGroup>
+	  <Folder Include="Assets\Textures\Menu\" />
 	  <Folder Include="Content\Items\ModdedBiomeSets\CindersparkNDrakonic-Items\" />
 	  <Folder Include="Content\Items\ArmorSets\" />
 	  <Folder Include="Content\Items\ModdedBiomeSets\Govheil-Items\" />

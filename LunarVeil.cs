@@ -80,12 +80,74 @@ namespace LunarVeil
             LunarVeilUtils.LoadShaders();
             LunarVeilUtils.LoadOrderedLoadables();
             Instance = this;
+
+
+            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+            //``````````````````````````````````````````````````````````````````````````````````````
+
+
+            //`````````````````````````````````````````````````````````````````````````````
+
+
+
+
+
+            if (!Main.dedServ && Main.netMode != NetmodeID.Server && ModContent.GetInstance<LunarVeilClientConfig>().VanillaRespritesToggle == true)
+            {
+                Main.instance.LoadTiles(TileID.WoodBlock);
+                TextureAssets.Tile[TileID.WoodBlock] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/RefinedWoodTile");
+
+                Main.instance.LoadTiles(TileID.Dirt);
+                TextureAssets.Tile[TileID.Dirt] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/CourseDirt");
+
+                Main.instance.LoadTiles(TileID.Grass);
+                TextureAssets.Tile[TileID.Grass] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/CourseGrass");
+            }
+
+
+            On_UIWorldListItem.DrawSelf += (orig, self, spriteBatch) =>
+            {
+                orig(self, spriteBatch);
+                DrawWorldSelectItemOverlay(self, spriteBatch);
+            };
+
+
+            Instance = this;
         }
+        private void DrawWorldSelectItemOverlay(UIWorldListItem uiItem, SpriteBatch spriteBatch)
+        {
+            //    bool data = uiItem.Data.TryGetHeaderData(ModContent.GetInstance<WorldLoadGen>(), out var _data);
+            UIElement WorldIcon = (UIElement)typeof(UIWorldListItem).GetField("_worldIcon", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(uiItem);
+            WorldFileData Data = (WorldFileData)typeof(AWorldListItem).GetField("_data", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(uiItem);
+            WorldIcon.RemoveAllChildren();
+
+
+            UIElement worldIcon = WorldIcon;
+            UIImage element = new UIImage(ModContent.Request<Texture2D>("LunarVeil/Assets/Textures/Menu/LunarTree"))
+            {
+                Top = new StyleDimension(-10f, 0f),
+                Left = new StyleDimension(-6f, 0f),
+                IgnoresMouseInteraction = true
+            };
+            worldIcon.Append(element);
+
+
+        }
+
 
         public override void Unload()
         {
             LunarVeilUtils.UnloadOrderedLoadables();
-        }
+
+            if (!Main.dedServ)
+            {
+                UnloadTile(TileID.Grass);
+                UnloadTile(TileID.Dirt);
+                UnloadTile(TileID.WoodBlock);
+            }
+         }
 
         private void UnloadTile(int tileID)
         {

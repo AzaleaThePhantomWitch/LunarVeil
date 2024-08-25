@@ -10,6 +10,7 @@ WatersToggle: {
 	Label: Pretty Waters
 	Tooltip: Toggles new water effects on and off.
 }
+
 VanillaRespritesToggle: {
 	Label: Vanilla Resprites
 	Tooltip: Makes the vanilla textures looks a bit different.
