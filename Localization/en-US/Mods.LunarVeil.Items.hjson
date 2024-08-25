@@ -26,3 +26,8 @@ ModelizingPlacer: {
 		'''
 	DisplayName: Modelizing Placer
 }
+
+RainforestGrassBlock: {
+	Tooltip: ""
+	DisplayName: Rainforest Grass Block
+}

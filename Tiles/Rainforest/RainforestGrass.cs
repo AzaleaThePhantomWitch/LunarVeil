@@ -15,9 +15,9 @@ namespace LunarVeil.Tiles.Rainforest
             Main.tileMergeDirt[Type] = true;
             Main.tileBlockLight[Type] = true;
             RegisterItemDrop(ModContent.ItemType<RainforestGrassBlock>());
-            DustType = Main.rand.Next(110, 113);
+           // DustType = Main.rand.Next(110, 113);
 
-            MineResist = 2f;
+            MineResist = 1f;
             MinPick = 25;
 
             AddMapEntry(new Color(110, 74, 51));
