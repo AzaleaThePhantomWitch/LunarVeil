@@ -15,9 +15,9 @@ namespace LunarVeil.WorldGeneration
 
 
         //We can set the world size to anything, 8400x2400 is large world
-        public int NewMaxTilesX => 8400;
-        public int NewMaxTilesY => 2400;
-
+        public int NewMaxTilesX => 12400;
+        public int NewMaxTilesY => 6400;
+        //Original 8400x 2400y
         public override void Load()
         {
             //if (ModLoader.version < new Version(0, 10))
