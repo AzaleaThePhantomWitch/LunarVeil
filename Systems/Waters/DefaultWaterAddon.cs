@@ -47,7 +47,7 @@ namespace LunarVeil.Systems.Waters
 
                     Vector2 tsp = Main.screenPosition;
 
-                    spriteBatch.Draw(tex2, pos - new Vector2(tsp.X % tex2.Width, tsp.Y % tex2.Height), null, Color.White * 0.25f);
+                    spriteBatch.Draw(tex2, pos - new Vector2(tsp.X % tex2.Width, tsp.Y % tex2.Height), null, Color.White * 0.5f);
                 }
             }
         }
@@ -73,7 +73,7 @@ namespace LunarVeil.Systems.Waters
 
                     Vector2 tsp = Main.screenPosition;
 
-                    spriteBatch.Draw(tex2, pos - new Vector2(tsp.X % tex2.Width, tsp.Y % tex2.Height), null, Color.White * 0.25f);
+                    spriteBatch.Draw(tex2, pos - new Vector2(tsp.X % tex2.Width, tsp.Y % tex2.Height), null, Color.White * 0.5f);
                 }
             }
         }

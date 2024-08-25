@@ -108,9 +108,29 @@ namespace LunarVeil
                 Main.instance.LoadTiles(TileID.ClayBlock);
                 TextureAssets.Tile[TileID.ClayBlock] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/ForestTiles/ClayTile");
 
+
+
                 //Set tree tops
                 //Number inside is the one you're replacing, up to 31
-                TextureAssets.TreeTop[0] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/ForestTiles/ClayTile");
+
+
+                //Forest
+                Main.instance.LoadTiles(TileID.Trees);
+                TextureAssets.Tile[TileID.Trees] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/ForestTiles/TreeWood");
+
+                TextureAssets.TreeTop[0] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/ForestTiles/TreeNormal1");
+
+                TextureAssets.TreeTop[6] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/ForestTiles/TreeNormal1");
+
+                TextureAssets.TreeTop[7] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/ForestTiles/TreeNormal2");
+
+                TextureAssets.TreeTop[8] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/ForestTiles/TreeNormal2");
+
+                TextureAssets.TreeTop[9] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/ForestTiles/TreeNormal3");
+
+                TextureAssets.TreeTop[10] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/ForestTiles/TreeNormal3");
+
+                //---------------------------------------------------
             }
 
 
