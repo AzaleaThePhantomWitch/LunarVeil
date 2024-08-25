@@ -97,16 +97,16 @@ namespace LunarVeil
             if (!Main.dedServ && Main.netMode != NetmodeID.Server && ModContent.GetInstance<LunarVeilClientConfig>().VanillaRespritesToggle == true)
             {
                 Main.instance.LoadTiles(TileID.WoodBlock);
-                TextureAssets.Tile[TileID.WoodBlock] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/RefinedWoodTile");
+                TextureAssets.Tile[TileID.WoodBlock] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/ForestTiles/RefinedWoodTile");
 
                 Main.instance.LoadTiles(TileID.Dirt);
-                TextureAssets.Tile[TileID.Dirt] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/CourseDirt");
+                TextureAssets.Tile[TileID.Dirt] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/ForestTiles/CourseDirt");
 
                 Main.instance.LoadTiles(TileID.Grass);
-                TextureAssets.Tile[TileID.Grass] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/CourseGrass");
+                TextureAssets.Tile[TileID.Grass] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/ForestTiles/CourseGrass");
 
                 Main.instance.LoadTiles(TileID.ClayBlock);
-                TextureAssets.Tile[TileID.ClayBlock] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/ClayTile");
+                TextureAssets.Tile[TileID.ClayBlock] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/ForestTiles/ClayTile");
             }
 
 
