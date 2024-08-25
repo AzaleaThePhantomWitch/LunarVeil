@@ -6,7 +6,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 
-namespace LunarVeil.NPCs.Forest.IvythornSlime
+namespace LunarVeil.Content.NPCs.Forest.IvythornSlime
 {
 
     public class IvythornSlime : ModNPC
