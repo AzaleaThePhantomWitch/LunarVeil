@@ -6,10 +6,10 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 
-namespace LunarVeil.NPCs.Forest.IvythornSlime
+namespace LunarVeil.Content.NPCs.Forest.IvythornSlime
 {
 
-    public class IvythornSlime : ModNPC
+    public class IvythornSlimeScaled : ModNPC
     {
         public override void SetStaticDefaults()
         {
@@ -21,16 +21,16 @@ namespace LunarVeil.NPCs.Forest.IvythornSlime
         {
             NPC.width = 32;
             NPC.height = 24;
-            NPC.damage = 8;
-            NPC.defense = 4;
-            NPC.lifeMax = 46;
+            NPC.damage = 10;
+            NPC.defense = 5;
+            NPC.lifeMax = 60;
             NPC.HitSound = SoundID.NPCHit1;
             NPC.DeathSound = SoundID.NPCDeath1;
             NPC.value = 30f;
             NPC.buffImmune[BuffID.Poisoned] = true;
             NPC.buffImmune[BuffID.Venom] = true;
             NPC.alpha = 60;
-            NPC.knockBackResist = .65f;
+            NPC.knockBackResist = .45f;
             NPC.aiStyle = 1;
             AIType = NPCID.BlueSlime;
             AnimationType = NPCID.BlueSlime;
