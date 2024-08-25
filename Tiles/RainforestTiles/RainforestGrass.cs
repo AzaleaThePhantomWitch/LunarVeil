@@ -5,7 +5,7 @@ using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace LunarVeil.Tiles.Rainforest
+namespace LunarVeil.Tiles.RainforestTiles
 {
     public class RainforestGrass : ModTile
     {
