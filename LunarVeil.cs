@@ -20,6 +20,7 @@ using Terraria.IO;
 using Terraria.UI;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 using Terraria.GameContent.UI.States;
+using Terraria.GameContent.Creative;
 
 
 namespace LunarVeil
@@ -223,6 +224,7 @@ namespace LunarVeil
            
 
         }
+      
         private void DrawWorldPreview(UIWorldCreationPreview uiItem, SpriteBatch spriteBatch)
         {
             typeof(UIWorldCreationPreview).GetField("_SizeSmallTexture", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(uiItem, ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/PreviewSizeWorldVeil"));
@@ -238,15 +240,6 @@ namespace LunarVeil
             typeof(UIWorldCreationPreview).GetField("_BunnyExpertTexture", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(uiItem, ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/PreviewDifficultyExpert"));
             typeof(UIWorldCreationPreview).GetField("_BunnyNormalTexture", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(uiItem, ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/PreviewDifficultyNormal"));
             typeof(UIWorldCreationPreview).GetField("_BunnyCreativeTexture", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(uiItem, ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/PreviewDifficultyMJourny"));
-
-
-
-
-
-
-
-
-
 
 
         }
