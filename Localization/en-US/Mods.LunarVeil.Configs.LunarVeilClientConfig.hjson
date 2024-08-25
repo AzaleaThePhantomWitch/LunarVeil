@@ -13,5 +13,10 @@ WatersToggle: {
 
 VanillaRespritesToggle: {
 	Label: Vanilla Resprites
-	Tooltip: Makes the vanilla textures looks a bit different.
+	Tooltip: Makes the vanilla textures look a bit different.
+}
+
+VanillaUIRespritesToggle: {
+	Label: Vanilla UI Resprites
+	Tooltip: Makes the vanilla ui textures look a bit different.
 }
