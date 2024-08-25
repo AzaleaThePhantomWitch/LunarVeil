@@ -107,6 +107,10 @@ namespace LunarVeil
 
                 Main.instance.LoadTiles(TileID.ClayBlock);
                 TextureAssets.Tile[TileID.ClayBlock] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/ForestTiles/ClayTile");
+
+                //Set tree tops
+                //Number inside is the one you're replacing, up to 31
+                TextureAssets.TreeTop[0] = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/ForestTiles/ClayTile");
             }
 
 
