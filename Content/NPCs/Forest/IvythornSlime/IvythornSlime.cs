@@ -1,6 +1,7 @@
-
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.GameContent.Biomes;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -11,6 +12,7 @@ namespace LunarVeil.Content.NPCs.Forest.IvythornSlime
 
     public class IvythornSlime : ModNPC
     {
+        private int _style = 2;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Ivythorn Slime");
@@ -34,8 +36,29 @@ namespace LunarVeil.Content.NPCs.Forest.IvythornSlime
             NPC.aiStyle = 1;
             AIType = NPCID.BlueSlime;
             AnimationType = NPCID.BlueSlime;
+            _style = Main.rand.Next(0, 3);
         }
 
+
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            var texture = ModContent.Request<Texture2D>(Texture).Value;
+            switch (_style)
+            {
+                case 0:
+                    break;
+                case 1:
+                    texture = ModContent.Request<Texture2D>(Texture + "_2").Value;
+                    break;
+                case 2:
+                    texture = ModContent.Request<Texture2D>(Texture + "_3").Value;
+                    break;
+            }
+
+            spriteBatch.Draw(texture, NPC.Center - Main.screenPosition + new Vector2(0, NPC.gfxOffY), NPC.frame,
+                drawColor, NPC.rotation, NPC.frame.Size() / 2, NPC.scale, SpriteEffects.None, 0);
+            return false;
+        }
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
             if (!spawnInfo.Player.ZonePurity)
@@ -57,6 +80,7 @@ namespace LunarVeil.Content.NPCs.Forest.IvythornSlime
 
         public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
         {
+           
             if (Main.rand.NextBool(3))
             {
                 target.AddBuff(BuffID.Poisoned, 180);
