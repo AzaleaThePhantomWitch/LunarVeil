@@ -13,6 +13,7 @@ namespace LunarVeil.Systems.Waters
             && !Main.LocalPlayer.ZoneBeach
             && !Main.LocalPlayer.ZoneCrimson
             && !Main.LocalPlayer.ZoneCorrupt
+            && !Main.LocalPlayer.ZoneShimmer
             ;
 
         public static ScreenTarget BackTarget = new(RenderFront, () => Biomes, 1, (a) => Main.waterTarget.Size());
