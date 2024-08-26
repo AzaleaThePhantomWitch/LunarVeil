@@ -19,9 +19,56 @@ namespace LunarVeil.WorldGeneration.BaseEdits
     public class LunarVeilWorldBase : ModSystem
     {
 
+        private void DoNothing(GenerationProgress progress, GameConfiguration configuration) { }
+        private void ReplacePassLegacy(List<GenPass> tasks, string name, WorldGenLegacyMethod method)
+        {
+            var pass = new PassLegacy(name, method);
+            int index = tasks.FindIndex(genpass => genpass.Name.Equals(name));
+            if (index != -1)
+            {
+                tasks[index] = pass;
+            }
+        }
+
+        private void RemoveMostPasses(List<GenPass> tasks)
+        {
+            for (int i = 2; i < tasks.Count; i++)
+            {
+                tasks[i] = new PassLegacy(tasks[i].Name, DoNothing);
+            }
+        }
+
+        private void RemovePass(List<GenPass> tasks, string name)
+        {
+            int caveIndex = tasks.FindIndex(genpass => genpass.Name.Equals(name));
+            if (caveIndex != -1)
+            {
+                tasks[caveIndex] = new PassLegacy(name, DoNothing);
+            }
+        }
+
+
 
         public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
         {
+            RemovePass(tasks, "Spawn Point");
+            RemovePass(tasks, "Full Desert");
+            RemovePass(tasks, "Dirt Layer Caves");
+            RemovePass(tasks, "Rock Layer Caves");
+            RemovePass(tasks, "Surface Caves");
+            RemovePass(tasks, "Wavy Caves");
+            RemovePass(tasks, "Mountain Caves");
+            RemovePass(tasks, "Generate Ice Biome");
+            RemovePass(tasks, "Dungeon");
+
+            //This completely replaces the vanilla pass
+
+           // ReplacePassLegacy(tasks, "Terrain", NewSurfacing);
+
+            //This function would remove every single pass except reset/terrain ones
+            //RemoveMostPasses(tasks);
+
+
 
             int SurfaceLeveling = tasks.FindIndex(genpass => genpass.Name.Equals("Tunnels"));
             tasks[SurfaceLeveling] = new PassLegacy("LunarDiggin", (progress, config) =>
