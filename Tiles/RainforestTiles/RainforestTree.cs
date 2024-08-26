@@ -1,21 +1,24 @@
 ﻿using LunarVeil.WorldGeneration.BaseEdits;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.GameContent.Creative;
+using Terraria.GameContent.UI.ResourceSets;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
+using Terraria.Utilities;
 
 namespace LunarVeil.Tiles.RainforestTiles
 {
     internal class RainforestTreeSapling : ModTile
     {
-       
+     
 
         public override void SetStaticDefaults()
         {
@@ -118,9 +121,10 @@ namespace LunarVeil.Tiles.RainforestTiles
 
         internal class RainforestTree : ModTile
         {
-           
 
-            public override void SetStaticDefaults()
+      
+       
+        public override void SetStaticDefaults()
             {
                  LocalizedText name = CreateMapEntryName();
                   TileID.Sets.IsATreeTrunk[Type] = true;
@@ -144,8 +148,8 @@ namespace LunarVeil.Tiles.RainforestTiles
                 if (right && !up && down || !up && !down)
                     Main.instance.TilesRenderer.AddSpecialLegacyPoint(new Point(i, j));
             }
-
-            public override void SpecialDraw(int i, int j, SpriteBatch spriteBatch)
+       
+        public override void SpecialDraw(int i, int j, SpriteBatch spriteBatch)
             {
                 bool left = Framing.GetTileSafely(i - 1, j).TileType == ModContent.TileType<RainforestTree>();
                 bool right = Framing.GetTileSafely(i + 1, j).TileType == ModContent.TileType<RainforestTree>();
@@ -159,7 +163,7 @@ namespace LunarVeil.Tiles.RainforestTiles
 
                     Color color = Lighting.GetColor(i, j);
 
-                    spriteBatch.Draw(tex, pos - Main.screenPosition, null, color, GetLeafSway(3, 0.05f, 0.008f), new Vector2(tex.Width / 2, tex.Height), 1, 0, 0);
+                    spriteBatch.Draw(tex, pos - Main.screenPosition, null, color, GetLeafSway(3, 0.05f, 0.008f), new Vector2(tex.Width / 2, tex.Height), 1, 0, 1);
 
 
 
@@ -168,22 +172,67 @@ namespace LunarVeil.Tiles.RainforestTiles
                    
                 }
 
+
                 if (!up && !down)
                 {
                     Texture2D sideTex = Terraria.GameContent.TextureAssets.TreeTop[0].Value;
                     Vector2 sidePos = (new Vector2(i + 1, j) + Systems.Tiling.MultitileHelper.TileAdj) * 16;
 
                     if (left)
-                        spriteBatch.Draw(sideTex, sidePos + new Vector2(20, 0) - Main.screenPosition, null, Color.White, 0, Vector2.Zero, 1, 0, 0);
+                        spriteBatch.Draw(sideTex, sidePos + new Vector2(20, 0) - Main.screenPosition, null, Color.White, 0, Vector2.Zero, 1, 0, 1);
 
                     if (right)
-                        spriteBatch.Draw(sideTex, sidePos + new Vector2(0, 20) - Main.screenPosition, null, Color.White, 0, Vector2.Zero, 1, 0, 0);
+                        spriteBatch.Draw(sideTex, sidePos + new Vector2(0, 20) - Main.screenPosition, null, Color.White, 0, Vector2.Zero, 1, 0, 1);
                 }
             }
 
             public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
             {
-                bool left = Framing.GetTileSafely(i - 1, j).TileType == ModContent.TileType<RainforestTree>();
+            Vector2 pos2 = (new Vector2(i + 1, j) + Systems.Tiling.MultitileHelper.TileAdj) * 16;
+            Color color2 = Lighting.GetColor(i, j);
+            UnifiedRandom random = new UnifiedRandom(i + j);
+            int Treebranch = 0;
+            SpriteEffects Flipper = 0;
+
+            bool Drawbranch = false;
+
+            if (random.NextBool(2))
+            {
+
+                Flipper = SpriteEffects.FlipHorizontally;
+
+            }
+            Drawbranch = random.NextBool(6);
+            Treebranch = random.Next(3) + 1;
+
+
+
+
+
+            Vector2 BranchOffset = new Vector2(50, 40);
+
+            if (Drawbranch)
+            {
+                if (Flipper == 0)
+                {
+                    Texture2D tex2 = ModContent.Request<Texture2D>(Texture + "Branches" + Treebranch).Value;
+                    spriteBatch.Draw(tex2, pos2 + BranchOffset - Main.screenPosition, null, color2.MultiplyRGB(Color.Gray), GetLeafSway(0, 0.05f, 0.01f), new Vector2(tex2.Width / 2, tex2.Height), 1, 0, 0);
+
+                }
+
+                if (Flipper == SpriteEffects.FlipHorizontally)
+                {
+                    Texture2D tex3 = ModContent.Request<Texture2D>(Texture + "Branches" + Treebranch).Value;
+                    spriteBatch.Draw(tex3, pos2 + BranchOffset - new Vector2(116, 0) - Main.screenPosition, null, color2.MultiplyRGB(Color.Gray), GetLeafSway(0, 0.05f, 0.01f), new Vector2(tex3.Width / 2, tex3.Height), 1, SpriteEffects.FlipHorizontally, 0);
+
+                }
+            }
+
+
+
+
+
+            bool left = Framing.GetTileSafely(i - 1, j).TileType == ModContent.TileType<RainforestTree>();
                 bool right = Framing.GetTileSafely(i + 1, j).TileType == ModContent.TileType<RainforestTree>();
                 bool up = Framing.GetTileSafely(i, j - 1).TileType == ModContent.TileType<RainforestTree>();
                 bool down = Framing.GetTileSafely(i, j + 1).TileType == ModContent.TileType<RainforestTree>();
@@ -195,12 +244,26 @@ namespace LunarVeil.Tiles.RainforestTiles
 
                     Color color = Lighting.GetColor(i, j);
 
-                    spriteBatch.Draw(tex, pos + new Vector2(50, 40) - Main.screenPosition, null, color.MultiplyRGB(Color.Gray), GetLeafSway(0, 0.05f, 0.01f), new Vector2(tex.Width / 2, tex.Height), 1, 0, 0);
-                    spriteBatch.Draw(tex, pos + new Vector2(-30, 80) - Main.screenPosition, null, color.MultiplyRGB(Color.DarkGray), GetLeafSway(2, 0.025f, 0.012f), new Vector2(tex.Width / 2, tex.Height), 1, 0, 0);
-                }
+                    spriteBatch.Draw(tex, pos + new Vector2(50, 40) - Main.screenPosition, null, color.MultiplyRGB(Color.Gray), GetLeafSway(0, 0.05f, 0.01f), new Vector2(tex.Width / 2, tex.Height), 1, 0, 1);
+                    spriteBatch.Draw(tex, pos + new Vector2(-30, 80) - Main.screenPosition, null, color.MultiplyRGB(Color.DarkGray), GetLeafSway(2, 0.025f, 0.012f), new Vector2(tex.Width / 2, tex.Height), 1, 0, 1);
 
-                return true;
-            }
+
+                }
+             
+
+
+
+           
+
+
+
+            //Branch 1 2 and 3
+
+
+
+
+            return true;
+        }
 
           
 
