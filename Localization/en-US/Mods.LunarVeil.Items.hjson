@@ -31,3 +31,8 @@ RainforestGrassBlock: {
 	Tooltip: ""
 	DisplayName: Rainforest Grass Block
 }
+
+RainforestTreeAcorn: {
+	DisplayName: Rainforest Tree Acorn
+	Tooltip: ""
+}

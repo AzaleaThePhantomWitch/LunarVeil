@@ -12,6 +12,9 @@ using Terraria.IO;
 using static tModPorter.ProgressUpdate;
 using Microsoft.Xna.Framework;
 using Terraria.ID;
+using Terraria.DataStructures;
+using LunarVeil.Systems.Tiling;
+using LunarVeil.Tiles.RainforestTiles;
 
 namespace LunarVeil.WorldGeneration.BaseEdits
 {
@@ -142,6 +145,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
             {
                 tasks.Insert(RainforestingGen + 1, new PassLegacy("RainClump", RainforestClump));
                 tasks.Insert(RainforestingGen + 2, new PassLegacy("RainDeeps", RainforestDeeps));
+                tasks.Insert(RainforestingGen + 3, new PassLegacy("RainTrees", RainforestTreeSpawning));
             }
 
 
@@ -165,10 +169,11 @@ namespace LunarVeil.WorldGeneration.BaseEdits
         int jungleNIce = 0;
         int cinderNGovheilia = 0;
         int noxNDread = 0;
+
+
+        #region  Dunes N Desert
        
-        
-        
-     private void NewDunes(GenerationProgress progress, GameConfiguration configuration)
+        private void NewDunes(GenerationProgress progress, GameConfiguration configuration)
      {
 
             switch (Main.rand.Next(2))
@@ -444,6 +449,11 @@ namespace LunarVeil.WorldGeneration.BaseEdits
            
 
       }
+
+
+        #endregion
+
+        #region RainforestGeneration
         private void RainforestClump(GenerationProgress progress, GameConfiguration configuration)
         {
             progress.Message = "Forest Becoming Rainy";
@@ -587,7 +597,101 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
         }
 
+     
 
+        private void RainforestTreeSpawning(GenerationProgress progress, GameConfiguration configuration)
+        {
+            progress.Message = "Making the Rainforest become a rainforest";
+            for (int k = 60; k < Main.maxTilesX - 60; k++)
+            {
+                if (k > Main.maxTilesX / 3 && k < Main.maxTilesX / 3 * 2 && WorldGen.genRand.NextBool(1)) //inner part of the world
+                {
+                    for (int y = 10; y < Main.worldSurface; y++)
+                    {
+                        if (IsGround(k, y, 2))
+                        {
+                            PlaceRaintrees(k, y, Main.rand.Next(12, 60));
+                            k += 1;
+
+                            break;
+                        }
+
+                        if (!IsAir(k, y, 2))
+                            break;
+                    }
+                }
+            }
+
+
+        }
+        private bool IsAir(int x, int y, int w)
+        {
+            for (int k = 0; k < w; k++)
+            {
+                Tile tile = Framing.GetTileSafely(x + k, y);
+                if (tile.HasTile && Main.tileSolid[tile.TileType])
+                    return false;
+            }
+
+            return true;
+        }
+
+        public static bool IsGround(int x, int y, int w)
+        {
+            for (int k = 0; k < w; k++)
+            {
+                Tile tile = Framing.GetTileSafely(x + k, y);
+                if (!(tile.HasTile && tile.Slope == SlopeType.Solid && !tile.IsHalfBlock && (tile.TileType == ModContent.TileType<Tiles.RainforestTiles.RainforestGrass>())))
+                    return false;
+
+                Tile tile2 = Framing.GetTileSafely(x + k, y - 1);
+                if (tile2.HasTile && Main.tileSolid[tile2.TileType])
+                    return false;
+            }
+
+            return true;
+        }
+
+        public static void PlaceRaintrees(int treex, int treey, int height)
+        {
+            treey -= 1;
+
+            if (treey - height < 1)
+                return;
+
+            for (int x = -1; x < 3; x++)
+            {
+                for (int y = 0; y < (height + 2); y++)
+                {
+                    WorldGen.KillTile(treex + x, treey - y);
+                }
+            }
+
+            MultitileHelper.PlaceMultitile(new Point16(treex, treey - 1), ModContent.TileType<RainforestTreeBase>());
+
+            for (int x = 0; x < 2; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    WorldGen.PlaceTile(treex + x, treey - (y + 2), ModContent.TileType<RainforestTree>(), true, true);
+                }
+            }
+
+            for (int x = -1; x < 3; x++)
+            {
+                for (int y = 0; y < (height + 2); y++)
+                {
+                    WorldGen.TileFrame(treex + x, treey + y);
+                }
+            }
+        }
+
+
+
+
+        #endregion
+
+        #region JungleGeneration
         private void JungleClump(GenerationProgress progress, GameConfiguration configuration)
         {
             progress.Message = "Jungle being goofy again";
@@ -672,7 +776,9 @@ namespace LunarVeil.WorldGeneration.BaseEdits
             }
         }
 
+        #endregion
 
+        #region IceBiomeGeneration
         private void IceClump(GenerationProgress progress, GameConfiguration configuration)
         {
             progress.Message = "Ice biome mounding";
@@ -777,9 +883,12 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
             
         }
+        #endregion
 
 
 
+
+        #region CavesGeneration
         private void NewCaveFormationMiddle(GenerationProgress progress, GameConfiguration configuration)
         {
           
@@ -840,6 +949,16 @@ namespace LunarVeil.WorldGeneration.BaseEdits
             }
 
         }
+
+
+
+
+
+
+
+
+
+#endregion
 
     }
 }
