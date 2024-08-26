@@ -50,6 +50,11 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                 if (tasks[i].Name == "Grass")
                     continue;
 
+                if (tasks[i].Name == "Lakes")
+                    continue;
+
+                if (tasks[i].Name == "Spreading Grass")
+                    continue;
 
                 tasks[i] = new PassLegacy(tasks[i].Name, DoNothing);
                
