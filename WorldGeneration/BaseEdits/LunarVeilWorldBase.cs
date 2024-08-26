@@ -34,7 +34,25 @@ namespace LunarVeil.WorldGeneration.BaseEdits
         {
             for (int i = 2; i < tasks.Count; i++)
             {
+                //Bring back an older pass
+                if (tasks[i].Name == "Spawn Point")
+                    continue;
+
+                if (tasks[i].Name == "Quick Cleanup")
+                    continue;
+                
+                if (tasks[i].Name == "Clean Up Dirt")
+                    continue;
+
+                if (tasks[i].Name == "Smooth World")
+                    continue;
+
+                if (tasks[i].Name == "Grass")
+                    continue;
+
+
                 tasks[i] = new PassLegacy(tasks[i].Name, DoNothing);
+               
             }
         }
 
@@ -46,12 +64,25 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                 tasks[caveIndex] = new PassLegacy(name, DoNothing);
             }
         }
-
+      
+        private void InsertNewPass(List<GenPass> tasks, string name, WorldGenLegacyMethod method, int index = -1)
+        {
+            if (index != -1)
+            {
+                tasks.Insert(index, new PassLegacy(name, method));
+            }
+            else
+            {
+                tasks.Add(new PassLegacy(name, method));
+            }
+        }
 
 
         public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
         {
-            RemovePass(tasks, "Spawn Point");
+
+            /*
+        //  RemovePass(tasks, "Spawn Point");
             RemovePass(tasks, "Full Desert");
             RemovePass(tasks, "Dirt Layer Caves");
             RemovePass(tasks, "Rock Layer Caves");
@@ -60,13 +91,28 @@ namespace LunarVeil.WorldGeneration.BaseEdits
             RemovePass(tasks, "Mountain Caves");
             RemovePass(tasks, "Generate Ice Biome");
             RemovePass(tasks, "Dungeon");
+            RemovePass(tasks, "Corruption");
+            RemovePass(tasks, "Floating Islands");
+            RemovePass(tasks, "Buried Chests");
+         // RemovePass(tasks, "Small Holes");
+            RemovePass(tasks, "Jungle Temple");
+            RemovePass(tasks, "Marble");
+            RemovePass(tasks, "Granite");
+            RemovePass(tasks, "Glowing Mushrooms and Jungle Plants");
+            RemovePass(tasks, "Spider Caves");
+            RemovePass(tasks, "Gem Caves");
+            RemovePass(tasks, "Lihzahrd Altars");
+            RemovePass(tasks, "Mushroom Patches");
+            */
+
+
 
             //This completely replaces the vanilla pass
 
-           // ReplacePassLegacy(tasks, "Terrain", NewSurfacing);
+            // ReplacePassLegacy(tasks, "Terrain", NewSurfacing);
 
             //This function would remove every single pass except reset/terrain ones
-            //RemoveMostPasses(tasks);
+            RemoveMostPasses(tasks);
 
 
 
@@ -82,11 +128,20 @@ namespace LunarVeil.WorldGeneration.BaseEdits
             int Dune = tasks.FindIndex(genpass => genpass.Name.Equals("Dunes"));
             tasks[Dune] = new PassLegacy("LunarSands", (progress, config) =>
             {
-                progress.Message = "More Sand";
+                progress.Message = "Gintze eating sand";
                 NewDunes(progress, config);
             });
 
+            int BigGenerationInsert = tasks.FindIndex(genpass => genpass.Name.Equals("LunarSands"));
+            if (BigGenerationInsert != -1)
+            {
+                tasks.Insert(BigGenerationInsert + 1, new PassLegacy("RainClump", RainforestClump));
+                tasks.Insert(BigGenerationInsert + 2, new PassLegacy("RainDeeps", RainforestDeeps));
+            }
+
+
         }
+
         int desertNForest = 0;
         int jungleNIce = 0;
         int cinderNGovheilia = 0;
@@ -124,13 +179,14 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                             {
                                 //seperation
                                 smx += Main.rand.Next(21);
-                                smy -= 0;
+                                smy += 1;
                                
                             }
 
                             // If we went under the world's surface, try again
                             if (smy > Main.UnderworldLayer - 20)
                             {
+                                
                                 continue;
                             }
 
@@ -156,6 +212,21 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                                 WorldUtils.Gen(Loc2, new Shapes.Mound(60, 100), new Actions.SetTile(TileID.Sandstone));
                             }
 
+
+                            for (int da = 0; da < 10; da++)
+                            {
+                                //StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
+
+                                WorldGen.digTunnel(smx, smy + 30, 0, 1, Main.rand.Next(100), 1, false);
+
+
+                                WorldGen.digTunnel(smx, smy + 400, 0, 1, Main.rand.Next(100), 1, false);
+
+
+
+                            }
+
+
                             for (int da = 0; da < 5; da++)
                             {
                                 //StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
@@ -174,18 +245,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                             }
 
 
-                            for (int da = 0; da < 10; da++)
-                            {
-                                //StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
-
-                                WorldGen.digTunnel(smx, smy + 30, 0, 1, Main.rand.Next(100), 1, false);
-
-
-                                WorldGen.digTunnel(smx, smy + 400, 0, 1, Main.rand.Next(100), 1, false);
-
-
-
-                            }
+                          
 
 
 
@@ -193,10 +253,11 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                             {
                                 //StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
 
-                                WorldGen.digTunnel(smx, smy + 100, 0, 1, 400, 5, false);
+                                WorldGen.digTunnel(smx, smy + 100, 0, 1, 300, 5, false);
 
 
 
+                                WorldGen.digTunnel(smx - Main.rand.Next(40), smy + Main.rand.Next(400) + 500, 0, 1, 100, 2, false);
 
 
 
@@ -251,8 +312,8 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                             {
                                 //seperation
                                 smx += Main.rand.Next(21);
-                                smy -= 0;
-                                
+                                smy += 1;
+
                             }
 
                             // If we went under the world's surface, try again
@@ -283,6 +344,21 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                                 WorldUtils.Gen(Loc2, new Shapes.Mound(60, 100), new Actions.SetTile(TileID.Sandstone));
                             }
 
+
+                            for (int da = 0; da < 10; da++)
+                            {
+                                //StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
+
+                                WorldGen.digTunnel(smx, smy + 30, 0, 1, Main.rand.Next(100), 1, false);
+
+
+                                WorldGen.digTunnel(smx, smy + 400, 0, 1, Main.rand.Next(100), 1, false);
+
+
+
+                            }
+
+
                             for (int da = 0; da < 5; da++)
                             {
                                 //StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
@@ -301,18 +377,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                             }
 
 
-                            for (int da = 0; da < 10; da++)
-                            {
-                                //StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
 
-                                WorldGen.digTunnel(smx, smy + 30, 0, 1, Main.rand.Next(100), 1, false);
-
-
-                                WorldGen.digTunnel(smx, smy + 400, 0, 1, Main.rand.Next(100), 1, false);
-
-
-
-                            }
 
 
 
@@ -320,11 +385,8 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                             {
                                 //StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
 
-                                WorldGen.digTunnel(smx, smy + 100, 0, 1, 400, 5, false);
-
-
-
-
+                                WorldGen.digTunnel(smx, smy + 100, 0, 1, 300, 5, false);
+                                WorldGen.digTunnel(smx - Main.rand.Next(40), smy + Main.rand.Next(400) + 500, 0, 1, 100, 2, false);
 
 
                             }
@@ -342,6 +404,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
                             }
 
+
                             desertNForest = 2;
                         }
 
@@ -356,6 +419,148 @@ namespace LunarVeil.WorldGeneration.BaseEdits
            
 
       }
+        private void RainforestClump(GenerationProgress progress, GameConfiguration configuration)
+        {
+            progress.Message = "Forest Becoming Rainy";
+            int smx = 0;
+            int smy = 0;
+
+            if (desertNForest == 2)
+            {
+
+
+                 smx = ((Main.maxTilesX) / 2) - 925;
+                 smy = (Main.maxTilesY / 4) - 200;
+
+
+
+
+                for (int da = 0; da < 1; da++)
+                {
+                    Point Loc7 = new Point(smx, smy);
+                    WorldGen.TileRunner(Loc7.X, Loc7.Y, 900, 2, ModContent.TileType<Tiles.RainforestTiles.RainforestGrass>(), false, 0f, 0f, true, true);
+                    WorldGen.TileRunner(Loc7.X, Loc7.Y + 300, 1200, 2, ModContent.TileType<Tiles.RainforestTiles.RainforestGrass>(), false, 0f, 0f, true, true);
+                    WorldGen.TileRunner(Loc7.X, Loc7.Y + 600, 1000, 2, ModContent.TileType<Tiles.RainforestTiles.RainforestGrass>(), false, 0f, 0f, true, true);
+                }
+
+
+            }
+
+
+
+            if (desertNForest == 1)
+            {
+
+                 smx = ((Main.maxTilesX) / 2) + 925;
+                 smy = (Main.maxTilesY / 4) - 200;
+
+
+
+
+                for (int da = 0; da < 1; da++)
+                {
+                    Point Loc7 = new Point(smx, smy);
+                    WorldGen.TileRunner(Loc7.X, Loc7.Y, 900, 2, ModContent.TileType<Tiles.RainforestTiles.RainforestGrass>(), false, 0f, 0f, true, true);
+                    WorldGen.TileRunner(Loc7.X, Loc7.Y + 300, 1200, 2, ModContent.TileType<Tiles.RainforestTiles.RainforestGrass>(), false, 0f, 0f, true, true);
+                    WorldGen.TileRunner(Loc7.X, Loc7.Y + 600, 1000, 2, ModContent.TileType<Tiles.RainforestTiles.RainforestGrass>(), false, 0f, 0f, true, true);
+                }
+
+
+
+            }
+
+
+
+
+           
+
+
+
+
+
+
+
+        }
+
+        private void RainforestDeeps(GenerationProgress progress, GameConfiguration configuration)
+        {
+            progress.Message = "Forest Becoming deep";
+          
+
+
+
+            int attempts = 0;
+            while (attempts++ < 1000)
+            {
+                int smx = WorldGen.genRand.Next(((Main.maxTilesX) / 4), ((Main.maxTilesX / 2) + (Main.maxTilesX) / 4));
+
+
+                // Select a place // from 50 since there's a unaccessible area at the world's borders
+                // 50% of choosing the last 6th of the world
+                // Choose which side of the world to be on randomly
+                ///if (WorldGen.genRand.NextBool())
+                ///{
+                ///	towerX = Main.maxTilesX - towerX;
+                ///}
+
+                //Start at 200 tiles above the surface instead of 0, to exclude floating islands
+               int smy = (Main.maxTilesY / 3) - 700;
+
+                // We go down until we hit a solid tile or go under the world's surface
+
+                while (!WorldGen.SolidTile(smx, smy) && smy <= Main.UnderworldLayer)
+                {
+                    //seperation
+                    smx += 15;
+                    smy += 2;
+                }
+
+                // If we went under the world's surface, try again
+                if (smy > Main.UnderworldLayer - 20)
+                {
+                    continue;
+                }
+                Tile tile = Main.tile[smx, smy];
+                // If the type of the tile we are placing the tower on doesn't match what we want, try again
+                if (!(tile.TileType == ModContent.TileType<Tiles.RainforestTiles.RainforestGrass>()))
+                {
+                    continue;
+                }
+                // If the type of the tile we are placing the tower on doesn't match what we want, try again
+
+
+                for (int da = 0; da < 1; da++)
+                {
+
+                    //StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
+
+                    WorldGen.digTunnel(smx, smy, 0, 2, 125, 1, false);
+                  
+                    WorldGen.digTunnel(smx, smy + 150, 0, 2, 150, 2, false);
+
+                    WorldGen.digTunnel(smx, smy + 300, 0, 2, 200, 3, false);
+
+                    WorldGen.digTunnel(smx, smy + 500, 1, 2, 150, 3, false);
+
+                    WorldGen.digTunnel(smx, smy + 700, 2, 2, 50, 2, false);
+
+                    WorldGen.digTunnel(smx, smy + 750, 3, 2, 50, 1, false);
+                }
+
+
+            }
+
+
+
+
+
+
+
+        }
+
+
+
+
 
 
         private void NewCaveFormationMiddle(GenerationProgress progress, GameConfiguration configuration)
