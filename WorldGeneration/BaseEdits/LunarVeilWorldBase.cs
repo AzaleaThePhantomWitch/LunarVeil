@@ -137,13 +137,27 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                 NewDunes(progress, config);
             });
 
-            int BigGenerationInsert = tasks.FindIndex(genpass => genpass.Name.Equals("LunarSands"));
-            if (BigGenerationInsert != -1)
+            int RainforestingGen = tasks.FindIndex(genpass => genpass.Name.Equals("LunarSands"));
+            if (RainforestingGen != -1)
             {
-                tasks.Insert(BigGenerationInsert + 1, new PassLegacy("RainClump", RainforestClump));
-                tasks.Insert(BigGenerationInsert + 2, new PassLegacy("RainDeeps", RainforestDeeps));
+                tasks.Insert(RainforestingGen + 1, new PassLegacy("RainClump", RainforestClump));
+                tasks.Insert(RainforestingGen + 2, new PassLegacy("RainDeeps", RainforestDeeps));
             }
 
+
+            int JungleGen = tasks.FindIndex(genpass => genpass.Name.Equals("RainDeeps"));
+            if (JungleGen != -1)
+            {
+                tasks.Insert(JungleGen + 1, new PassLegacy("JungleClump", JungleClump));
+                //tasks.Insert(JungleGen + 2, new PassLegacy("RainDeeps", RainforestDeeps));
+            }
+
+            int IceGen = tasks.FindIndex(genpass => genpass.Name.Equals("JungleClump"));
+            if (IceGen != -1)
+            {
+                tasks.Insert(IceGen + 1, new PassLegacy("IceClump", IceClump));
+                //tasks.Insert(JungleGen + 2, new PassLegacy("RainDeeps", RainforestDeeps));
+            }
 
         }
 
@@ -201,9 +215,12 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                             {
                                 Point Loc2 = new Point(smx, smy);
                                 Point Loc3 = new Point(smx, smy + 400);
-                                WorldUtils.Gen(Loc2, new Shapes.Mound(Main.rand.Next(70), Main.rand.Next(150) + 90), new Actions.SetTile(TileID.Sand));
+                                WorldUtils.Gen(Loc2, new Shapes.Mound(Main.rand.Next(70), Main.rand.Next(50) + 80), new Actions.SetTile(TileID.Sand));
                                 WorldUtils.Gen(Loc3, new Shapes.Mound(200, 100), new Actions.SetTile(TileID.HardenedSand));
 
+
+                                Point Loc4 = new Point(smx, smy - 50);
+                                WorldGen.TileRunner(Loc4.X, Loc4.Y, 10, 4, TileID.HardenedSand, false, 0f, 0f, true, true);
 
                             }
 
@@ -333,9 +350,12 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                             {
                                 Point Loc2 = new Point(smx, smy);
                                 Point Loc3 = new Point(smx, smy + 400);
-                                WorldUtils.Gen(Loc2, new Shapes.Mound(Main.rand.Next(70), Main.rand.Next(150) + 90), new Actions.SetTile(TileID.Sand));
+                                WorldUtils.Gen(Loc2, new Shapes.Mound(Main.rand.Next(70), Main.rand.Next(50) + 80), new Actions.SetTile(TileID.Sand));
                                 WorldUtils.Gen(Loc3, new Shapes.Mound(200, 100), new Actions.SetTile(TileID.HardenedSand));
 
+
+                                Point Loc4 = new Point(smx, smy - 50);
+                                WorldGen.TileRunner(Loc4.X, Loc4.Y, 10, 4, TileID.HardenedSand, false, 0f, 0f, true, true);
 
                             }
 
@@ -541,15 +561,18 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                     //the true at the end makes it wet?
                     WorldGen.digTunnel(smx, smy, 0, 2, 125, 1, true);
                   
-                    WorldGen.digTunnel(smx, smy + 150, 0, 2, 150, 2, true);
+                    WorldGen.digTunnel(smx, smy + 150, 0, 2, 100, 2, true);
 
-                    WorldGen.digTunnel(smx, smy + 300, 0, 2, 200, 3, true);
+                    WorldGen.digTunnel(smx, smy + 300, 0, 2, 100, 3, true);
 
-                    WorldGen.digTunnel(smx, smy + 500, 1, 2, 150, 3, true);
+                    WorldGen.digTunnel(smx, smy + 500, 1, 2, 150, 2, true);
 
                     WorldGen.digTunnel(smx, smy + 700, 2, 2, 50, 2, true);
 
-                    WorldGen.digTunnel(smx, smy + 750, 3, 2, 50, 1, true);
+                    WorldGen.digTunnel(smx, smy + 750, 3, 2, 100, 1, true);
+
+                    Point Loc7 = new Point(smx, smy + 150);
+                    WorldGen.TileRunner(Loc7.X, Loc7.Y, 80, 4, ModContent.TileType<Tiles.RainforestTiles.RainforestGrass>(), false, 0f, 0f, true, true);
 
                 }
 
@@ -565,7 +588,195 @@ namespace LunarVeil.WorldGeneration.BaseEdits
         }
 
 
+        private void JungleClump(GenerationProgress progress, GameConfiguration configuration)
+        {
+            progress.Message = "Jungle being goofy again";
+            int smx = 0;
+            int smy = 0;
+            switch (Main.rand.Next(2))
+            {
+                case 0:
+                    {
 
+
+                        smx = ((Main.maxTilesX) / 2) - 1825;
+                        smy = (Main.maxTilesY / 4) - 200;
+
+
+                        jungleNIce = 1;
+
+                        for (int da = 0; da < 1; da++)
+                        {
+                            Point Loc7 = new Point(smx, smy);
+                            Point Loc8 = new Point(smx, smy + 50);
+                            WorldUtils.Gen(Loc8, new Shapes.Mound(Main.rand.Next(80) + 450, Main.rand.Next(100) + 50), new Actions.SetTile(TileID.Mud));
+
+
+
+                            WorldGen.TileRunner(Loc7.X, Loc7.Y, 1000, 6, TileID.Mud, false, 0f, 0f, true, true);
+                            WorldGen.TileRunner(Loc7.X, Loc7.Y + 300, 800, 2, TileID.Mud, false, 0f, 0f, true, true);
+                            WorldGen.TileRunner(Loc7.X, Loc7.Y + 600, 700, 2, TileID.Mud, false, 0f, 0f, true, true);
+                            WorldGen.TileRunner(Loc7.X, Loc7.Y + 900, 500, 2, TileID.Mud, false, 0f, 0f, true, true);
+                            WorldGen.TileRunner(Loc7.X, Loc7.Y + 1200, 300, 2, TileID.Mud, false, 0f, 0f, true, true);
+                            WorldGen.TileRunner(Loc7.X, Loc7.Y + 1500, 100, 2, TileID.Mud, false, 0f, 0f, true, true);
+                        }
+
+
+
+                        break;
+                    }
+
+                case 1:
+                    {
+
+
+                        smx = ((Main.maxTilesX) / 2) + 1825;
+                        smy = (Main.maxTilesY / 4) - 200;
+
+                        jungleNIce = 2;
+
+
+                        for (int da = 0; da < 1; da++)
+                        {
+                            Point Loc7 = new Point(smx, smy);
+                            Point Loc8 = new Point(smx, smy + 50);
+                            WorldUtils.Gen(Loc8, new Shapes.Mound(Main.rand.Next(80) + 450, Main.rand.Next(100) + 50), new Actions.SetTile(TileID.Mud));
+
+                            WorldGen.TileRunner(Loc7.X, Loc7.Y, 1000, 6, TileID.Mud, false, 0f, 0f, true, true);
+                            WorldGen.TileRunner(Loc7.X, Loc7.Y + 300, 800, 2, TileID.Mud, false, 0f, 0f, true, true);
+                            WorldGen.TileRunner(Loc7.X, Loc7.Y + 600, 700, 2, TileID.Mud, false, 0f, 0f, true, true);
+                            WorldGen.TileRunner(Loc7.X, Loc7.Y + 900, 500, 2, TileID.Mud, false, 0f, 0f, true, true);
+                            WorldGen.TileRunner(Loc7.X, Loc7.Y + 1200, 300, 2, TileID.Mud, false, 0f, 0f, true, true);
+                            WorldGen.TileRunner(Loc7.X, Loc7.Y + 1500, 100, 2, TileID.Mud, false, 0f, 0f, true, true);
+                        }
+
+
+
+                        break;
+                    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            }
+        }
+
+
+        private void IceClump(GenerationProgress progress, GameConfiguration configuration)
+        {
+            progress.Message = "Ice biome mounding";
+            int smx = 0;
+            int smy = 0;
+            bool placed = false;
+          
+                if (jungleNIce == 2)
+                   
+            {
+
+
+                        smx = ((Main.maxTilesX) / 2) - 1825;
+                        smy = (Main.maxTilesY / 4) - 200;
+
+
+                  
+
+                        for (int da = 0; da < 1; da++)
+                        {
+                            Point Loc7 = new Point(smx, smy);
+                            Point Loc8 = new Point(smx, smy + 50);
+                            WorldUtils.Gen(Loc8, new Shapes.Mound(450, 300), new Actions.SetTile(TileID.SnowBlock));
+
+
+                            // Spawn in Ice Chunks
+                            WorldGen.TileRunner(Loc7.X, Loc7.Y, 1000, 6, TileID.SnowBlock, false, 0f, 0f, true, true);
+                            WorldGen.TileRunner(Loc7.X, Loc7.Y + 300, 800, 2, TileID.SnowBlock, false, 0f, 0f, true, true);
+                            WorldGen.TileRunner(Loc7.X, Loc7.Y + 600, 700, 2, TileID.SnowBlock, false, 0f, 0f, true, true);
+                            WorldGen.TileRunner(Loc7.X, Loc7.Y + 900, 500, 2, TileID.SnowBlock, false, 0f, 0f, true, true);
+                            WorldGen.TileRunner(Loc7.X, Loc7.Y + 1200, 500, 2, TileID.SnowBlock, false, 0f, 0f, true, true);
+                            WorldGen.TileRunner(Loc7.X, Loc7.Y + 1500, 500, 2, TileID.SnowBlock, false, 0f, 0f, true, true);
+                            WorldGen.TileRunner(Loc7.X, Loc7.Y + 1800, 500, 2, TileID.SnowBlock, false, 0f, 0f, true, true);
+                            WorldGen.TileRunner(Loc7.X, Loc7.Y + 1800, 700, 2, TileID.SnowBlock, false, 0f, 0f, true, true);
+
+
+
+                    // Dig big chasm at top
+                    WorldGen.digTunnel(smx, smy - 250, 0, 1, 1000, 15, false);
+
+                    placed = true;
+
+                }
+
+
+
+                       
+                }
+
+                if (jungleNIce == 1)
+                    {
+
+
+                        smx = ((Main.maxTilesX) / 2) + 1825;
+                        smy = (Main.maxTilesY / 4) - 200;
+
+                   
+
+
+                        for (int da = 0; da < 1; da++)
+                        {
+                            Point Loc7 = new Point(smx, smy);
+                            Point Loc8 = new Point(smx, smy + 50);
+                            WorldUtils.Gen(Loc8, new Shapes.Mound(450, 300), new Actions.SetTile(TileID.SnowBlock));
+
+
+
+                            WorldGen.TileRunner(Loc7.X, Loc7.Y, 1000, 6, TileID.SnowBlock, false, 0f, 0f, true, true);
+                            WorldGen.TileRunner(Loc7.X, Loc7.Y + 300, 800, 2, TileID.SnowBlock, false, 0f, 0f, true, true);
+                            WorldGen.TileRunner(Loc7.X, Loc7.Y + 600, 700, 2, TileID.SnowBlock, false, 0f, 0f, true, true);
+                            WorldGen.TileRunner(Loc7.X, Loc7.Y + 900, 500, 2, TileID.SnowBlock, false, 0f, 0f, true, true);
+                            WorldGen.TileRunner(Loc7.X, Loc7.Y + 1200, 500, 2, TileID.SnowBlock, false, 0f, 0f, true, true);
+                            WorldGen.TileRunner(Loc7.X, Loc7.Y + 1500, 500, 2, TileID.SnowBlock, false, 0f, 0f, true, true);
+                            WorldGen.TileRunner(Loc7.X, Loc7.Y + 1800, 500, 2, TileID.SnowBlock, false, 0f, 0f, true, true);
+                            WorldGen.TileRunner(Loc7.X, Loc7.Y + 1800, 700, 2, TileID.SnowBlock, false, 0f, 0f, true, true);
+
+
+
+                    // Dig big chasm at top
+                    WorldGen.digTunnel(smx, smy - 250, 0, 1, 1000, 15, false);
+                    placed = true;
+                }
+
+
+
+                        
+                    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+        }
 
 
 
@@ -618,7 +829,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
                     WorldGen.digTunnel(smx, smy, 2, 1, 10, 2, false);
 
-                    WorldGen.digTunnel(smx, smy - 300, 3, 1, 50, 2, true);
+                   // WorldGen.digTunnel(smx, smy - 300, 3, 1, 50, 2, true);
 
 
 
