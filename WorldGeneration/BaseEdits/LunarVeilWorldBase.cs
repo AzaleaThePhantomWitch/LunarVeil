@@ -201,7 +201,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                             {
                                 Point Loc2 = new Point(smx, smy);
                                 Point Loc3 = new Point(smx, smy + 400);
-                                WorldUtils.Gen(Loc2, new Shapes.Mound(Main.rand.Next(70), Main.rand.Next(150) + 50), new Actions.SetTile(TileID.Sand));
+                                WorldUtils.Gen(Loc2, new Shapes.Mound(Main.rand.Next(70), Main.rand.Next(150) + 90), new Actions.SetTile(TileID.Sand));
                                 WorldUtils.Gen(Loc3, new Shapes.Mound(200, 100), new Actions.SetTile(TileID.HardenedSand));
 
 
@@ -333,7 +333,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                             {
                                 Point Loc2 = new Point(smx, smy);
                                 Point Loc3 = new Point(smx, smy + 400);
-                                WorldUtils.Gen(Loc2, new Shapes.Mound(Main.rand.Next(70), Main.rand.Next(150) + 50), new Actions.SetTile(TileID.Sand));
+                                WorldUtils.Gen(Loc2, new Shapes.Mound(Main.rand.Next(70), Main.rand.Next(150) + 90), new Actions.SetTile(TileID.Sand));
                                 WorldUtils.Gen(Loc3, new Shapes.Mound(200, 100), new Actions.SetTile(TileID.HardenedSand));
 
 
@@ -495,7 +495,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
 
             int attempts = 0;
-            while (attempts++ < 1000)
+            while (attempts++ < 1500)
             {
                 int smx = WorldGen.genRand.Next(((Main.maxTilesX) / 4), ((Main.maxTilesX / 2) + (Main.maxTilesX) / 4));
 
@@ -538,18 +538,19 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                 {
 
                     //StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
-
-                    WorldGen.digTunnel(smx, smy, 0, 2, 125, 1, false);
+                    //the true at the end makes it wet?
+                    WorldGen.digTunnel(smx, smy, 0, 2, 125, 1, true);
                   
-                    WorldGen.digTunnel(smx, smy + 150, 0, 2, 150, 2, false);
+                    WorldGen.digTunnel(smx, smy + 150, 0, 2, 150, 2, true);
 
-                    WorldGen.digTunnel(smx, smy + 300, 0, 2, 200, 3, false);
+                    WorldGen.digTunnel(smx, smy + 300, 0, 2, 200, 3, true);
 
-                    WorldGen.digTunnel(smx, smy + 500, 1, 2, 150, 3, false);
+                    WorldGen.digTunnel(smx, smy + 500, 1, 2, 150, 3, true);
 
-                    WorldGen.digTunnel(smx, smy + 700, 2, 2, 50, 2, false);
+                    WorldGen.digTunnel(smx, smy + 700, 2, 2, 50, 2, true);
 
-                    WorldGen.digTunnel(smx, smy + 750, 3, 2, 50, 1, false);
+                    WorldGen.digTunnel(smx, smy + 750, 3, 2, 50, 1, true);
+
                 }
 
 
@@ -617,11 +618,11 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
                     WorldGen.digTunnel(smx, smy, 2, 1, 10, 2, false);
 
+                    WorldGen.digTunnel(smx, smy - 300, 3, 1, 50, 2, true);
 
 
 
 
-                    
                 }
 
 
