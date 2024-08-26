@@ -24,7 +24,7 @@ namespace LunarVeil.WorldGeneration
             //{
             //	throw new Exception("\nThis mod uses functionality only present in the latest tModLoader versions. Please update tModLoader to use this mod\n\n");
             //}
-            IL_WorldGen.clearWorld += WorldGen_clearWorld;
+            IL_WorldGen.CreateNewWorld += WorldGen_EditWorldSize;
             WorldGen_lastMaxTilesX = typeof(WorldGen).GetField("lastMaxTilesX", BindingFlags.Static | BindingFlags.NonPublic);
             WorldGen_lastMaxTilesY = typeof(WorldGen).GetField("lastMaxTilesY", BindingFlags.Static | BindingFlags.NonPublic);
         }
@@ -32,22 +32,21 @@ namespace LunarVeil.WorldGeneration
         public override void Unload()
         {
             base.Unload();
-            IL_WorldGen.clearWorld -= WorldGen_clearWorld;
+            IL_WorldGen.CreateNewWorld -= WorldGen_EditWorldSize;
         }
-        private void WorldGen_clearWorld(ILContext il)
+        private void WorldGen_EditWorldSize(ILContext il)
         {
             var cursor = new ILCursor(il);
-            cursor.EmitDelegate<Action>(ClearWorld);
+            cursor.EmitDelegate<Action>(EditWorldSize);
         }
 
-        private void ClearWorld()
+        private void EditWorldSize()
         {
             int lastMaxTilesX = (int)WorldGen_lastMaxTilesX.GetValue(null);
             int lastMaxTilesY = (int)WorldGen_lastMaxTilesY.GetValue(null);
 
             // TODO: investigate cpu/ram trade-off for reducing this later when regular-sized worlds loaded.
-          //  if (Main.maxTilesX > 8400 && Main.maxTilesX > lastMaxTilesX || Main.maxTilesY > 2400 && Main.maxTilesY > lastMaxTilesY)
-          //  {
+    
                 // Goal: Increase limits, don't decrease anything lower than normal max for compatibility.
                 Main.maxTilesX = NewMaxTilesX;
                 Main.maxTilesY = NewMaxTilesY;
@@ -76,7 +75,7 @@ namespace LunarVeil.WorldGeneration
 
                 Main.initMap = new bool[Main.mapTargetX, Main.mapTargetY];
                 Main.mapWasContentLost = new bool[Main.mapTargetX, Main.mapTargetY];
-           // }
+            
 
         }
     }
