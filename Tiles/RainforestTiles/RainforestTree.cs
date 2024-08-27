@@ -206,7 +206,7 @@ namespace LunarVeil.Tiles.RainforestTiles
             }
 
             bool Drawbranch = _random.NextBool(6);
-            int Treebranch = _random.Next(3) + 1;
+            int Treebranch = _random.Next(4) + 1;
 
 
             Vector2 BranchOffset = new Vector2(50, 40);
