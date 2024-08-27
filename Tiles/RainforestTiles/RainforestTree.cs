@@ -215,14 +215,14 @@ namespace LunarVeil.Tiles.RainforestTiles
                 if (Flipper == 0)
                 {
                     Texture2D tex2 = ModContent.Request<Texture2D>(Texture + "Branches" + Treebranch).Value;
-                    spriteBatch.Draw(tex2, pos2 + BranchOffset - Main.screenPosition, null, color2.MultiplyRGB(Color.Gray), GetLeafSway(0, 0.05f, 0.01f), new Vector2(tex2.Width / 2, tex2.Height), 1, 0, 0);
+                    spriteBatch.Draw(tex2, pos2 + BranchOffset - Main.screenPosition, null, color2.MultiplyRGB(Color.White), GetLeafSway(0, 0.05f, 0.01f), new Vector2(tex2.Width / 2, tex2.Height), 1, 0, 0);
 
                 }
 
                 if (Flipper == SpriteEffects.FlipHorizontally)
                 {
                     Texture2D tex3 = ModContent.Request<Texture2D>(Texture + "Branches" + Treebranch).Value;
-                    spriteBatch.Draw(tex3, pos2 + BranchOffset - new Vector2(116, 0) - Main.screenPosition, null, color2.MultiplyRGB(Color.Gray), GetLeafSway(0, 0.05f, 0.01f), new Vector2(tex3.Width / 2, tex3.Height), 1, SpriteEffects.FlipHorizontally, 0);
+                    spriteBatch.Draw(tex3, pos2 + BranchOffset - new Vector2(116, 0) - Main.screenPosition, null, color2.MultiplyRGB(Color.White), GetLeafSway(0, 0.05f, 0.01f), new Vector2(tex3.Width / 2, tex3.Height), 1, SpriteEffects.FlipHorizontally, 0);
 
                 }
             }
@@ -267,10 +267,11 @@ namespace LunarVeil.Tiles.RainforestTiles
                 DrawBranches(i, j, spriteBatch);
             }
 
+            
             //Draw Tree Tops
             if (shouldDraw && right && !up && down)
             {
-                Texture2D tex = ModContent.Request<Texture2D>(Texture + "Top").Value;
+                Texture2D tex = ModContent.Request<Texture2D>(Texture + "Back").Value;
                 Vector2 pos = (new Vector2(i + 1, j) + Systems.Tiling.MultitileHelper.TileAdj) * 16;
 
                 Color color = Lighting.GetColor(i, j);
