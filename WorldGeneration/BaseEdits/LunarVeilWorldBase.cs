@@ -601,9 +601,9 @@ namespace LunarVeil.WorldGeneration.BaseEdits
             progress.Message = "Ice biome mounding";
             int smx = 0;
             int smy = 0;
-            bool placed = false;
-          
-                if (jungleNIce == 2)
+            bool placed;
+            int contdown = 0;
+            if (jungleNIce == 2)
                    
             {
 
@@ -634,16 +634,22 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
 
                     // Dig big chasm at top
-                    WorldGen.digTunnel(smx, smy - 250, 0, 1, 1000, 15, false);
+                   
 
+                }
+                for (int daa = 0; daa < 30; daa++)
+                {
+                    contdown -= 10;
+
+                    // Dig big chasm at top
+                    WorldGen.digTunnel(smx - Main.rand.Next(10), smy - 250 - contdown, 0, 1, 1, 15, false);
                     placed = true;
-
                 }
 
 
 
-                       
-                }
+            }
+          
 
                 if (jungleNIce == 1)
                     {
@@ -675,14 +681,22 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
 
                     // Dig big chasm at top
-                    WorldGen.digTunnel(smx, smy - 250, 0, 1, 1000, 15, false);
+                   
+                   
+                   
+                }
+
+                for (int daa = 0; daa < 30; daa++)
+                {
+                    contdown -= 10;
+
+                    // Dig big chasm at top
+                    WorldGen.digTunnel(smx - Main.rand.Next(10), smy - 250 - contdown, 0, 1, 1, 15, false);
                     placed = true;
                 }
 
 
-
-                        
-                    }
+            }
 
 
 
