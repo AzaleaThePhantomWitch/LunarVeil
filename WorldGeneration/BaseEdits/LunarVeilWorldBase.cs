@@ -521,7 +521,12 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
 
                         smx = ((Main.maxTilesX) / 2) - 1825;
-                        smy = (Main.maxTilesY / 4) - 200;
+                        smy = (int)GenVars.worldSurfaceHigh - 70;
+                        while (!WorldGen.SolidTile(smx, smy) && smy <= Main.UnderworldLayer)
+                        {
+                            //seperation
+                            smy += 1;
+                        }
 
 
                         jungleNIce = 1;
@@ -552,7 +557,12 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
 
                         smx = ((Main.maxTilesX) / 2) + 1825;
-                        smy = (Main.maxTilesY / 4) - 200;
+                        smy = (int)GenVars.worldSurfaceHigh - 70;
+                        while (!WorldGen.SolidTile(smx, smy) && smy <= Main.UnderworldLayer)
+                        {
+                            //seperation
+                            smy += 1;
+                        }
 
                         jungleNIce = 2;
 
