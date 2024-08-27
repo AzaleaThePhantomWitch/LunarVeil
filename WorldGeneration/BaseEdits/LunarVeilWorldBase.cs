@@ -691,7 +691,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
 
                 smx = ((Main.maxTilesX) / 2) - 1825;
-                smy = (int)GenVars.worldSurfaceHigh - 70;
+                smy = (int)GenVars.worldSurfaceHigh - 200;
                 while (!WorldGen.SolidTile(smx, smy) && smy <= Main.UnderworldLayer)
                 {
                     //seperation
@@ -828,9 +828,9 @@ namespace LunarVeil.WorldGeneration.BaseEdits
             {
                 
 
-                int caveSteps = 1000; // How many carves
-                int Blockwidth = 6; //Block width for how far
-                int Blockwidth2 = 9;
+                int caveSteps = 700; // How many carves
+                int Blockwidth = 9; //Block width for how far
+                int Blockwidth2 = 12;
                 int Blockwidth3 = 15;
 
                 Vector2 baseCaveDirection = Vector2.UnitY.RotatedBy(WorldGen.genRand.NextFloatDirection() * 0.54f);
@@ -850,9 +850,19 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                     {
                         WorldUtils.Gen(AbysmPosition.ToPoint(), new Shapes.Circle(Blockwidth3), Actions.Chain(new GenAction[]
                      {
-                            new Actions.SetTile(TileID.SnowBlock),
+                             new Actions.SetTile((ushort)ModContent.TileType<AbyssalDirt>()),
+                           
                             new Actions.Smooth(true)
                      }));
+
+
+
+
+                    }
+
+                    if(AbysmStart.X < Main.maxTilesX - 15 && AbysmStart.X >= 15)
+                    {
+
 
                         WorldUtils.Gen(AbysmPosition.ToPoint(), new Shapes.Circle(Blockwidth2), Actions.Chain(new GenAction[]
                        {
@@ -860,11 +870,18 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                             new Actions.Smooth(true)
                        }));
                         //building 
+
+                    }
+
+                    if (AbysmStart.X < Main.maxTilesX - 15 && AbysmStart.X >= 15)
+                    {
+
+                        //building 
                         WorldUtils.Gen(AbysmPosition.ToPoint(), new Shapes.Circle(Blockwidth), Actions.Chain(new GenAction[]
                         {
-                            new Actions.SetTile((ushort)ModContent.TileType<AbyssalDirt>()),
+                             new Actions.SetTile(TileID.SnowBlock),
                             new Actions.Smooth(true)
-                        })) ;
+                        }));
 
 
                     }
@@ -881,7 +898,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
             }
 
            
-            for (int i = 0; i < 16; i++)
+            for (int i = 0; i < 20; i++)
             {
 
                 int caveWidth = 1; // Width
