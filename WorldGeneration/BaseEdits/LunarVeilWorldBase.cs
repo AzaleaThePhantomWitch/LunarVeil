@@ -235,7 +235,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
             int steps = 100;
             int duneX = 0;
             int duneY = (int)GenVars.worldSurfaceHigh;
-            
+            int newDuneY = duneY;
             switch (Main.rand.Next(2))
             {
                 case 0:
@@ -249,10 +249,11 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                     desertNForest = 2;
                     break;
             }
-
+            
             int originalDuneX = duneX;
             for (int i = 0; i < steps; i++)
             {
+                
                 //A bit of randomness
                 duneX += Main.rand.Next(45, 90);
                 if((duneX - originalDuneX) > 900)
@@ -260,29 +261,30 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                     duneX = originalDuneX + Main.rand.Next(50);
                 }
 
-                duneY = (int)GenVars.worldSurfaceHigh - 70;
+                duneY = (int)GenVars.worldSurfaceHigh - 500;
                 while (!WorldGen.SolidTile(duneX, duneY) && duneY <= Main.UnderworldLayer)
                 {
                     //seperation
                     duneY += 1;
                 }
+              
 
                 for (int daa = 0; daa < 1; daa++)
                 {
-                    Point Loc2 = new Point(duneX, duneY);
-                    Point Loc3 = new Point(duneX, duneY + 400);
+                    Point Loc2 = new Point(duneX, newDuneY);
+                    Point Loc3 = new Point(duneX, newDuneY + 400);
                     WorldUtils.Gen(Loc2, new Shapes.Mound(Main.rand.Next(70), Main.rand.Next(50) + 80), new Actions.SetTile(TileID.Sand));
                     WorldUtils.Gen(Loc3, new Shapes.Mound(200, 100), new Actions.SetTile(TileID.HardenedSand));
 
 
-                    Point Loc4 = new Point(duneX, duneY - 50);
+                    Point Loc4 = new Point(duneX, newDuneY - 50);
                     WorldGen.TileRunner(Loc4.X, Loc4.Y, 10, 4, TileID.HardenedSand, false, 0f, 0f, true, true);
                 }
 
                 for (int daa = 0; daa < 1; daa++)
                 {
-                    Point Loc2 = new Point(duneX, duneY + 100);
-                    Point Loc3 = new Point(duneX, duneY + 20);
+                    Point Loc2 = new Point(duneX, newDuneY + 100);
+                    Point Loc3 = new Point(duneX, newDuneY + 20);
 
                     WorldUtils.Gen(Loc3, new Shapes.Mound(80, 100), new Actions.SetTile(TileID.HardenedSand));
 
@@ -292,32 +294,32 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
                 for (int da = 0; da < 10; da++)
                 {
-                    WorldGen.digTunnel(duneX, duneY + 30, 0, 1, Main.rand.Next(100), 1, false);
-                    WorldGen.digTunnel(duneX, duneY + 400, 0, 1, Main.rand.Next(100), 1, false);
+                    WorldGen.digTunnel(duneX, newDuneY + 30, 0, 1, Main.rand.Next(100), 1, false);
+                    WorldGen.digTunnel(duneX, newDuneY + 500, 0, 1, Main.rand.Next(100), 1, false);
                 }
 
 
                 for (int da = 0; da < 5; da++)
                 {
-                    Point Loc2 = new Point(duneX, duneY + 400);
+                    Point Loc2 = new Point(duneX, newDuneY + 400);
                     WorldUtils.Gen(Loc2, new Shapes.Mound(Main.rand.Next(45), 100), new Actions.SetTile(TileID.HardenedSand));
 
-                    Point Loc3 = new Point(duneX, duneY + 900);
+                    Point Loc3 = new Point(duneX, newDuneY + 900);
                     WorldUtils.Gen(Loc3, new Shapes.Mound(Main.rand.Next(20), 700), new Actions.SetTile(TileID.HardenedSand));
 
-                    Point Loc4 = new Point(duneX + 12, duneY + 900);
+                    Point Loc4 = new Point(duneX + 12, newDuneY + 900);
                     WorldUtils.Gen(Loc4, new Shapes.Mound(Main.rand.Next(10), 700), new Actions.SetTile(TileID.Sandstone));
                 }
 
                 for (int da = 0; da < 20; da++)
                 {
-                    WorldGen.digTunnel(duneX, duneY + 100, 0, 1, 300, 5, false);
-                    WorldGen.digTunnel(duneX - Main.rand.Next(40), duneY + Main.rand.Next(400) + 500, 0, 1, 100, 2, false);
+                    WorldGen.digTunnel(duneX, newDuneY + 200, 0, 1, 300, 5, false);
+                    WorldGen.digTunnel(duneX - Main.rand.Next(40), newDuneY + Main.rand.Next(400) + 500, 0, 1, 100, 2, false);
                 }
 
                 for (int da = 0; da < 7; da++)
                 {
-                    Point Loc2 = new Point(duneX, duneY + 400);
+                    Point Loc2 = new Point(duneX, newDuneY + 400);
                     WorldUtils.Gen(Loc2, new Shapes.Mound(Main.rand.Next(80) + 20, Main.rand.Next(200) + 50), new Actions.SetTile(TileID.Sandstone));
                 }
             }
@@ -339,7 +341,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
 
                  smx = ((Main.maxTilesX) / 2) - 925;
-                smy = (int)GenVars.worldSurfaceHigh - 70;
+                smy = (int)GenVars.worldSurfaceHigh - 500;
                 while (!WorldGen.SolidTile(smx, smy) && smy <= Main.UnderworldLayer)
                 {
                     //seperation
@@ -685,13 +687,14 @@ namespace LunarVeil.WorldGeneration.BaseEdits
             int smy = 0;
             bool placed;
             int contdown = 0;
+            int contdownx = 0;
             if (jungleNIce == 2)
                    
             {
 
 
                 smx = ((Main.maxTilesX) / 2) - 1825;
-                smy = (int)GenVars.worldSurfaceHigh - 200;
+                smy = (int)GenVars.worldSurfaceHigh - 100;
                 while (!WorldGen.SolidTile(smx, smy) && smy <= Main.UnderworldLayer)
                 {
                     //seperation
@@ -702,7 +705,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                 for (int da = 0; da < 1; da++)
                         {
                             Point Loc7 = new Point(smx, smy);
-                            Point Loc8 = new Point(smx, smy + 50);
+                            Point Loc8 = new Point(smx, smy + 100);
                             WorldUtils.Gen(Loc8, new Shapes.Mound(450, 300), new Actions.SetTile(TileID.SnowBlock));
 
 
@@ -711,23 +714,29 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                             WorldGen.TileRunner(Loc7.X, Loc7.Y + 300, 800, 2, TileID.SnowBlock, false, 0f, 0f, true, true);
                             WorldGen.TileRunner(Loc7.X, Loc7.Y + 600, 700, 2, TileID.SnowBlock, false, 0f, 0f, true, true);
                             WorldGen.TileRunner(Loc7.X, Loc7.Y + 900, 500, 2, TileID.SnowBlock, false, 0f, 0f, true, true);
-                            WorldGen.TileRunner(Loc7.X, Loc7.Y + 1200, 500, 2, TileID.SnowBlock, false, 0f, 0f, true, true);
-                            WorldGen.TileRunner(Loc7.X, Loc7.Y + 1500, 500, 2, TileID.SnowBlock, false, 0f, 0f, true, true);
-                            WorldGen.TileRunner(Loc7.X, Loc7.Y + 1800, 500, 2, TileID.SnowBlock, false, 0f, 0f, true, true);
-                            WorldGen.TileRunner(Loc7.X, Loc7.Y + 1800, 700, 2, TileID.SnowBlock, false, 0f, 0f, true, true);
+                            WorldGen.TileRunner(Loc7.X, Loc7.Y + 1200, 500, 2, ModContent.TileType<AbyssalDirt>(), false, 0f, 0f, true, true);
+                    WorldGen.TileRunner(Loc7.X, Loc7.Y + 1500, 500, 2, ModContent.TileType<AbyssalDirt>(), false, 0f, 0f, true, true);
+                    WorldGen.TileRunner(Loc7.X, Loc7.Y + 1800, 500, 2, ModContent.TileType<AbyssalDirt>(), false, 0f, 0f, true, true);
+                    WorldGen.TileRunner(Loc7.X, Loc7.Y + 1800, 700, 2, ModContent.TileType<AbyssalDirt>(), false, 0f, 0f, true, true);
 
 
 
                     // Dig big chasm at top
-                   
+
 
                 }
                 for (int daa = 0; daa < 30; daa++)
                 {
                     contdown -= 10;
-
+                    contdownx -= 20;
                     // Dig big chasm at top
                     WorldGen.digTunnel(smx - Main.rand.Next(10), smy - 250 - contdown, 0, 1, 1, 15, false);
+
+                    WorldGen.digTunnel(smx - 300 - contdownx, smy + 1200, 0, 1, 1, Main.rand.Next(40) + 10, false);
+
+                    WorldGen.digTunnel(smx - 300 - contdownx, smy + 1500, 0, 1, 1, Main.rand.Next(40) + 10, false);
+
+                    WorldGen.digTunnel(smx - 300 - contdownx, smy + 1800, 0, 1, 1, Main.rand.Next(40) + 10, true);
                     placed = true;
 
                     AbysmStart = new Point(smx, smy - 250 - contdown);
@@ -743,7 +752,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
 
                         smx = ((Main.maxTilesX) / 2) + 1825;
-                smy = (int)GenVars.worldSurfaceHigh - 70;
+                smy = (int)GenVars.worldSurfaceHigh - 100;
                 while (!WorldGen.SolidTile(smx, smy) && smy <= Main.UnderworldLayer)
                 {
                     //seperation
@@ -764,15 +773,15 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                             WorldGen.TileRunner(Loc7.X, Loc7.Y + 300, 800, 2, TileID.SnowBlock, false, 0f, 0f, true, true);
                             WorldGen.TileRunner(Loc7.X, Loc7.Y + 600, 700, 2, TileID.SnowBlock, false, 0f, 0f, true, true);
                             WorldGen.TileRunner(Loc7.X, Loc7.Y + 900, 500, 2, TileID.SnowBlock, false, 0f, 0f, true, true);
-                            WorldGen.TileRunner(Loc7.X, Loc7.Y + 1200, 500, 2, TileID.SnowBlock, false, 0f, 0f, true, true);
-                            WorldGen.TileRunner(Loc7.X, Loc7.Y + 1500, 500, 2, TileID.SnowBlock, false, 0f, 0f, true, true);
-                            WorldGen.TileRunner(Loc7.X, Loc7.Y + 1800, 500, 2, TileID.SnowBlock, false, 0f, 0f, true, true);
-                            WorldGen.TileRunner(Loc7.X, Loc7.Y + 1800, 700, 2, TileID.SnowBlock, false, 0f, 0f, true, true);
+                            WorldGen.TileRunner(Loc7.X, Loc7.Y + 1200, 500, 2, ModContent.TileType<AbyssalDirt>(), false, 0f, 0f, true, true);
+                            WorldGen.TileRunner(Loc7.X, Loc7.Y + 1500, 500, 2, ModContent.TileType<AbyssalDirt>(), false, 0f, 0f, true, true);
+                            WorldGen.TileRunner(Loc7.X, Loc7.Y + 1800, 500, 2, ModContent.TileType<AbyssalDirt>(), false, 0f, 0f, true, true);
+                            WorldGen.TileRunner(Loc7.X, Loc7.Y + 1800, 700, 2, ModContent.TileType<AbyssalDirt>(), false, 0f, 0f, true, true);
 
 
 
                     // Dig big chasm at top
-                    WorldGen.digTunnel(smx, smy - 250, 0, 1, 1000, 15, false);
+                   // WorldGen.digTunnel(smx, smy - 250, 0, 1, 1000, 15, false);
   
                     placed = true;
                 }
@@ -780,9 +789,15 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                 for (int daa = 0; daa < 30; daa++)
                 {
                     contdown -= 10;
-
+                    contdownx -= 20;
                     // Dig big chasm at top
                     WorldGen.digTunnel(smx - Main.rand.Next(10), smy - 250 - contdown, 0, 1, 1, 15, false);
+
+                    WorldGen.digTunnel(smx - 300 - contdownx, smy + 1200, 0, 1, 1, Main.rand.Next(40) + 10, false);
+
+                    WorldGen.digTunnel(smx - 300 - contdownx, smy + 1500, 0, 1, 1, Main.rand.Next(40) + 10, false);
+
+                    WorldGen.digTunnel(smx - 300 - contdownx, smy + 1800, 0, 1, 1, Main.rand.Next(40) + 10, true);
                     placed = true;
 
                     AbysmStart = new Point(smx, smy - 250 - contdown);
@@ -822,20 +837,21 @@ namespace LunarVeil.WorldGeneration.BaseEdits
         private void AbysmClump(GenerationProgress progress, GameConfiguration configuration)
         {
             int contdown = 0;
+            int contdownx = 0;
             int caveSeed = WorldGen.genRand.Next();
 
             for (int i = 0; i < 12; i++)
             {
                 
 
-                int caveSteps = 700; // How many carves
+                int caveSteps = 500; // How many carves
                 int Blockwidth = 9; //Block width for how far
                 int Blockwidth2 = 12;
                 int Blockwidth3 = 15;
 
-                Vector2 baseCaveDirection = Vector2.UnitY.RotatedBy(WorldGen.genRand.NextFloatDirection() * 0.54f);
+                Vector2 baseCaveDirection = Vector2.UnitY.RotatedBy(WorldGen.genRand.NextFloatDirection() * (i * 0.08f));
                 Vector2 AbysmPosition = new Vector2(AbysmStart.X, AbysmStart.Y + contdown);
-
+               
 
                 for (int j = 0; j < caveSteps; j++)
                 {
@@ -850,8 +866,8 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                     {
                         WorldUtils.Gen(AbysmPosition.ToPoint(), new Shapes.Circle(Blockwidth3), Actions.Chain(new GenAction[]
                      {
-                             new Actions.SetTile((ushort)ModContent.TileType<AbyssalDirt>()),
-                           
+                            new Actions.SetTile((ushort)ModContent.TileType<AbyssalDirt>()),
+                            new Modifiers.Dither(.2),// Dithering
                             new Actions.Smooth(true)
                      }));
 
@@ -898,14 +914,14 @@ namespace LunarVeil.WorldGeneration.BaseEdits
             }
 
            
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 26; i++)
             {
 
                 int caveWidth = 1; // Width
-                int caveSteps = 3000; // How many carves
+                int caveSteps = 5000; // How many carves
 
           
-                Vector2 baseCaveDirection = Vector2.UnitY.RotatedBy(WorldGen.genRand.NextFloatDirection() * 0.54f);
+                Vector2 baseCaveDirection = Vector2.UnitY.RotatedBy(WorldGen.genRand.NextFloatDirection() * (i * 0.035f));
                 Vector2 AbysmPosition = new Vector2(AbysmStart.X, AbysmStart.Y + contdown);
 
 
@@ -942,8 +958,165 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                 contdown = 0;
             }
 
+
+            for (int i = 0; i < 10; i++)
+            {
+
+                int caveWidth = 1; // Width
+                int caveSteps = 2000; // How many carves
+
+
+                Vector2 baseCaveDirection = Vector2.UnitY.RotatedBy(WorldGen.genRand.NextFloatDirection() * 0.54f);
+
+                Vector2 AbysmPosition2 = new Vector2(AbysmStart.X + contdownx, AbysmStart.Y + contdown);
+
+
+
+
+
+
+
+                for (int j = 0; j < caveSteps; j++)
+                {
+                    contdown -= 20;
+                    contdownx -= 5;
+                    float caveOffsetAngleAtStep = WorldMath.PerlinNoise2D(j / 50f, j / 50f, 4, caveSeed) * MathHelper.Pi * 1.9f;
+                    Vector2 caveDirection = baseCaveDirection.RotatedBy(caveOffsetAngleAtStep);
+
+                    // Carve out at the current position.
+                    //Makes sure it doesn't go out of bouds
+                    if (AbysmStart.X < Main.maxTilesX - 15 && AbysmStart.X >= 15)
+                    {
+                        //digging 
+
+                        WorldGen.digTunnel(AbysmPosition2.X, AbysmPosition2.Y, caveDirection.X, caveDirection.Y, 1, (int)(caveWidth * 1.18f), true);
+                        WorldUtils.Gen(AbysmPosition2.ToPoint(), new Shapes.Circle(caveWidth), Actions.Chain(new GenAction[]
+                        {
+                            new Actions.ClearTile(true),
+                            new Actions.Smooth(true)
+                        }));
+                    }
+
+                    // Update the cave position.
+                    AbysmPosition2 += caveDirection * caveWidth;
+                }
+
+                contdown = 0;
+                contdownx = 0;
+            }
+
         }
+
+
+
+
+
+        private void MakingIcyWalls(GenerationProgress progress, GameConfiguration configuration)
+        {
+            progress.Message = "Walls forming in the ice and abysm";
+
+
+
+          
+                // Select a place in the first 6th of the world, avoiding the oceans
+                for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 9.2f) * 6E-03); k++)
+                {
+                    int X = WorldGen.genRand.Next(100, Main.maxTilesX - 100);
+                    int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.UnderworldLayer);
+                    int yBelow = Y + 1;
+                    if (!WorldGen.SolidTile(X, yBelow))
+                        continue;
+
+                    if (Main.tile[X, yBelow].TileType == TileID.SnowBlock ||
+                        Main.tile[X, yBelow].TileType == TileID.IceBlock ||
+                         Main.tile[X, yBelow].TileType == ModContent.TileType<AbyssalDirt>())
+                    {
+                    WorldGen.TileRunner(X, yBelow, WorldGen.genRand.Next(1, 3), WorldGen.genRand.Next(1, 40), WallID.SnowWallUnsafe);
+
+
+
+
+                          }
+                
+
+
+
+
+
+
+            }
+        }
+
         #endregion
+        /*
+        private void MakingIcyWalls(GenerationProgress progress, GameConfiguration configuration)
+        {
+            progress.Message = "Walls forming in the ice and abysm";
+
+
+            Point origin;
+            StructureMap structures;
+            // By using TileScanner, check that the 50x50 area centered around the origin is mostly Dirt or Stone
+            Dictionary<ushort, int> tileDictionary = new Dictionary<ushort, int>();
+            WorldUtils.Gen(new Point(origin.X - 25, origin.Y - 25), new Shapes.Rectangle(50, 50), new Actions.TileScanner(TileID.Dirt, TileID.Stone).Output(tileDictionary));
+            if (tileDictionary[TileID.Dirt] + tileDictionary[TileID.Stone] < 1250)
+                return false; // If not, return false, which will cause the calling method to attempt a different origin
+
+            Point surfacePoint;
+            // Search up to 1000 tiles above for an area 50 tiles tall and 1 tile wide without a single solid tile. Basically find the surface.
+            bool flag = WorldUtils.Find(origin, Searches.Chain(new Searches.Up(1000), new Conditions.IsSolid().AreaOr(1, 50).Not()), out surfacePoint);
+            // Search from the orgin up to the surface and make sure no sand is between origin and surface
+            if (WorldUtils.Find(origin, Searches.Chain(new Searches.Up(origin.Y - surfacePoint.Y), new Conditions.IsTile(TileID.Sand)), out Point _))
+                return false;
+
+            if (!flag)
+                return false;
+
+            surfacePoint.Y += 50; // Adjust result to point to surface, not 50 tiles above
+            ShapeData slimeShapeData = new ShapeData();
+            ShapeData moundShapeData = new ShapeData();
+            Point point = new Point(origin.X, origin.Y + 20);
+            Point point2 = new Point(origin.X, origin.Y + 30);
+            float xScale = 0.8f + Main.rand.NextFloat() * 0.5f; // Randomize the width of the shrine area
+                                                                      // Check that the StructureMap doesn't have any existing conflicts for the intended area we wish to place the shrine.
+            if (!structures.CanPlace(new Rectangle(point.X - (int)(20f * xScale), point.Y - 20, (int)(40f * xScale), 40)))
+                return false;
+            // Check that the StructureMap doesn't have any existing conflicts for the shaft leading to the surface
+            if (!structures.CanPlace(new Rectangle(origin.X, surfacePoint.Y + 10, 1, origin.Y - surfacePoint.Y - 9), 2))
+                return false;
+            // Using the Slime shape, clear out tiles. Blotches gives the edges a more organic look. https://i.imgur.com/WtZaBbn.png
+            WorldUtils.Gen(point, new Shapes.Slime(20, xScale, 1f), Actions.Chain(new Modifiers.Blotches(2, 0.4), new Actions.ClearTile(frameNeighbors: true).Output(slimeShapeData)));
+            // Place a dirt mound within the cut out slime shape
+            WorldUtils.Gen(point2, new Shapes.Mound(14, 14), Actions.Chain(new Modifiers.Blotches(2, 1, 0.8), new Actions.SetTile(TileID.Dirt), new Actions.SetFrames(frameNeighbors: true).Output(moundShapeData)));
+            // Remove the mound coordinates from the slime coordinate data
+            slimeShapeData.Subtract(moundShapeData, point, point2);
+            // Place grass along the inner outline of the slime coordinate data
+            WorldUtils.Gen(point, new ModShapes.InnerOutline(slimeShapeData), Actions.Chain(new Actions.SetTile(TileID.Grass), new Actions.SetFrames(frameNeighbors: true)));
+            // Place water in empty coordinates in the bottom half of the slime shape
+            WorldUtils.Gen(point, new ModShapes.All(slimeShapeData), Actions.Chain(new Modifiers.RectangleMask(-40, 40, 0, 40), new Modifiers.IsEmpty(), new Actions.SetLiquid()));
+            // Place Flower wall on all slime shape coordinates. Place vines 1 tile below all grass tiles of the slime shape.
+            WorldUtils.Gen(point, new ModShapes.All(slimeShapeData), Actions.Chain(new Actions.PlaceWall(WallID.Flower), new Modifiers.OnlyTiles(TileID.Grass), new Modifiers.Offset(0, 1), new ActionVines(3, 5)));
+            // Remove tiles to create shaft to surface. Convert Sand tiles along shaft to hardened sand tiles.
+            ShapeData shaftShapeData = new ShapeData();
+            WorldUtils.Gen(new Point(origin.X, surfacePoint.Y + 10), new Shapes.Rectangle(1, origin.Y - surfacePoint.Y - 9), Actions.Chain(new Modifiers.Blotches(2, 0.2), new Actions.ClearTile().Output(shaftShapeData), new Modifiers.Expand(1), new Modifiers.OnlyTiles(TileID.Sand), new Actions.SetTile(TileID.HardenedSand).Output(shaftShapeData)));
+            WorldUtils.Gen(new Point(origin.X, surfacePoint.Y + 10), new ModShapes.All(shaftShapeData), new Actions.SetFrames(frameNeighbors: true));
+            // 33% chance to place an enchanted sword shrine tile
+            if (Main.rand.NextBool(3))
+                WorldGen.PlaceTile(point2.X, point2.Y - 15, TileID.LargePiles2, mute: true, forced: false, -1, 17);
+            else
+                WorldGen.PlaceTile(point2.X, point2.Y - 15, TileID.LargePiles, mute: true, forced: false, -1, 15);
+            // Place plants above grass tiles in the mound shape.
+            WorldUtils.Gen(point2, new ModShapes.All(moundShapeData), Actions.Chain(new Modifiers.Offset(0, -1), new Modifiers.OnlyTiles(TileID.Grass), new Modifiers.Offset(0, -1), new ActionGrass()));
+            // Add to the StructureMap to prevent other worldgen from intersecting this area.
+            structures.AddStructure(new Rectangle(point.X - (int)(20f * xScale), point.Y - 20, (int)(40f * xScale), 40), 4);
+           
+        }
+
+        */
+
+
+
+
 
 
 
