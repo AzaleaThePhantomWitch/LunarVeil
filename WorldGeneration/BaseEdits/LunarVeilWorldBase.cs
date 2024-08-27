@@ -163,12 +163,54 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                 //tasks.Insert(JungleGen + 2, new PassLegacy("RainDeeps", RainforestDeeps));
             }
 
+            int PerlinGen = tasks.FindIndex(genpass => genpass.Name.Equals("IceClump"));
+            if (PerlinGen != -1)
+            {
+                tasks.Insert(IceGen + 1, new PassLegacy("PerlinNoiseCave", PerlinNoiseCave));
+                //tasks.Insert(JungleGen + 2, new PassLegacy("RainDeeps", RainforestDeeps));
+            }
         }
 
         int desertNForest = 0;
         int jungleNIce = 0;
         int cinderNGovheilia = 0;
         int noxNDread = 0;
+
+        private void PerlinNoiseCave(GenerationProgress progress, GameConfiguration configuration)
+        {
+
+            for(int i =0; i < 25; i++)
+            {
+                int caveWidth = 8;
+                int caveSteps = 25;
+
+                int caveSeed = WorldGen.genRand.Next();
+                Vector2 baseCaveDirection = Vector2.UnitY.RotatedBy(WorldGen.genRand.NextFloatDirection() * 0.54f);
+                Vector2 cavePosition = new Vector2(Main.maxTilesX / 2, (int)Main.worldSurface);
+
+                for (int j = 0; j < caveSteps; j++)
+                {
+                    float caveOffsetAngleAtStep = WorldMath.PerlinNoise2D(1 / 50f, j / 50f, 4, caveSeed) * MathHelper.Pi * 1.9f;
+                    Vector2 caveDirection = baseCaveDirection.RotatedBy(caveOffsetAngleAtStep);
+
+                    // Carve out at the current position.
+                    if (cavePosition.X < Main.maxTilesX - 15 && cavePosition.X >= 15)
+                    {
+                        WorldGen.digTunnel(cavePosition.X, cavePosition.Y, caveDirection.X, caveDirection.Y, 1, (int)(caveWidth * 1.18f), false);
+                        WorldUtils.Gen(cavePosition.ToPoint(), new Shapes.Circle(caveWidth), Actions.Chain(new GenAction[]
+                        {
+                            new Actions.ClearTile(true),
+                            new Actions.Smooth(true)
+                        }));
+                    }
+
+                    // Update the cave position.
+                    cavePosition += caveDirection * caveWidth;
+                }
+            }
+   
+        }
+
         #region  Dunes N Desert
 
         private void NewDunes(GenerationProgress progress, GameConfiguration configuration)
@@ -698,9 +740,9 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
 
                     // Dig big chasm at top
-                   
-                   
-                   
+                    WorldGen.digTunnel(smx, smy - 250, 0, 1, 1000, 15, false);
+  
+                    placed = true;
                 }
 
                 for (int daa = 0; daa < 30; daa++)
