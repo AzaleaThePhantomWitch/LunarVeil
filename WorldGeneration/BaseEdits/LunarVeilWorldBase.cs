@@ -163,26 +163,30 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                 //tasks.Insert(JungleGen + 2, new PassLegacy("RainDeeps", RainforestDeeps));
             }
 
+            /*
+
             int PerlinGen = tasks.FindIndex(genpass => genpass.Name.Equals("IceClump"));
             if (PerlinGen != -1)
             {
                 tasks.Insert(IceGen + 1, new PassLegacy("PerlinNoiseCave", PerlinNoiseCave));
                 //tasks.Insert(JungleGen + 2, new PassLegacy("RainDeeps", RainforestDeeps));
             }
+
+            */
         }
 
         int desertNForest = 0;
         int jungleNIce = 0;
         int cinderNGovheilia = 0;
         int noxNDread = 0;
-
+        #region  PerlinNoiseTest
         private void PerlinNoiseCave(GenerationProgress progress, GameConfiguration configuration)
         {
 
-            for(int i =0; i < 25; i++)
+            for(int i = 0; i < 25; i++)
             {
-                int caveWidth = 8;
-                int caveSteps = 25;
+                int caveWidth = 8; // Width
+                int caveSteps = 25; // How many carves
 
                 int caveSeed = WorldGen.genRand.Next();
                 Vector2 baseCaveDirection = Vector2.UnitY.RotatedBy(WorldGen.genRand.NextFloatDirection() * 0.54f);
@@ -196,6 +200,8 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                     // Carve out at the current position.
                     if (cavePosition.X < Main.maxTilesX - 15 && cavePosition.X >= 15)
                     {
+                        //digging 
+
                         WorldGen.digTunnel(cavePosition.X, cavePosition.Y, caveDirection.X, caveDirection.Y, 1, (int)(caveWidth * 1.18f), false);
                         WorldUtils.Gen(cavePosition.ToPoint(), new Shapes.Circle(caveWidth), Actions.Chain(new GenAction[]
                         {
@@ -210,6 +216,8 @@ namespace LunarVeil.WorldGeneration.BaseEdits
             }
    
         }
+
+        #endregion
 
         #region  Dunes N Desert
 
