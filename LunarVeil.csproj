@@ -7,6 +7,11 @@
 	<PropertyGroup>
 		
 	</PropertyGroup>
+	<ItemGroup>
+	  <None Remove="Tiles\AbysmTiles\AbyssalDirt.png" />
+	  <None Remove="Tiles\AbysmTiles\AbyssalVines.png" />
+	  <None Remove="Tiles\AbysmTiles\AbyssalVines2.png" />
+	</ItemGroup>
 
 	<!-- References -->
 	<ItemGroup>

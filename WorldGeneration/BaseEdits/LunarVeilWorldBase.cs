@@ -15,6 +15,7 @@ using Terraria.ID;
 using Terraria.DataStructures;
 using LunarVeil.Systems.Tiling;
 using LunarVeil.Tiles.RainforestTiles;
+using LunarVeil.Tiles.AbysmTiles;
 
 namespace LunarVeil.WorldGeneration.BaseEdits
 {
@@ -160,6 +161,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
             if (IceGen != -1)
             {
                 tasks.Insert(IceGen + 1, new PassLegacy("IceClump", IceClump));
+                tasks.Insert(IceGen + 2, new PassLegacy("AbysmClumping", AbysmClump));
                 //tasks.Insert(JungleGen + 2, new PassLegacy("RainDeeps", RainforestDeeps));
             }
 
@@ -175,11 +177,15 @@ namespace LunarVeil.WorldGeneration.BaseEdits
             */
         }
 
+        Point AbysmStart;
         int desertNForest = 0;
         int jungleNIce = 0;
         int cinderNGovheilia = 0;
         int noxNDread = 0;
         #region  PerlinNoiseTest
+
+
+        /*
         private void PerlinNoiseCave(GenerationProgress progress, GameConfiguration configuration)
         {
 
@@ -216,6 +222,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
             }
    
         }
+        */
 
         #endregion
 
@@ -332,7 +339,12 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
 
                  smx = ((Main.maxTilesX) / 2) - 925;
-                 smy = (Main.maxTilesY / 4) - 200;
+                smy = (int)GenVars.worldSurfaceHigh - 70;
+                while (!WorldGen.SolidTile(smx, smy) && smy <= Main.UnderworldLayer)
+                {
+                    //seperation
+                    smy += 1;
+                }
 
 
 
@@ -354,7 +366,12 @@ namespace LunarVeil.WorldGeneration.BaseEdits
             {
 
                  smx = ((Main.maxTilesX) / 2) + 925;
-                 smy = (Main.maxTilesY / 4) - 200;
+                smy = (int)GenVars.worldSurfaceHigh - 70;
+                while (!WorldGen.SolidTile(smx, smy) && smy <= Main.UnderworldLayer)
+                {
+                    //seperation
+                    smy += 1;
+                }
 
 
 
@@ -406,7 +423,12 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                 ///}
 
                 //Start at 200 tiles above the surface instead of 0, to exclude floating islands
-               int smy = (Main.maxTilesY / 3) - 700;
+                int smy = (int)GenVars.worldSurfaceHigh - 70;
+                while (!WorldGen.SolidTile(smx, smy) && smy <= Main.UnderworldLayer)
+                {
+                    //seperation
+                    smy += 1;
+                }
 
                 // We go down until we hit a solid tile or go under the world's surface
 
@@ -436,7 +458,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
                     //StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
                     //the true at the end makes it wet?
-                    WorldGen.digTunnel(smx, smy, 0, 2, 125, 1, true);
+                    WorldGen.digTunnel(smx, smy + 5, 0, 2, 125, 1, true);
                   
                     WorldGen.digTunnel(smx, smy + 150, 0, 2, 100, 2, true);
 
@@ -707,9 +729,11 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                     // Dig big chasm at top
                     WorldGen.digTunnel(smx - Main.rand.Next(10), smy - 250 - contdown, 0, 1, 1, 15, false);
                     placed = true;
+
+                    AbysmStart = new Point(smx, smy - 250 - contdown);
                 }
 
-
+                AbysmStart = new Point(smx, smy - 250 - contdown);
 
             }
           
@@ -760,9 +784,11 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                     // Dig big chasm at top
                     WorldGen.digTunnel(smx - Main.rand.Next(10), smy - 250 - contdown, 0, 1, 1, 15, false);
                     placed = true;
+
+                    AbysmStart = new Point(smx, smy - 250 - contdown);
                 }
 
-
+                     AbysmStart = new Point(smx, smy - 250 - contdown);
             }
 
 
@@ -780,6 +806,125 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
 
             
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+        private void AbysmClump(GenerationProgress progress, GameConfiguration configuration)
+        {
+            int contdown = 0;
+            int caveSeed = WorldGen.genRand.Next();
+
+            for (int i = 0; i < 12; i++)
+            {
+                
+
+                int caveSteps = 1000; // How many carves
+                int Blockwidth = 6; //Block width for how far
+                int Blockwidth2 = 9;
+                int Blockwidth3 = 15;
+
+                Vector2 baseCaveDirection = Vector2.UnitY.RotatedBy(WorldGen.genRand.NextFloatDirection() * 0.54f);
+                Vector2 AbysmPosition = new Vector2(AbysmStart.X, AbysmStart.Y + contdown);
+
+
+                for (int j = 0; j < caveSteps; j++)
+                {
+                    contdown -= 20;
+                    float caveOffsetAngleAtStep = WorldMath.PerlinNoise2D(j / 50f, j / 50f, 4, caveSeed) * MathHelper.Pi * 1.9f;
+                    Vector2 caveDirection = baseCaveDirection.RotatedBy(caveOffsetAngleAtStep);
+
+                    // Carve out at the current position.
+                    //Makes sure it doesn't go out of bouds
+                  //  Vector2 AbysmPosition = new Vector2(AbysmStart.X, AbysmStart.Y + contdown);
+                    if (AbysmStart.X < Main.maxTilesX - 15 && AbysmStart.X >= 15)
+                    {
+                        WorldUtils.Gen(AbysmPosition.ToPoint(), new Shapes.Circle(Blockwidth3), Actions.Chain(new GenAction[]
+                     {
+                            new Actions.SetTile(TileID.SnowBlock),
+                            new Actions.Smooth(true)
+                     }));
+
+                        WorldUtils.Gen(AbysmPosition.ToPoint(), new Shapes.Circle(Blockwidth2), Actions.Chain(new GenAction[]
+                       {
+                            new Actions.SetTile(TileID.IceBlock),
+                            new Actions.Smooth(true)
+                       }));
+                        //building 
+                        WorldUtils.Gen(AbysmPosition.ToPoint(), new Shapes.Circle(Blockwidth), Actions.Chain(new GenAction[]
+                        {
+                            new Actions.SetTile((ushort)ModContent.TileType<AbyssalDirt>()),
+                            new Actions.Smooth(true)
+                        })) ;
+
+
+                    }
+
+                    // Update the cave position.
+                    AbysmPosition += caveDirection * Blockwidth;
+                }
+
+
+                contdown = 0;
+
+
+
+            }
+
+           
+            for (int i = 0; i < 16; i++)
+            {
+
+                int caveWidth = 1; // Width
+                int caveSteps = 3000; // How many carves
+
+          
+                Vector2 baseCaveDirection = Vector2.UnitY.RotatedBy(WorldGen.genRand.NextFloatDirection() * 0.54f);
+                Vector2 AbysmPosition = new Vector2(AbysmStart.X, AbysmStart.Y + contdown);
+
+
+               
+
+           
+
+
+
+                for (int j = 0; j < caveSteps; j++)
+                {
+                    contdown -= 20;
+                    float caveOffsetAngleAtStep = WorldMath.PerlinNoise2D(j / 50f, j / 50f, 4, caveSeed) * MathHelper.Pi * 1.9f;
+                    Vector2 caveDirection = baseCaveDirection.RotatedBy(caveOffsetAngleAtStep);
+
+                    // Carve out at the current position.
+                    //Makes sure it doesn't go out of bouds
+                    if (AbysmStart.X < Main.maxTilesX - 15 && AbysmStart.X >= 15)
+                    {
+                        //digging 
+
+                        WorldGen.digTunnel(AbysmPosition.X, AbysmPosition.Y, caveDirection.X, caveDirection.Y, 1, (int)(caveWidth * 1.18f), false);
+                        WorldUtils.Gen(AbysmPosition.ToPoint(), new Shapes.Circle(caveWidth), Actions.Chain(new GenAction[]
+                        {
+                            new Actions.ClearTile(true),
+                            new Actions.Smooth(true)
+                        }));
+                    }
+
+                    // Update the cave position.
+                    AbysmPosition += caveDirection * caveWidth;
+                }
+
+                contdown = 0;
+            }
+
         }
         #endregion
 
