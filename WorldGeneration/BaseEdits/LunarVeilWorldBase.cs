@@ -16,6 +16,7 @@ using Terraria.DataStructures;
 using LunarVeil.Systems.Tiling;
 using LunarVeil.Tiles.RainforestTiles;
 using LunarVeil.Tiles.AbysmTiles;
+using ReLogic.Utilities;
 
 namespace LunarVeil.WorldGeneration.BaseEdits
 {
@@ -135,33 +136,36 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
 
             int Dune = tasks.FindIndex(genpass => genpass.Name.Equals("Dunes"));
-            tasks[Dune] = new PassLegacy("LunarSands", (progress, config) =>
+            tasks[Dune] = new PassLegacy("Lunar Sands", (progress, config) =>
             {
                 progress.Message = "Gintze eating sand";
                 NewDunes(progress, config);
             });
 
-            int RainforestingGen = tasks.FindIndex(genpass => genpass.Name.Equals("LunarSands"));
+            int RainforestingGen = tasks.FindIndex(genpass => genpass.Name.Equals("Lunar Sands"));
             if (RainforestingGen != -1)
             {
-                tasks.Insert(RainforestingGen + 1, new PassLegacy("RainClump", RainforestClump));
-                tasks.Insert(RainforestingGen + 2, new PassLegacy("RainDeeps", RainforestDeeps));
-                tasks.Insert(RainforestingGen + 3, new PassLegacy("RainTrees", RainforestTreeSpawning));
+                tasks.Insert(RainforestingGen + 1, new PassLegacy("Rain Clump", RainforestClump));
+                tasks.Insert(RainforestingGen + 2, new PassLegacy("Rain Deeps", RainforestDeeps));
+                tasks.Insert(RainforestingGen + 3, new PassLegacy("Rain Trees", RainforestTreeSpawning));
             }
 
 
-            int JungleGen = tasks.FindIndex(genpass => genpass.Name.Equals("RainDeeps"));
+            int JungleGen = tasks.FindIndex(genpass => genpass.Name.Equals("Rain Deeps"));
             if (JungleGen != -1)
             {
-                tasks.Insert(JungleGen + 1, new PassLegacy("JungleClump", JungleClump));
+                tasks.Insert(JungleGen + 1, new PassLegacy("Jungle Clump", JungleClump));
                 //tasks.Insert(JungleGen + 2, new PassLegacy("RainDeeps", RainforestDeeps));
             }
 
-            int IceGen = tasks.FindIndex(genpass => genpass.Name.Equals("JungleClump"));
+            int IceGen = tasks.FindIndex(genpass => genpass.Name.Equals("Jungle Clump"));
             if (IceGen != -1)
             {
-                tasks.Insert(IceGen + 1, new PassLegacy("IceClump", IceClump));
-                tasks.Insert(IceGen + 2, new PassLegacy("AbysmClumping", AbysmClump));
+                tasks.Insert(IceGen + 1, new PassLegacy("Ice Clump", IceClump));
+                tasks.Insert(IceGen + 2, new PassLegacy("Abysm Clumping", AbysmClump));
+                tasks.Insert(IceGen + 3, new PassLegacy("Walls ice underground", MakingIcyWalls));               
+                tasks.Insert(IceGen + 4, new PassLegacy("Icy Waters", MakingIcyPonds));
+                tasks.Insert(IceGen + 5, new PassLegacy("Icy Pikes", MakingIcyRandomness));
                 //tasks.Insert(JungleGen + 2, new PassLegacy("RainDeeps", RainforestDeeps));
             }
 
@@ -235,7 +239,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
             int steps = 100;
             int duneX = 0;
             int duneY = (int)GenVars.worldSurfaceHigh;
-            int newDuneY = duneY;
+            int newDuneY = duneY - 30;
             switch (Main.rand.Next(2))
             {
                 case 0:
@@ -706,11 +710,17 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                         {
                             Point Loc7 = new Point(smx, smy);
                             Point Loc8 = new Point(smx, smy + 100);
-                            WorldUtils.Gen(Loc8, new Shapes.Mound(450, 300), new Actions.SetTile(TileID.SnowBlock));
+
+                    WorldUtils.Gen(Loc8, new Shapes.Mound(450, 300), Actions.Chain(new GenAction[]
+                        {
+                            new Actions.ClearWall(true),
+                            new Actions.SetTile(TileID.SnowBlock),
+                            new Actions.Smooth(true)
+                        }));
 
 
-                            // Spawn in Ice Chunks
-                            WorldGen.TileRunner(Loc7.X, Loc7.Y, 1000, 6, TileID.SnowBlock, false, 0f, 0f, true, true);
+                    // Spawn in Ice Chunks
+                    WorldGen.TileRunner(Loc7.X, Loc7.Y, 1000, 6, TileID.SnowBlock, false, 0f, 0f, true, true);
                             WorldGen.TileRunner(Loc7.X, Loc7.Y + 300, 800, 2, TileID.SnowBlock, false, 0f, 0f, true, true);
                             WorldGen.TileRunner(Loc7.X, Loc7.Y + 600, 700, 2, TileID.SnowBlock, false, 0f, 0f, true, true);
                             WorldGen.TileRunner(Loc7.X, Loc7.Y + 900, 500, 2, TileID.SnowBlock, false, 0f, 0f, true, true);
@@ -765,11 +775,16 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                         {
                             Point Loc7 = new Point(smx, smy);
                             Point Loc8 = new Point(smx, smy + 50);
-                            WorldUtils.Gen(Loc8, new Shapes.Mound(450, 300), new Actions.SetTile(TileID.SnowBlock));
+                    WorldUtils.Gen(Loc8, new Shapes.Mound(450, 300), Actions.Chain(new GenAction[]
+         {
+                            new Actions.ClearWall(true),
+                            new Actions.SetTile(TileID.SnowBlock),
+                            new Actions.Smooth(true)
+         }));
 
 
 
-                            WorldGen.TileRunner(Loc7.X, Loc7.Y, 1000, 6, TileID.SnowBlock, false, 0f, 0f, true, true);
+                    WorldGen.TileRunner(Loc7.X, Loc7.Y, 1000, 6, TileID.SnowBlock, false, 0f, 0f, true, true);
                             WorldGen.TileRunner(Loc7.X, Loc7.Y + 300, 800, 2, TileID.SnowBlock, false, 0f, 0f, true, true);
                             WorldGen.TileRunner(Loc7.X, Loc7.Y + 600, 700, 2, TileID.SnowBlock, false, 0f, 0f, true, true);
                             WorldGen.TileRunner(Loc7.X, Loc7.Y + 900, 500, 2, TileID.SnowBlock, false, 0f, 0f, true, true);
@@ -867,7 +882,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                         WorldUtils.Gen(AbysmPosition.ToPoint(), new Shapes.Circle(Blockwidth3), Actions.Chain(new GenAction[]
                      {
                             new Actions.SetTile((ushort)ModContent.TileType<AbyssalDirt>()),
-                            new Modifiers.Dither(.2),// Dithering
+                            //new Modifiers.Dither(.2),// Dithering
                             new Actions.Smooth(true)
                      }));
 
@@ -1019,24 +1034,29 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
           
                 // Select a place in the first 6th of the world, avoiding the oceans
-                for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 9.2f) * 6E-03); k++)
+                for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 8.2f) * 6E-03); k++)
                 {
                     int X = WorldGen.genRand.Next(100, Main.maxTilesX - 100);
                     int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.UnderworldLayer);
                     int yBelow = Y + 1;
+                     Vector2 WallPosition = new Vector2(X, yBelow);
                     if (!WorldGen.SolidTile(X, yBelow))
                         continue;
 
                     if (Main.tile[X, yBelow].TileType == TileID.SnowBlock ||
                         Main.tile[X, yBelow].TileType == TileID.IceBlock ||
-                         Main.tile[X, yBelow].TileType == ModContent.TileType<AbyssalDirt>())
+                        Main.tile[X, yBelow].TileType == ModContent.TileType<AbyssalDirt>())
                     {
-                    WorldGen.TileRunner(X, yBelow, WorldGen.genRand.Next(1, 3), WorldGen.genRand.Next(1, 40), WallID.SnowWallUnsafe);
+
+                     WorldUtils.Gen(WallPosition.ToPoint(), new Shapes.Circle(WorldGen.genRand.Next(1, 5)), Actions.Chain(new GenAction[]
+                        {
+                            new Actions.PlaceWall(WallID.SnowWallUnsafe),
+                            new Actions.Smooth(true)
+                        }));
 
 
 
-
-                          }
+                    }
                 
 
 
@@ -1045,6 +1065,218 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
 
             }
+
+
+            for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 9.2f) * 6E-03); k++)
+            {
+                int X = WorldGen.genRand.Next(100, Main.maxTilesX - 100);
+                int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.UnderworldLayer);
+                int yBelow = Y + 1;
+                Vector2 WallPosition = new Vector2(X, yBelow);
+                if (!WorldGen.SolidTile(X, yBelow))
+                    continue;
+
+                if (Main.tile[X, yBelow].TileType == TileID.SnowBlock ||
+                    Main.tile[X, yBelow].TileType == TileID.IceBlock ||
+                    Main.tile[X, yBelow].TileType == ModContent.TileType<AbyssalDirt>())
+                {
+
+                    WorldUtils.Gen(WallPosition.ToPoint(), new Shapes.Circle(WorldGen.genRand.Next(1, 5)), Actions.Chain(new GenAction[]
+                       {
+                            new Actions.PlaceWall(WallID.IceEcho),
+                            new Actions.Smooth(true)
+                       }));
+
+
+
+                }
+
+
+
+
+
+
+
+            }
+        }
+
+        private void MakingIcyRandomness(GenerationProgress progress, GameConfiguration configuration)
+        {
+            progress.Message = "Ice settling in the ground";
+
+
+
+
+            // Select a place in the first 6th of the world, avoiding the oceans
+            for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 9.2f) * 6E-05); k++)
+            {
+                int X = WorldGen.genRand.Next(100, Main.maxTilesX - 100);
+                int Y = WorldGen.genRand.Next(0, (int)Main.worldSurface);
+                int yBelow = Y + 1;
+                Vector2 WallPosition = new Vector2(X, yBelow);
+                Vector2D WallPosition2 = new Vector2D(WorldGen.genRand.Next(-40, -2), WorldGen.genRand.Next(-90, -3));
+                if (!WorldGen.SolidTile(X, yBelow))
+                    continue;
+
+                if (Main.tile[X, yBelow].TileType == TileID.SnowBlock)
+                {
+
+                    WorldUtils.Gen(WallPosition.ToPoint(), new Shapes.Tail(10, WallPosition2), Actions.Chain(new GenAction[]
+                       {    
+                           new Actions.ClearWall(true),
+                            new Actions.SetTile(TileID.IceBlock),
+                            //new Actions.Smooth(true)
+                       }));
+
+
+
+                }
+
+
+
+
+
+
+
+            }
+
+            for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 2.2f) * 6E-03); k++)
+            {
+                int X = WorldGen.genRand.Next(100, Main.maxTilesX - 100);
+                int Y = WorldGen.genRand.Next(0, (int)Main.worldSurface);
+                int yBelow = Y + 1;
+                Vector2 WallPosition = new Vector2(X, yBelow);
+                if (!WorldGen.SolidTile(X, yBelow))
+                    continue;
+
+                if (Main.tile[X, yBelow].TileType == TileID.SnowBlock)
+                {
+
+                    WorldUtils.Gen(WallPosition.ToPoint(), new Shapes.Circle(WorldGen.genRand.Next(1, 3)), Actions.Chain(new GenAction[]
+                       {
+                            new Actions.ClearWall(true),
+                            new Actions.SetTile(TileID.IceBlock),
+                            new Actions.Smooth(true)
+                       }));
+
+
+
+                }
+
+
+
+
+
+
+
+            }
+
+            for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 9.2f) * 6E-03); k++)
+            {
+                int X = WorldGen.genRand.Next(100, Main.maxTilesX - 100);
+                int Y = WorldGen.genRand.Next(0, (int)Main.worldSurface);
+                int yBelow = Y + 1;
+                Vector2 WallPosition = new Vector2(X, yBelow);
+                if (!WorldGen.SolidTile(X, yBelow))
+                    continue;
+
+                if (Main.tile[X, yBelow].TileType == TileID.IceBlock)
+                {
+
+                    WorldUtils.Gen(WallPosition.ToPoint(), new Shapes.Circle(WorldGen.genRand.Next(1, 3)), Actions.Chain(new GenAction[]
+                       {
+                            new Actions.ClearWall(true),
+                            new Actions.PlaceWall(WallID.IceEcho),
+                            new Actions.Smooth(true)
+                       }));
+
+
+
+                }
+
+
+
+
+
+
+
+            }
+
+            for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 8.2f) * 6E-04); k++)
+            {
+                int X = WorldGen.genRand.Next(100, Main.maxTilesX - 100);
+                int Y = WorldGen.genRand.Next((int)Main.worldSurface, Main.maxTilesY);
+                int yBelow = Y + 1;
+                Vector2 WallPosition = new Vector2(X, yBelow);
+                if (!WorldGen.SolidTile(X, yBelow))
+                    continue;
+
+                if (Main.tile[X, yBelow].TileType == TileID.SnowBlock)
+                {
+
+                    WorldUtils.Gen(WallPosition.ToPoint(), new Shapes.Circle(WorldGen.genRand.Next(1, 10)), Actions.Chain(new GenAction[]
+                       {
+                            new Actions.SetTile(TileID.IceBlock),
+                            new Actions.Smooth(true)
+                       }));
+
+
+
+                }
+
+
+
+
+
+
+
+            }
+
+
+
+        }
+
+        private void MakingIcyPonds(GenerationProgress progress, GameConfiguration configuration)
+        {
+            progress.Message = "Icy waters!";
+
+
+
+
+            // Select a place in the first 6th of the world, avoiding the oceans
+            for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 13.2f) * 6E-06); k++)
+            {
+                int X = WorldGen.genRand.Next(100, Main.maxTilesX - 100);
+                int Y = WorldGen.genRand.Next(0, (int)Main.worldSurface);
+                int yBelow = Y + 1;
+                Vector2 WallPosition = new Vector2(X, yBelow);
+            
+                if (!WorldGen.SolidTile(X, yBelow))
+                    continue;
+
+                if (Main.tile[X, yBelow].TileType == TileID.SnowBlock)
+                {
+                    WorldGen.digTunnel(WallPosition.X, WallPosition.Y, 0, 0, 1, (int)(10), true);
+                    WorldUtils.Gen(WallPosition.ToPoint(), new Shapes.HalfCircle(WorldGen.genRand.Next(30) + 5), Actions.Chain(new GenAction[]
+                       {
+                           new Actions.ClearWall(true),
+                           new Actions.ClearTile(true),
+                            new Actions.Smooth(true)
+                            //new Actions.Smooth(true)
+                       }));
+
+
+
+                }
+
+
+
+
+
+
+
+            }
+
         }
 
         #endregion
