@@ -71,7 +71,7 @@ namespace LunarVeil.Systems.Skies
 
         private void DrawFrontClouds(SpriteBatch spriteBatch)
         {
-            var texture = ModContent.Request<Texture2D>("LunarVeil/Assets/NoiseTextures/Clouds3");
+            var texture = ModContent.Request<Texture2D>("LunarVeil/Assets/NoiseTextures/Clouds5");
             var colorMapTexture = ModContent.Request<Texture2D>("LunarVeil/Assets/NoiseTextures/ColorMapYellow");
             MiscShaderData eff = LunarVeilUtils.CloudsDesertShader;
             if (!Main.dayTime)
