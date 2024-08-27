@@ -392,11 +392,11 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
                     WorldGen.digTunnel(smx, smy + 300, 0, 2, 100, 3, true);
 
-                    WorldGen.digTunnel(smx, smy + 500, 1, 2, 150, 2, true);
+                    WorldGen.digTunnel(smx, smy + 500, 0, 2, 150, 2, true);
 
-                    WorldGen.digTunnel(smx, smy + 700, 2, 2, 50, 2, true);
+                    WorldGen.digTunnel(smx, smy + 700, 0, 2, 50, 2, true);
 
-                    WorldGen.digTunnel(smx, smy + 750, 3, 2, 100, 1, true);
+                    WorldGen.digTunnel(smx, smy + 750, 0, 2, 100, 1, true);
 
                     Point Loc7 = new Point(smx, smy + 150);
                     WorldGen.TileRunner(Loc7.X, Loc7.Y, 80, 4, ModContent.TileType<Tiles.RainforestTiles.RainforestGrass>(), false, 0f, 0f, true, true);
@@ -608,13 +608,16 @@ namespace LunarVeil.WorldGeneration.BaseEdits
             {
 
 
-                        smx = ((Main.maxTilesX) / 2) - 1825;
-                        smy = (Main.maxTilesY / 4) - 200;
+                smx = ((Main.maxTilesX) / 2) - 1825;
+                smy = (int)GenVars.worldSurfaceHigh - 70;
+                while (!WorldGen.SolidTile(smx, smy) && smy <= Main.UnderworldLayer)
+                {
+                    //seperation
+                    smy += 1;
+                }
 
 
-                  
-
-                        for (int da = 0; da < 1; da++)
+                for (int da = 0; da < 1; da++)
                         {
                             Point Loc7 = new Point(smx, smy);
                             Point Loc8 = new Point(smx, smy + 50);
@@ -656,12 +659,16 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
 
                         smx = ((Main.maxTilesX) / 2) + 1825;
-                        smy = (Main.maxTilesY / 4) - 200;
+                smy = (int)GenVars.worldSurfaceHigh - 70;
+                while (!WorldGen.SolidTile(smx, smy) && smy <= Main.UnderworldLayer)
+                {
+                    //seperation
+                    smy += 1;
+                }
 
-                   
 
 
-                        for (int da = 0; da < 1; da++)
+                for (int da = 0; da < 1; da++)
                         {
                             Point Loc7 = new Point(smx, smy);
                             Point Loc8 = new Point(smx, smy + 50);
