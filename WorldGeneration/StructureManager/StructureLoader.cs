@@ -86,7 +86,7 @@ namespace LunarVeil.WorldGeneration.StructureManager
         }
 
 
-        private static int[] ReadStruct(FileStream stream, Point bottomLeft, int[] tileBlend = null)
+        private static int[] ReadStruct(Stream stream, Point bottomLeft, int[] tileBlend = null)
         {
             using (var reader = new BinaryReader(stream, Encoding.UTF8, false))
             {
@@ -243,7 +243,7 @@ namespace LunarVeil.WorldGeneration.StructureManager
         /// <returns>A array of ints, corrsponding to the index of chests placed in the struct, from bottom left to top right</returns>
         public static int[] ReadStruct(Point BottomLeft, string Path, int[] tileBlend = null)
         {
-            using (FileStream stream = (FileStream)Mod.GetFileStream(Path + ".str"))
+            using (Stream stream = Mod.GetFileStream(Path + ".str"))
             {
                 return ReadStruct(stream, BottomLeft, tileBlend);
             }
