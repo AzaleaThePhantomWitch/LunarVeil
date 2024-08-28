@@ -158,6 +158,13 @@ namespace LunarVeil.WorldGeneration.StructureManager
 
                                     }
                                 }
+                                else
+                                {
+                                    if(TileType == -1)
+                                    {
+                                        makeOld = true;
+                                    }
+                                }
                             }
 
                             t.TileType = (ushort)TileType;
