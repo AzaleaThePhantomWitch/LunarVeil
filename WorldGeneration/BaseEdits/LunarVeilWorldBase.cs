@@ -864,7 +864,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
             }
 
-            for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 3.2f) * 6E-04); k++)
+            for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 8.2f) * 6E-04); k++)
             {
                 int X = WorldGen.genRand.Next(1000, Main.maxTilesX - 1000);
                 int Y = WorldGen.genRand.Next((int)AbysmStart2.Y - 90, AbysmStart2.Y + 90);
