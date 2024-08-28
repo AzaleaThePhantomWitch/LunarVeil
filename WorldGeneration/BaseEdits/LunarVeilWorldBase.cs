@@ -159,13 +159,19 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                 //tasks.Insert(JungleGen + 2, new PassLegacy("RainDeeps", RainforestDeeps));
             }
 
-            int IceGen = tasks.FindIndex(genpass => genpass.Name.Equals("Jungle Clump"));
+            int IceClumping = tasks.FindIndex(genpass => genpass.Name.Equals("Jungle Clump"));
+            if (IceClumping != -1)
+            {
+                tasks.Insert(IceClumping + 1, new PassLegacy("Ice Clump", IceClump));
+                //tasks.Insert(JungleGen + 2, new PassLegacy("RainDeeps", RainforestDeeps));
+            }
+
+            int IceGen = tasks.FindIndex(genpass => genpass.Name.Equals("Clean Up Dirt"));
             if (IceGen != -1)
             {
-                tasks.Insert(IceGen + 1, new PassLegacy("Ice Clump", IceClump));
                 tasks.Insert(IceGen + 2, new PassLegacy("Ice Bridges", RuneBridges));
                 tasks.Insert(IceGen + 3, new PassLegacy("Abysm Clumping", AbysmClump));
-                tasks.Insert(IceGen + 4, new PassLegacy("Walls ice underground", MakingIcyWalls));               
+                tasks.Insert(IceGen + 4, new PassLegacy("Walls ice underground", MakingIcyWalls));
                 tasks.Insert(IceGen + 5, new PassLegacy("Icy Waters", MakingIcyPonds));
                 tasks.Insert(IceGen + 6, new PassLegacy("Icy Pikes", MakingIcyRandomness));
                 //tasks.Insert(JungleGen + 2, new PassLegacy("RainDeeps", RainforestDeeps));
@@ -1298,7 +1304,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
             progress.Message = "The frozen folk creating bridges";
 
 
-            for (int k = 0; k < (int)(15); k++)
+            for (int k = 0; k < (int)(20); k++)
             {
                 bool placed = false;
                 int attempts = 0;
@@ -1349,7 +1355,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                                 //Start Left
                                 for (int da = 0; da < 1; da++)
                                 {
-                                    Point Loc = new Point(smx, smy + 15);
+                                    Point Loc = new Point(smx - 15, smy + 15);
                                     //StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
                                     string path = "WorldGeneration/STRUCT/IceStruct/BridgeIce1";//
                                     int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path);
@@ -1446,7 +1452,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                             case 1:
                                 for (int da = 0; da < 1; da++)
                                 {
-                                    Point Loc = new Point(smx, smy + 30);
+                                    Point Loc = new Point(smx - 20, smy + 30);
                                     //StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
                                     string path = "WorldGeneration/STRUCT/IceStruct/BridgeIce2";//
                                     int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path);
