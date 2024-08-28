@@ -57,13 +57,14 @@ namespace LunarVeil.Tiles
         public override void PostDraw(int i, int j, SpriteBatch spriteBatch)
         {
             base.PostDraw(i, j, spriteBatch);
+            Color color2 = Lighting.GetColor(i, j);
             Texture2D texture = ModContent.Request<Texture2D>(StructureTexture).Value;
             int textureWidth = texture.Width;
             int textureHeight = texture.Height;
 
             Vector2 drawPos = (new Vector2(i, j) + Systems.Tiling.MultitileHelper.TileAdj) * 16;
             Vector2 drawOrigin = new Vector2(textureWidth / 2, textureHeight);
-            spriteBatch.Draw(texture, drawPos - Main.screenPosition, null, StructureColor, 0, drawOrigin, 1, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, drawPos - Main.screenPosition, null, color2.MultiplyRGB(StructureColor), 0, drawOrigin, 1, SpriteEffects.None, 0);
         }
     }
 }
