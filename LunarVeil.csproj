@@ -11,6 +11,8 @@
 	  <None Remove="Tiles\AbysmTiles\AbyssalDirt.png" />
 	  <None Remove="Tiles\AbysmTiles\AbyssalVines.png" />
 	  <None Remove="Tiles\AbysmTiles\AbyssalVines2.png" />
+	  <None Remove="Tiles\ExampleDecorativeTileItem.png" />
+	  <None Remove="Tiles\VanillaRedo\AbyssalDirt.png" />
 	</ItemGroup>
 
 	<!-- References -->

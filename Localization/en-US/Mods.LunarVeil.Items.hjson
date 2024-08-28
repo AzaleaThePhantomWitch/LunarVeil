@@ -41,3 +41,13 @@ RunicIceBlock: {
 	DisplayName: Runic Ice Block
 	Tooltip: ""
 }
+
+ExampleDecorativeTileItem: {
+	Tooltip: ""
+	DisplayName: Example Decorative Tile Item
+}
+
+ExampleDecorativeWallItem: {
+	DisplayName: Example Decorative Wall Item
+	Tooltip: ""
+}
