@@ -239,8 +239,8 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
             int steps = 100;
             int duneX = 0;
-            int duneY = (int)GenVars.worldSurfaceHigh - 900;
-            int newDuneY = duneY - 20;
+            int duneY = (int)GenVars.worldSurfaceHigh + 100;;
+            int newDuneY = duneY;
             switch (Main.rand.Next(2))
             {
                 case 0:
@@ -266,7 +266,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                     duneX = originalDuneX + Main.rand.Next(50);
                 }
 
-                duneY = (int)GenVars.worldSurfaceHigh - 900;
+                duneY = (int)GenVars.worldSurfaceHigh - 100;
                 while (!WorldGen.SolidTile(duneX, duneY) && duneY <= Main.UnderworldLayer)
                 {
                     //seperation
@@ -346,7 +346,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
 
                  smx = ((Main.maxTilesX) / 2) - 925;
-                smy = (int)GenVars.worldSurfaceHigh - 900;
+                smy = (int)GenVars.worldSurfaceHigh - 600;;
                 while (!WorldGen.SolidTile(smx, smy) && smy <= Main.UnderworldLayer)
                 {
                     //seperation
@@ -373,7 +373,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
             {
 
                  smx = ((Main.maxTilesX) / 2) + 925;
-                smy = (int)GenVars.worldSurfaceHigh - 900;
+                smy = (int)GenVars.worldSurfaceHigh - 600;;
                 while (!WorldGen.SolidTile(smx, smy) && smy <= Main.UnderworldLayer)
                 {
                     //seperation
@@ -430,7 +430,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                 ///}
 
                 //Start at 200 tiles above the surface instead of 0, to exclude floating islands
-                int smy = (int)GenVars.worldSurfaceHigh - 900;
+                int smy = (int)GenVars.worldSurfaceHigh - 600;;
                 while (!WorldGen.SolidTile(smx, smy) && smy <= Main.UnderworldLayer)
                 {
                     //seperation
@@ -600,7 +600,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
 
                         smx = ((Main.maxTilesX) / 2) - 1825;
-                        smy = (int)GenVars.worldSurfaceHigh - 900;
+                        smy = (int)GenVars.worldSurfaceHigh - 600;;
                         while (!WorldGen.SolidTile(smx, smy) && smy <= Main.UnderworldLayer)
                         {
                             //seperation
@@ -634,7 +634,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
 
                         smx = ((Main.maxTilesX) / 2) + 1825;
-                        smy = (int)GenVars.worldSurfaceHigh - 900;
+                        smy = (int)GenVars.worldSurfaceHigh - 600;;
                         while (!WorldGen.SolidTile(smx, smy) && smy <= Main.UnderworldLayer)
                         {
                             //seperation
@@ -696,7 +696,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
 
                 smx = ((Main.maxTilesX) / 2) - 1825;
-                smy = (int)GenVars.worldSurfaceHigh - 900;
+                smy = (int)GenVars.worldSurfaceHigh - 600;;
                 while (!WorldGen.SolidTile(smx, smy) && smy <= Main.UnderworldLayer)
                 {
                     //seperation
