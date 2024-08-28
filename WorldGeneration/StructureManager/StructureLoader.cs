@@ -160,7 +160,8 @@ namespace LunarVeil.WorldGeneration.StructureManager
                                 }
                                 else
                                 {
-                                    if(TileType == -1)
+                                    //Auto air blend
+                                    if(!t.HasTile)
                                     {
                                         makeOld = true;
                                     }
