@@ -182,6 +182,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
         }
 
         Point AbysmStart;
+        Point AbysmStart2;
         int desertNForest = 0;
         int jungleNIce = 0;
         int cinderNGovheilia = 0;
@@ -238,8 +239,8 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
             int steps = 100;
             int duneX = 0;
-            int duneY = (int)GenVars.worldSurfaceHigh;
-            int newDuneY = duneY - 30;
+            int duneY = 100;
+            int newDuneY = duneY - 20;
             switch (Main.rand.Next(2))
             {
                 case 0:
@@ -299,7 +300,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                 for (int da = 0; da < 10; da++)
                 {
                     WorldGen.digTunnel(duneX, newDuneY + 30, 0, 1, Main.rand.Next(100), 1, false);
-                    WorldGen.digTunnel(duneX, newDuneY + 500, 0, 1, Main.rand.Next(100), 1, false);
+                    WorldGen.digTunnel(duneX, newDuneY + 400, 0, 1, Main.rand.Next(100), 1, false);
                 }
 
 
@@ -345,7 +346,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
 
                  smx = ((Main.maxTilesX) / 2) - 925;
-                smy = (int)GenVars.worldSurfaceHigh - 500;
+                smy = 100;
                 while (!WorldGen.SolidTile(smx, smy) && smy <= Main.UnderworldLayer)
                 {
                     //seperation
@@ -599,7 +600,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
 
                         smx = ((Main.maxTilesX) / 2) - 1825;
-                        smy = (int)GenVars.worldSurfaceHigh - 70;
+                        smy = 100;
                         while (!WorldGen.SolidTile(smx, smy) && smy <= Main.UnderworldLayer)
                         {
                             //seperation
@@ -613,8 +614,6 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                         {
                             Point Loc7 = new Point(smx, smy);
                             Point Loc8 = new Point(smx, smy + 50);
-                            WorldUtils.Gen(Loc8, new Shapes.Mound(Main.rand.Next(80) + 450, Main.rand.Next(100) + 50), new Actions.SetTile(TileID.Mud));
-
 
 
                             WorldGen.TileRunner(Loc7.X, Loc7.Y, 1000, 6, TileID.Mud, false, 0f, 0f, true, true);
@@ -635,7 +634,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
 
                         smx = ((Main.maxTilesX) / 2) + 1825;
-                        smy = (int)GenVars.worldSurfaceHigh - 70;
+                        smy = Main.maxTilesY + 100;
                         while (!WorldGen.SolidTile(smx, smy) && smy <= Main.UnderworldLayer)
                         {
                             //seperation
@@ -649,7 +648,6 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                         {
                             Point Loc7 = new Point(smx, smy);
                             Point Loc8 = new Point(smx, smy + 50);
-                            WorldUtils.Gen(Loc8, new Shapes.Mound(Main.rand.Next(80) + 450, Main.rand.Next(100) + 50), new Actions.SetTile(TileID.Mud));
 
                             WorldGen.TileRunner(Loc7.X, Loc7.Y, 1000, 6, TileID.Mud, false, 0f, 0f, true, true);
                             WorldGen.TileRunner(Loc7.X, Loc7.Y + 300, 800, 2, TileID.Mud, false, 0f, 0f, true, true);
@@ -698,7 +696,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
 
                 smx = ((Main.maxTilesX) / 2) - 1825;
-                smy = (int)GenVars.worldSurfaceHigh - 100;
+                smy =  100;
                 while (!WorldGen.SolidTile(smx, smy) && smy <= Main.UnderworldLayer)
                 {
                     //seperation
@@ -750,9 +748,12 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                     placed = true;
 
                     AbysmStart = new Point(smx, smy - 250 - contdown);
+                    AbysmStart2 = new Point(smx, smy - 250 - contdown);
                 }
 
+
                 AbysmStart = new Point(smx, smy - 250 - contdown);
+                AbysmStart2 = new Point(smx, smy - 250 - contdown);
 
             }
           
@@ -816,9 +817,12 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                     placed = true;
 
                     AbysmStart = new Point(smx, smy - 250 - contdown);
+                    AbysmStart2 = new Point(smx, smy - 250 - contdown);
                 }
 
-                     AbysmStart = new Point(smx, smy - 250 - contdown);
+
+                AbysmStart = new Point(smx, smy - 250 - contdown);
+                AbysmStart2 = new Point(smx, smy - 250 - contdown);
             }
 
 
@@ -837,7 +841,6 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
             
         }
-
 
 
 
@@ -1019,6 +1022,14 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                 contdown = 0;
                 contdownx = 0;
             }
+
+
+            WorldUtils.Gen(AbysmStart2, new Shapes.HalfCircle(90), Actions.Chain(new GenAction[]
+                  {
+                            new Actions.ClearWall(true),
+                            new Actions.ClearTile(true),
+                            new Actions.Smooth(true)
+                  }));
 
         }
 
