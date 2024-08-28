@@ -160,11 +160,7 @@ namespace LunarVeil.WorldGeneration.StructureManager
                                 }
                                 else
                                 {
-                                    //Auto air blend
-                                    if(!t.HasTile)
-                                    {
-                                        makeOld = true;
-                                    }
+             
                                 }
                             }
 
@@ -186,6 +182,13 @@ namespace LunarVeil.WorldGeneration.StructureManager
 
 
                         }
+
+                        //Auto air blend
+                        if (tileBlend == null && !hastile)
+                        {
+                            makeOld = true;
+                        }
+
                         //wall
                         int WallType = 0;
                         bool ModdedWall = reader.ReadBoolean();
