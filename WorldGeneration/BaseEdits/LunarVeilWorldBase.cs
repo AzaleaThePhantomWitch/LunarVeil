@@ -862,7 +862,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
             {
                 
 
-                int caveSteps = 500; // How many carves
+                int caveSteps = 250; // How many carves
                 int Blockwidth = 9; //Block width for how far
                 int Blockwidth2 = 12;
                 int Blockwidth3 = 15;
@@ -936,7 +936,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
             {
 
                 int caveWidth = 1; // Width
-                int caveSteps = 5000; // How many carves
+                int caveSteps = 3000; // How many carves
 
           
                 Vector2 baseCaveDirection = Vector2.UnitY.RotatedBy(WorldGen.genRand.NextFloatDirection() * (i * 0.035f));

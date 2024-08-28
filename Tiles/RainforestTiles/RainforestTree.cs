@@ -427,13 +427,6 @@ namespace LunarVeil.Tiles.RainforestTiles
         }
         // Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
      
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<RainforestGrassBlock>(), 2);
-            recipe.AddIngredient(ItemID.Acorn, 1);
-            recipe.AddTile(TileID.Furnaces);
-            recipe.Register();
-        }
+      
     }
 }
