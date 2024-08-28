@@ -864,7 +864,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
             }
 
-            for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 8.2f) * 6E-03); k++)
+            for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 3.2f) * 6E-04); k++)
             {
                 int X = WorldGen.genRand.Next(1000, Main.maxTilesX - 1000);
                 int Y = WorldGen.genRand.Next((int)AbysmStart2.Y - 90, AbysmStart2.Y + 90);
@@ -878,7 +878,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                     Main.tile[X, yBelow].TileType == ModContent.TileType<AbyssalDirt>())
                 {
 
-                    WorldUtils.Gen(WallPosition.ToPoint(), new Shapes.Circle(WorldGen.genRand.Next(1, 13)), Actions.Chain(new GenAction[]
+                    WorldUtils.Gen(WallPosition.ToPoint(), new Shapes.Circle(WorldGen.genRand.Next(1, 17)), Actions.Chain(new GenAction[]
                        {
                             new Actions.PlaceWall(WallID.SnowWallUnsafe),
                             new Actions.Smooth(true)
