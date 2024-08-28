@@ -24,7 +24,7 @@ namespace LunarVeil.Tiles.VanillaRedo.IceTiles
             RegisterItemDrop(ItemType<RunicIceBlock>());
             AddMapEntry(new Color(90, 90, 90));
             MineResist = 3f;
-            MinPick = 100;
+            MinPick = 40;
 
         }
 
