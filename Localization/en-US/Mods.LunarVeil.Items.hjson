@@ -36,3 +36,8 @@ RainforestTreeAcorn: {
 	DisplayName: Rainforest Tree Acorn
 	Tooltip: ""
 }
+
+RunicIceBlock: {
+	DisplayName: Runic Ice Block
+	Tooltip: ""
+}
