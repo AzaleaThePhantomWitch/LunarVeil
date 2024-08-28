@@ -6,35 +6,6 @@ using Terraria.ModLoader;
 
 namespace LunarVeil.Tiles
 {
-
-    internal abstract class DecorativeTile : ModTile
-    {
-        public Color StructureColor { get; set; }
-        public override void SetStaticDefaults()
-        {
-            StructureColor = Color.White;
-            Main.tileSolid[Type] = true;
-            Main.tileMerge[Type][Type] = true;
-            Main.tileBlockLight[Type] = true;
-            Main.tileBlendAll[Type] = true;
-            Main.tileBlockLight[Type] = true;
-            AddMapEntry(Color.White);
-        }
-
-        public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
-        {
-            string texturePath = Texture + "_S";
-            Texture2D texture = ModContent.Request<Texture2D>(texturePath).Value;
-            int textureWidth = texture.Width;
-            int textureHeight = texture.Height;
-
-            Vector2 drawPos = (new Vector2(i, j) + Systems.Tiling.MultitileHelper.TileAdj) * 16;
-            Vector2 drawOrigin = new Vector2(textureWidth / 2, textureHeight);
-            spriteBatch.Draw(texture, drawPos - Main.screenPosition, null, StructureColor, 0, drawOrigin, 1, SpriteEffects.None, 0);
-            return base.PreDraw(i, j, spriteBatch);
-        }
-    }
-
     public abstract class DecorativeWallItem : ModItem
     {
         public override void SetDefaults()
