@@ -1356,7 +1356,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
             for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY * 9.2f) * 6E-04); k++)
             {
                 int X = WorldGen.genRand.Next(100, Main.maxTilesX - 100);
-                int Y = WorldGen.genRand.Next((int)Main.worldSurface, (int)Main.UnderworldLayer);
+                int Y = WorldGen.genRand.Next((int)0, (int)Main.UnderworldLayer);
                 int yBelow = Y + 1;
                 Vector2 WallPosition = new Vector2(X, yBelow);
                 if (!WorldGen.SolidTile(X, yBelow))
@@ -1369,21 +1369,12 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                     {
                         case 0:
                             //Start Left
-                            WorldUtils.Gen(WallPosition.ToPoint(), new Shapes.Circle(WorldGen.genRand.Next(1, 1)), Actions.Chain(new GenAction[]
-                      {
-                            new Actions.ClearWall(true),
-                            new Actions.PlaceWall((ushort)ModContent.WallType<LargeIceyStone>()),
-                            new Actions.Smooth(true)
-                      }));
+                            WorldGen.PlaceWall(X, yBelow + 2, (ushort)ModContent.WallType<LargeIceyStone>());
                             break;
                         case 1:
                             //Start Right
-                            WorldUtils.Gen(WallPosition.ToPoint(), new Shapes.Circle(WorldGen.genRand.Next(1, 1)), Actions.Chain(new GenAction[]
-                      {
-                            new Actions.ClearWall(true),
-                            new Actions.PlaceWall((ushort)ModContent.WallType<MediumIceyStone>()),
-                            new Actions.Smooth(true)
-                      }));
+                            WorldGen.PlaceWall(X,yBelow + 2, (ushort)ModContent.WallType<MediumIceyStone>());
+
                             break;
                     }
                    
