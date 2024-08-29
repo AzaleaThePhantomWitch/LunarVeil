@@ -4,10 +4,10 @@ using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace LunarVeil.Tiles
+namespace LunarVeil.Tiles.VanillaRedo.IceTiles
 {
     //Wall Version
-    public class ExampleDecorativeWallItem : DecorativeWallItem
+    public class MediumIceyStoneBlock : DecorativeWallItem
     {
         public override void SetStaticDefaults()
         {
@@ -19,16 +19,17 @@ namespace LunarVeil.Tiles
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.createWall = ModContent.WallType<ExampleDecorativeWall>();
+            Item.createWall = ModContent.WallType<MediumIceyStone>();
         }
     }
 
-    internal class ExampleDecorativeWall : DecorativeWall
+    internal class MediumIceyStone : DecorativeWall
     {
         public override void SetStaticDefaults()
         {
-            StructureColor = Color.Gray;
+        
             base.SetStaticDefaults();
+            StructureColor = Color.Gray;
             //If you need other static defaults it go here
         }
     }

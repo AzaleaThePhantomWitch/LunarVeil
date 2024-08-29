@@ -51,3 +51,13 @@ ExampleDecorativeWallItem: {
 	DisplayName: Example Decorative Wall Item
 	Tooltip: ""
 }
+
+LargeIceyStoneBlock: {
+	DisplayName: Large Icey Stone Block
+	Tooltip: ""
+}
+
+MediumIceyStoneBlock: {
+	DisplayName: Medium Icey Stone Block
+	Tooltip: ""
+}

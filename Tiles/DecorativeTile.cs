@@ -8,6 +8,7 @@ namespace LunarVeil.Tiles
 {
     public abstract class DecorativeWallItem : ModItem
     {
+        public override string Texture => "LunarVeil/Tiles/ExampleDecorativeWallItem";
         public override void SetDefaults()
         {
             Item.width = 12;
