@@ -1371,23 +1371,28 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                     {
                         case 0:
                             //Start Left
-                            WorldGen.PlaceWall(X, yBelow + 2, (ushort)ModContent.WallType<LargeIceyStone>());
-                            WorldUtils.Gen(WallPosition.ToPoint(), new Shapes.Circle(10), Actions.Chain(new GenAction[]
+                            
+
+                            WorldUtils.Gen(WallPosition.ToPoint(), new Shapes.Circle(7), Actions.Chain(new GenAction[]
                  {
-                            new Actions.SetTile((ushort)ModContent.TileType<AbyssalDirt>()),
+                            new Actions.SetTile(TileID.IceBlock)
                             //new Modifiers.Dither(.2),// Dithering
-                            new Actions.Smooth(true)
+
                  }));
+
+                            WorldGen.PlaceWall(X, yBelow + 3, (ushort)ModContent.WallType<LargeIceyStone>());
                             break;
                         case 1:
                             //Start Right
-                            WorldGen.PlaceWall(X,yBelow + 2, (ushort)ModContent.WallType<MediumIceyStone>());
+                            
+
                             WorldUtils.Gen(WallPosition.ToPoint(), new Shapes.Circle(5), Actions.Chain(new GenAction[]
                  {
-                            new Actions.SetTile((ushort)ModContent.TileType<AbyssalDirt>()),
+                            new Actions.SetTile(TileID.IceBlock)
                             //new Modifiers.Dither(.2),// Dithering
-                            new Actions.Smooth(true)
-                 }));
+                            }));
+
+                            WorldGen.PlaceWall(X, yBelow + 1, (ushort)ModContent.WallType<MediumIceyStone>());
                             break;
                     }
 
