@@ -172,7 +172,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
             {
                 tasks.Insert(IceClumping + 1, new PassLegacy("Ice Clump", IceClump));
                 tasks.Insert(IceClumping + 2, new PassLegacy("Ice Caves Surface", IceyCaves));
-                
+                tasks.Insert(IceClumping + 3, new PassLegacy("Ice Caves Underground", IceyUndergroundCaves));
                 //tasks.Insert(JungleGen + 2, new PassLegacy("RainDeeps", RainforestDeeps));
             }
 
@@ -186,7 +186,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                 tasks.Insert(IceGen + 6, new PassLegacy("Icy Pikes", MakingIcyRandomness));
                 tasks.Insert(IceGen + 7, new PassLegacy("Icy Pikes", MakingIcyUndergroundSpikes));
                 tasks.Insert(IceGen + 8, new PassLegacy("Trees of the wind", BorealTreeSpawning));
-                tasks.Insert(IceGen + 9, new PassLegacy("Ice Caves Surface", IceyUndergroundCaves));
+               
                 //tasks.Insert(JungleGen + 2, new PassLegacy("RainDeeps", RainforestDeeps));
             }
 
@@ -931,7 +931,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
             {
                 
 
-                int caveSteps = 250; // How many carves
+                int caveSteps = 300; // How many carves
                 int Blockwidth = 9; //Block width for how far
                 int Blockwidth2 = 12;
                 int Blockwidth3 = 15;
@@ -963,7 +963,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
                     }
 
-                    
+                    /*
                     if(AbysmStart.X < Main.maxTilesX - 15 && AbysmStart.X >= 15)
                     {
 
@@ -989,7 +989,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
 
                     }
-                   
+                   */
                     // Update the cave position.
                     AbysmPosition += caveDirection * Blockwidth;
                 }
@@ -1002,11 +1002,11 @@ namespace LunarVeil.WorldGeneration.BaseEdits
             }
 
            
-            for (int i = 0; i < 26; i++)
+            for (int i = 0; i < 15; i++)
             {
 
-                int caveWidth = 1 + WorldGen.genRand.Next(1, 6); // Width
-                int caveSteps = 3000; // How many carves
+                int caveWidth = 1 + WorldGen.genRand.Next(1, 3); // Width
+                int caveSteps = 1000; // How many carves
                 //
           
                 Vector2 baseCaveDirection = Vector2.UnitY.RotatedBy(WorldGen.genRand.NextFloatDirection() * (i * 0.035f));
@@ -1361,25 +1361,37 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                 int X = WorldGen.genRand.Next(100, Main.maxTilesX - 100);
                 int Y = WorldGen.genRand.Next((int)0, (int)Main.UnderworldLayer);
                 int yBelow = Y + 1;
-                Vector2 WallPosition = new Vector2(X, yBelow);
+                Vector2 WallPosition = new Vector2(X, yBelow + 2);
                 if (!WorldGen.SolidTile(X, yBelow))
                     continue;
 
-                if (Main.tile[X, yBelow].TileType == TileID.IceBlock ||
-                    Main.tile[X, yBelow].TileType == ModContent.TileType<AbyssalDirt>())
+                if (Main.tile[X, yBelow].TileType == TileID.IceBlock)
                 {
                     switch (Main.rand.Next(2))
                     {
                         case 0:
                             //Start Left
                             WorldGen.PlaceWall(X, yBelow + 2, (ushort)ModContent.WallType<LargeIceyStone>());
+                            WorldUtils.Gen(WallPosition.ToPoint(), new Shapes.Circle(10), Actions.Chain(new GenAction[]
+                 {
+                            new Actions.SetTile((ushort)ModContent.TileType<AbyssalDirt>()),
+                            //new Modifiers.Dither(.2),// Dithering
+                            new Actions.Smooth(true)
+                 }));
                             break;
                         case 1:
                             //Start Right
                             WorldGen.PlaceWall(X,yBelow + 2, (ushort)ModContent.WallType<MediumIceyStone>());
-
+                            WorldUtils.Gen(WallPosition.ToPoint(), new Shapes.Circle(5), Actions.Chain(new GenAction[]
+                 {
+                            new Actions.SetTile((ushort)ModContent.TileType<AbyssalDirt>()),
+                            //new Modifiers.Dither(.2),// Dithering
+                            new Actions.Smooth(true)
+                 }));
                             break;
                     }
+
+
                    
 
 
@@ -1831,8 +1843,8 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                     //	Main.npc[num].homeless = true;
                     if (Main.tile[smx, smy].TileType == TileID.SnowBlock)
                     {
-                        int caveWidth = WorldGen.genRand.Next(1, 4 + id); // Width
-                        int caveSteps = WorldGen.genRand.Next(50, 120 + id); // How many carves
+                        int caveWidth = WorldGen.genRand.Next(1, 5); // Width
+                        int caveSteps = WorldGen.genRand.Next(200, 1000 + id); // How many carves
 
                         int caveSeed = WorldGen.genRand.Next();
                         Vector2 baseCaveDirection = Vector2.UnitY.RotatedBy(WorldGen.genRand.NextFloatDirection() * 0.54f);
