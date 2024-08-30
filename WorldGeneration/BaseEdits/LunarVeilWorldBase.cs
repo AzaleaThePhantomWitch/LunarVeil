@@ -70,6 +70,13 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                 if (tasks[i].Name == "Pots")
                     continue;
 
+                if (tasks[i].Name == "Tile Cleanup")
+                    continue;
+
+                if (tasks[i].Name == "Cave Walls")
+                    continue;
+
+
                 tasks[i] = new PassLegacy(tasks[i].Name, DoNothing);
                
             }
@@ -1900,11 +1907,11 @@ namespace LunarVeil.WorldGeneration.BaseEdits
             progress.Message = "Icy Crystals!";
             for (int k = 60; k < Main.maxTilesX - 60; k++)
             {
-                if (k > 200 && k < Main.maxTilesX - 200 && WorldGen.genRand.NextBool(7)) //inner part of the world
+                if (k > 200 && k < Main.maxTilesX - 200 && WorldGen.genRand.NextBool(1)) //inner part of the world
                 {
-                    for (int y = 100; y < Main.UnderworldLayer; y++)
+                    for (int y = 10; y < Main.UnderworldLayer; y++)
                     {
-                        if (IsGroundIce(k, y, 3))
+                        if (IsGroundIce(k, y, 10))
                         {
                             PlaceIcyCrystals(k, y, Main.rand.Next(1, 1));
                             k += 1;
@@ -1912,7 +1919,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                             break;
                         }
 
-                        if (!IsAir(k, y, 4))
+                        if (!IsAir(k, y, 10))
                             break;
                     }
                 }
@@ -1966,7 +1973,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
             for (int k = 0; k < w; k++)
             {
                 Tile tile = Framing.GetTileSafely(x + k, y);
-                if (!(tile.HasTile && tile.Slope == SlopeType.Solid && !tile.IsHalfBlock && (tile.TileType == TileID.IceBlock)))
+                if (!(tile.HasTile && tile.Slope == SlopeType.Solid && !tile.IsHalfBlock && (tile.TileType == ModContent.TileType<RunicIceCathedralTile>())))
                     return false;
 
                 Tile tile2 = Framing.GetTileSafely(x + k, y - 1);
@@ -1994,17 +2001,17 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
             // MultitileHelper.PlaceMultitile(new Point16(treex, treey - 1), ModContent.TileType<RainforestTreeBase>());
 
-            for (int x = 0; x < 2; x++)
+            for (int x = 0; x < 1; x++)
             {
                 for (int y = 0; y < height; y++)
                 {
-                    switch (Main.rand.Next(2))
+                    switch (Main.rand.Next(3))
                     {
                         case 0:
                             //Start Left
 
 
-                            WorldGen.PlaceWall(treex + x, treey - (y), (ushort)ModContent.WallType<LargeIceyStone>());
+                            WorldGen.PlaceWall(treex, treey - (y) + 3, (ushort)ModContent.WallType<LargeIceyStone>());
                             break;
 
 
@@ -2012,7 +2019,14 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                             //Start Right
 
 
-                            WorldGen.PlaceWall(treex + x, treey - (y), (ushort)ModContent.WallType<MediumIceyStone>());
+                            WorldGen.PlaceWall(treex, treey - (y) + 2, (ushort)ModContent.WallType<MediumIceyStone>());
+                            break;
+
+                        case 2:
+                            //Start Right
+
+
+                            WorldGen.PlaceWall(treex, treey - (y) + 2, (ushort)ModContent.WallType<SmallIceyStone>());
                             break;
 
 
@@ -2048,7 +2062,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
            // MultitileHelper.PlaceMultitile(new Point16(treex, treey - 1), ModContent.TileType<RainforestTreeBase>());
 
-            for (int x = 0; x < 2; x++)
+            for (int x = 0; x < 1; x++)
             {
                 for (int y = 0; y < height; y++)
                 {

@@ -61,3 +61,8 @@ MediumIceyStoneBlock: {
 	DisplayName: Medium Icey Stone Block
 	Tooltip: ""
 }
+
+SmallIceyStoneBlock: {
+	DisplayName: Small Icey Stone Block
+	Tooltip: ""
+}
