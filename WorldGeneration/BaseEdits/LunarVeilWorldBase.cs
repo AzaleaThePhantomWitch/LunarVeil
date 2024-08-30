@@ -186,7 +186,8 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                 tasks.Insert(IceGen + 6, new PassLegacy("Icy Pikes", MakingIcyRandomness));
                 tasks.Insert(IceGen + 7, new PassLegacy("Icy Pikes", MakingIcyUndergroundSpikes));
                 tasks.Insert(IceGen + 8, new PassLegacy("Trees of the wind", BorealTreeSpawning));
-               
+                tasks.Insert(IceGen + 9, new PassLegacy("Trees of the wind", IceCrystalsSpawning));
+
                 //tasks.Insert(JungleGen + 2, new PassLegacy("RainDeeps", RainforestDeeps));
             }
 
@@ -1371,29 +1372,35 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                     {
                         case 0:
                             //Start Left
-                            
+
 
                             WorldUtils.Gen(WallPosition.ToPoint(), new Shapes.Circle(7), Actions.Chain(new GenAction[]
                  {
-                            new Actions.SetTile(TileID.IceBlock)
+                            new Actions.SetTile(TileID.IceBlock),
                             //new Modifiers.Dither(.2),// Dithering
+                            new Actions.ClearWall()
 
-                 }));
+                 })) ;
 
-                            WorldGen.PlaceWall(X, yBelow + 3, (ushort)ModContent.WallType<LargeIceyStone>());
+                        //    WorldGen.PlaceWall(X, yBelow + 3, (ushort)ModContent.WallType<LargeIceyStone>());
                             break;
+
+
                         case 1:
                             //Start Right
                             
 
-                            WorldUtils.Gen(WallPosition.ToPoint(), new Shapes.Circle(5), Actions.Chain(new GenAction[]
+                            WorldUtils.Gen(WallPosition.ToPoint(), new Shapes.Circle(3), Actions.Chain(new GenAction[]
                  {
-                            new Actions.SetTile(TileID.IceBlock)
+                            new Actions.SetTile(TileID.IceBlock),
+                            new Actions.ClearWall()
                             //new Modifiers.Dither(.2),// Dithering
                             }));
 
-                            WorldGen.PlaceWall(X, yBelow + 1, (ushort)ModContent.WallType<MediumIceyStone>());
+                         //   WorldGen.PlaceWall(X, yBelow + 1, (ushort)ModContent.WallType<MediumIceyStone>());
                             break;
+
+
                     }
 
 
@@ -1849,7 +1856,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                     if (Main.tile[smx, smy].TileType == TileID.SnowBlock)
                     {
                         int caveWidth = WorldGen.genRand.Next(1, 5); // Width
-                        int caveSteps = WorldGen.genRand.Next(200, 1000 + id); // How many carves
+                        int caveSteps = WorldGen.genRand.Next(200, 1500 + id); // How many carves
 
                         int caveSeed = WorldGen.genRand.Next();
                         Vector2 baseCaveDirection = Vector2.UnitY.RotatedBy(WorldGen.genRand.NextFloatDirection() * 0.54f);
@@ -1886,6 +1893,33 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
 
         }
+
+
+        private void IceCrystalsSpawning(GenerationProgress progress, GameConfiguration configuration)
+        {
+            progress.Message = "Icy Crystals!";
+            for (int k = 60; k < Main.maxTilesX - 60; k++)
+            {
+                if (k > 200 && k < Main.maxTilesX - 200 && WorldGen.genRand.NextBool(7)) //inner part of the world
+                {
+                    for (int y = 100; y < Main.UnderworldLayer; y++)
+                    {
+                        if (IsGroundIce(k, y, 3))
+                        {
+                            PlaceIcyCrystals(k, y, Main.rand.Next(1, 1));
+                            k += 1;
+
+                            break;
+                        }
+
+                        if (!IsAir(k, y, 4))
+                            break;
+                    }
+                }
+            }
+
+
+        }
         private void BorealTreeSpawning(GenerationProgress progress, GameConfiguration configuration)
         {
             progress.Message = "Icy trees!";
@@ -1895,7 +1929,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                 {
                     for (int y = 10; y < Main.worldSurface; y++)
                     {
-                        if (IsGroundIce(k, y, 1))
+                        if (IsGroundSnow(k, y, 1))
                         {
                             PlaceBorealTrees(k, y, Main.rand.Next(1, 1));
                             k += 1;
@@ -1911,7 +1945,8 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
 
         }
-        public static bool IsGroundIce(int x, int y, int w)
+
+        public static bool IsGroundSnow(int x, int y, int w)
         {
             for (int k = 0; k < w; k++)
             {
@@ -1926,6 +1961,76 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
             return true;
         }
+        public static bool IsGroundIce(int x, int y, int w)
+        {
+            for (int k = 0; k < w; k++)
+            {
+                Tile tile = Framing.GetTileSafely(x + k, y);
+                if (!(tile.HasTile && tile.Slope == SlopeType.Solid && !tile.IsHalfBlock && (tile.TileType == TileID.IceBlock)))
+                    return false;
+
+                Tile tile2 = Framing.GetTileSafely(x + k, y - 1);
+                if (tile2.HasTile && Main.tileSolid[tile2.TileType])
+                    return false;
+            }
+
+            return true;
+        }
+
+        public static void PlaceIcyCrystals(int treex, int treey, int height)
+        {
+            treey -= 1;
+
+            if (treey - height < 1)
+                return;
+
+            for (int x = -1; x < 3; x++)
+            {
+                for (int y = 0; y < (height + 2); y++)
+                {
+                    WorldGen.KillWall(treex + x, treey - y);
+                }
+            }
+
+            // MultitileHelper.PlaceMultitile(new Point16(treex, treey - 1), ModContent.TileType<RainforestTreeBase>());
+
+            for (int x = 0; x < 2; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    switch (Main.rand.Next(2))
+                    {
+                        case 0:
+                            //Start Left
+
+
+                            WorldGen.PlaceWall(treex + x, treey - (y), (ushort)ModContent.WallType<LargeIceyStone>());
+                            break;
+
+
+                        case 1:
+                            //Start Right
+
+
+                            WorldGen.PlaceWall(treex + x, treey - (y), (ushort)ModContent.WallType<MediumIceyStone>());
+                            break;
+
+
+                    }
+                    
+                    
+                }
+            }
+
+            for (int x = -1; x < 3; x++)
+            {
+                for (int y = 0; y < (height + 2); y++)
+                {
+                    WorldGen.TileFrame(treex + x, treey + y);
+                }
+            }
+        }
+
         public static void PlaceBorealTrees(int treex, int treey, int height)
         {
             treey -= 1;

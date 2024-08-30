@@ -22,7 +22,7 @@ namespace LunarVeil.Tiles.AbysmTiles
             Main.tileBlendAll[Type] = true;
             Main.tileLighted[Type] = true;
             Main.tileBlockLight[Type] = true;
-            AddMapEntry(new Color(57, 55, 172));
+            AddMapEntry(new Color(137, 155, 232));
         }
    
         public override void RandomUpdate(int i, int j)
