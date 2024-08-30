@@ -1911,7 +1911,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                 {
                     for (int y = 10; y < Main.UnderworldLayer; y++)
                     {
-                        if (IsGroundIce(k, y, 10))
+                        if (IsGroundIce(k, y, 8))
                         {
                             PlaceIcyCrystals(k, y, Main.rand.Next(1, 1));
                             k += 1;
@@ -1919,7 +1919,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                             break;
                         }
 
-                        if (!IsAir(k, y, 10))
+                        if (!IsAir(k, y, 8))
                             break;
                     }
                 }
@@ -2011,7 +2011,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                             //Start Left
 
 
-                            WorldGen.PlaceWall(treex, treey - (y) + 3, (ushort)ModContent.WallType<LargeIceyStone>());
+                            WorldGen.PlaceWall(treex + 2, treey - (y) + 3, (ushort)ModContent.WallType<LargeIceyStone>());
                             break;
 
 
@@ -2019,14 +2019,14 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                             //Start Right
 
 
-                            WorldGen.PlaceWall(treex, treey - (y) + 2, (ushort)ModContent.WallType<MediumIceyStone>());
+                            WorldGen.PlaceWall(treex + 2, treey - (y) + 2, (ushort)ModContent.WallType<MediumIceyStone>());
                             break;
 
                         case 2:
                             //Start Right
 
 
-                            WorldGen.PlaceWall(treex, treey - (y) + 2, (ushort)ModContent.WallType<SmallIceyStone>());
+                            WorldGen.PlaceWall(treex + 2, treey - (y) + 2, (ushort)ModContent.WallType<SmallIceyStone>());
                             break;
 
 
