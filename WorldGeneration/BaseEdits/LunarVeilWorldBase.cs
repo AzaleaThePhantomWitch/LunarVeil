@@ -689,6 +689,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
         #endregion
 
         #region IceBiomeGeneration
+     
         private void IceClump(GenerationProgress progress, GameConfiguration configuration)
         {
             progress.Message = "Ice biome mounding";
@@ -736,10 +737,18 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
 
 
+                    WorldUtils.Gen(Loc7, new Shapes.Circle(500,300), Actions.Chain(new GenAction[]
+                    {
+                        new Actions.ClearWall(true),
+                        new Actions.PlaceWall(WallID.SnowWallUnsafe),
+                        new Actions.Smooth(true)
+                    }));
+
                     // Dig big chasm at top
 
 
                 }
+
                 for (int daa = 0; daa < 30; daa++)
                 {
                     contdown -= 10;
@@ -780,15 +789,15 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
 
                 for (int da = 0; da < 1; da++)
-                        {
+                {
                             Point Loc7 = new Point(smx, smy);
                             Point Loc8 = new Point(smx, smy + 50);
                     WorldUtils.Gen(Loc8, new Shapes.Mound(450, 300), Actions.Chain(new GenAction[]
-         {
-                            new Actions.ClearWall(true),
-                            new Actions.SetTile(TileID.SnowBlock),
-                            new Actions.Smooth(true)
-         }));
+                     {
+                                        new Actions.ClearWall(true),
+                                        new Actions.SetTile(TileID.SnowBlock),
+                                        new Actions.Smooth(true)
+                     }));
 
 
 
@@ -801,11 +810,16 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                             WorldGen.TileRunner(Loc7.X, Loc7.Y + 1800, 500, 2, ModContent.TileType<AbyssalDirt>(), false, 0f, 0f, true, true);
                             WorldGen.TileRunner(Loc7.X, Loc7.Y + 1800, 700, 2, ModContent.TileType<AbyssalDirt>(), false, 0f, 0f, true, true);
 
-
+                    WorldUtils.Gen(Loc7, new Shapes.Circle(500, 300), Actions.Chain(new GenAction[]
+                    {
+                        new Actions.ClearWall(true),
+                        new Actions.PlaceWall(WallID.SnowWallUnsafe),
+                        new Actions.Smooth(true)
+                    }));
 
                     // Dig big chasm at top
-                   // WorldGen.digTunnel(smx, smy - 250, 0, 1, 1000, 15, false);
-  
+                    // WorldGen.digTunnel(smx, smy - 250, 0, 1, 1000, 15, false);
+
                     placed = true;
                 }
 
@@ -2075,8 +2089,12 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                                     Point Loc = new Point(smx - 15, smy + 10);
                                     //StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
                                     string path = "WorldGeneration/STRUCT/IceStruct/BridgeIce1";//
+
+                                    bool success = StructureLoader.TryPlaceAndProtectStructure(Loc, path);
+                                    if (!success)
+                                        break;
                                     int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path);
-                                    StructureLoader.ProtectStructure(Loc, path);
+                      
                                     foreach (int chestIndex in ChestIndexs)
                                     {
                                         var chest = Main.chest[chestIndex];
@@ -2172,8 +2190,12 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                                     Point Loc = new Point(smx - 20, smy + 20);
                                     //StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
                                     string path = "WorldGeneration/STRUCT/IceStruct/BridgeIce2";//
+
+                                    bool success = StructureLoader.TryPlaceAndProtectStructure(Loc, path);
+                                    if (!success)
+                                        break;
                                     int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path);
-                                    StructureLoader.ProtectStructure(Loc, path);
+                           
                                     foreach (int chestIndex in ChestIndexs)
                                     {
                                         var chest = Main.chest[chestIndex];
@@ -2269,8 +2291,12 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                                     Point Loc = new Point(smx - 15, smy + 10);
                                     //StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
                                     string path = "WorldGeneration/STRUCT/IceStruct/BridgeIce3";//
+
+                                    bool success = StructureLoader.TryPlaceAndProtectStructure(Loc, path);
+                                    if (!success)
+                                        break;
                                     int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path);
-                                    StructureLoader.ProtectStructure(Loc, path);
+                       
                                     foreach (int chestIndex in ChestIndexs)
                                     {
                                         var chest = Main.chest[chestIndex];
@@ -2366,8 +2392,12 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                                     Point Loc = new Point(smx - 20, smy + 10);
                                     //StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
                                     string path = "WorldGeneration/STRUCT/IceStruct/BridgeIce4";//
+
+                                    bool success = StructureLoader.TryPlaceAndProtectStructure(Loc, path);
+                                    if (!success)
+                                        break;
                                     int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path);
-                                    StructureLoader.ProtectStructure(Loc, path);
+                            
                                     foreach (int chestIndex in ChestIndexs)
                                     {
                                         var chest = Main.chest[chestIndex];
