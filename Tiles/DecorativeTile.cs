@@ -6,6 +6,24 @@ using Terraria.ModLoader;
 
 namespace LunarVeil.Tiles
 {
+    public class DecorativeGlobalTile : GlobalTile
+    {
+        public override void KillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem)
+        {
+            base.KillTile(i, j, type, ref fail, ref effectOnly, ref noItem);
+            Tile tile = Main.tile[i, j];
+            if(tile.WallType != 0)
+            {
+                DecorativeWall decorativeWall = ModContent.GetModWall(tile.WallType) as DecorativeWall;
+                if (decorativeWall == null)
+                    return;
+
+                //TODO Add dust or sound or something later maybe idk
+                WorldGen.KillWall(i, j);
+            }
+        }
+    }
+
     public abstract class DecorativeWallItem : ModItem
     {
         public override string Texture => "LunarVeil/Tiles/ExampleDecorativeWallItem";
