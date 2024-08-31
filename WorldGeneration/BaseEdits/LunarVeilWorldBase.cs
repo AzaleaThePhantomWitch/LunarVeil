@@ -1514,11 +1514,9 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                                 for (int da = 0; da < 1; da++)
                                 {
                                     Point Loc = new Point(smx, smy -5);
-                                    //StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
                                     string path = "WorldGeneration/STRUCT/IceStruct/HouseSurfaceIce1";//
-                                    /*bool success = StructureLoader.TryPlaceAndProtectStructure(Loc, path);
-                                    if (!success)
-                                        continue;*/
+              
+                                    StructureLoader.ProtectStructure(Loc, path);
                                     int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path);
                       
                                     foreach (int chestIndex in ChestIndexs)
@@ -1628,11 +1626,9 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                                 for (int da = 0; da < 1; da++)
                                 {
                                     Point Loc = new Point(smx, smy - 8);
-                                    //StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
                                     string path = "WorldGeneration/STRUCT/IceStruct/HouseSurfaceIce2";//
-                                    /*bool success = StructureLoader.TryPlaceAndProtectStructure(Loc, path);
-                                    if (!success)
-                                        continue;*/
+         
+                                    StructureLoader.ProtectStructure(Loc, path);
                                     int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path);
                   
                                     foreach (int chestIndex in ChestIndexs)
