@@ -1387,7 +1387,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                  {
                             new Actions.SetTile(TileID.IceBlock),
                             //new Modifiers.Dither(.2),// Dithering
-                            new Actions.ClearWall()
+                          //  new Actions.ClearWall()
 
                  })) ;
 
