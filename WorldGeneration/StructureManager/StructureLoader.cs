@@ -206,7 +206,7 @@ namespace LunarVeil.WorldGeneration.StructureManager
                         t.WallColor = reader.ReadByte();
 
 
-                        if (makeOld)
+                        if (makeOld && t.WallType == 0)
                         {
                             t.LiquidType = oldLiquidType;
                             t.LiquidAmount = oldLiquidAmount;
