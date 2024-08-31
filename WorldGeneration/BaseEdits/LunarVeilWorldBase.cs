@@ -170,6 +170,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                 tasks.Insert(IceGen + 7, new PassLegacy("Icy Pikes Overground", MakingIcyRandomness));
                 tasks.Insert(IceGen + 8, new PassLegacy("Icy Pikes Underground", MakingIcyUndergroundSpikes));
                 tasks.Insert(IceGen + 9, new PassLegacy("Ice Crystals Spwning", IceCrystalsSpawning));
+                tasks.Insert(IceGen + 10, new PassLegacy("Ice Fog", IceFog));
                 tasks.Insert(IceGen + 10, new PassLegacy("Boreal Trees!", BorealTreeSpawning));
 
                 //tasks.Insert(JungleGen + 2, new PassLegacy("RainDeeps", RainforestDeeps));
@@ -2695,6 +2696,65 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
 
         }
+
+        private void IceFog(GenerationProgress progress, GameConfiguration configuration)
+        {
+            progress.Message = "The fog is cuming";
+            for (int k = 60; k < Main.maxTilesX - 60; k++)
+            {
+                if (k > 200 && k < Main.maxTilesX - 200 && WorldGen.genRand.NextBool(1)) //inner part of the world
+                {
+                    for (int y = 10; y < Main.worldSurface; y++)
+                    {
+                        if (IsGroundFoggy(k, y, 1))
+                        {
+                            PlaceTheFog(k, y, Main.rand.Next(1, 1));
+                            k += 1;
+
+                            break;
+                        }
+
+                        if (!IsAir(k, y, 2))
+                            break;
+                    }
+                }
+
+                if (k > 200 && k < Main.maxTilesX - 200 && WorldGen.genRand.NextBool(1)) //inner part of the world
+                {
+                    for (int y = 10; y < Main.worldSurface; y++)
+                    {
+                        if (IsGroundIceyFog(k, y, 1))
+                        {
+                            PlaceTheFog(k, y, Main.rand.Next(1, 1));
+                            k += 1;
+
+                            break;
+                        }
+
+                        if (!IsAir(k, y, 2))
+                            break;
+                    }
+                }
+            }
+
+
+        }
+
+        public static bool IsGroundIceyFog(int x, int y, int w)
+        {
+            for (int k = 0; k < w; k++)
+            {
+                Tile tile = Framing.GetTileSafely(x + k, y);
+                if (!(tile.HasTile && tile.Slope == SlopeType.Solid && !tile.IsHalfBlock && (tile.TileType == ModContent.TileType<RunicIceCathedralTile>())))
+                    return false;
+
+                Tile tile2 = Framing.GetTileSafely(x + k, y - 1);
+                if (tile2.HasTile && Main.tileSolid[tile2.TileType])
+                    return false;
+            }
+
+            return true;
+        }
         public static bool IsGroundSnow(int x, int y, int w)
         {
             for (int k = 0; k < w; k++)
@@ -2726,6 +2786,21 @@ namespace LunarVeil.WorldGeneration.BaseEdits
             return true;
         }
 
+        public static bool IsGroundFoggy(int x, int y, int w)
+        {
+            for (int k = 0; k < w; k++)
+            {
+                Tile tile = Framing.GetTileSafely(x + k, y);
+                if (!(tile.HasTile && tile.Slope == SlopeType.Solid && !tile.IsHalfBlock && (tile.TileType == TileID.IceBlock)))
+                    return false;
+
+                Tile tile2 = Framing.GetTileSafely(x + k, y - 1);
+                if (tile2.HasTile && Main.tileSolid[tile2.TileType])
+                    return false;
+            }
+
+            return true;
+        }
         public static void PlaceIcyCrystals(int treex, int treey, int height)
         {
             treey -= 1;
@@ -2811,6 +2886,44 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                     
                     WorldGen.PlaceTile(treex + x, treey - (y), TileID.Saplings, true, true);
                     WorldGen.GrowTree(treex + x, treey - (y));
+                }
+            }
+
+            for (int x = -1; x < 3; x++)
+            {
+                for (int y = 0; y < (height + 2); y++)
+                {
+                    WorldGen.TileFrame(treex + x, treey + y);
+                }
+            }
+        }
+
+        public static void PlaceTheFog(int treex, int treey, int height)
+        {
+            treey -= 1;
+
+            if (treey - height < 1)
+                return;
+
+            for (int x = -1; x < 3; x++)
+            {
+                for (int y = 0; y < (height + 2); y++)
+                {
+                    WorldGen.KillTile(treex + x, treey - y);
+                }
+            }
+
+            // MultitileHelper.PlaceMultitile(new Point16(treex, treey - 1), ModContent.TileType<RainforestTreeBase>());
+
+            for (int x = 0; x < 1; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    Point Loc = new Point(treex + x, treey - (y));
+                    //StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
+                    string path = "WorldGeneration/STRUCT/IceStruct/FogSpammer";//
+                    StructureLoader.ReadStruct(Loc, path);
+                    StructureLoader.ProtectStructure(Loc, path);
                 }
             }
 
