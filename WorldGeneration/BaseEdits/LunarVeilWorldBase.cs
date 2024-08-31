@@ -1473,6 +1473,8 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
 
                         }
+
+                        placed = true;
                         
                         switch (Main.rand.Next(2))
                         {
