@@ -78,7 +78,6 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                     continue;
 
 
-
                 tasks[i] = new PassLegacy(tasks[i].Name, DoNothing);
                
             }
@@ -1198,6 +1197,13 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
                 if (Main.tile[X, yBelow].TileType == TileID.SnowBlock)
                 {
+                    StructureMap structures = GenVars.structures;
+                    Rectangle areaToPlaceIn = new Rectangle(
+                        (int)WallPosition.X - 5,
+                        (int)WallPosition.Y - 10,
+                        10, 20);
+                    if (!structures.CanPlace(areaToPlaceIn))
+                        continue;
 
                     WorldUtils.Gen(WallPosition.ToPoint(), new Shapes.Tail(10, WallPosition2), Actions.Chain(new GenAction[]
                        {    
@@ -1229,7 +1235,13 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
                 if (Main.tile[X, yBelow].TileType == TileID.SnowBlock)
                 {
-
+                    StructureMap structures = GenVars.structures;
+                    Rectangle areaToPlaceIn = new Rectangle(
+                        (int)WallPosition.X - 3,
+                        (int)WallPosition.Y - 3,
+                        6, 6);
+                    if (!structures.CanPlace(areaToPlaceIn))
+                        continue;
                     WorldUtils.Gen(WallPosition.ToPoint(), new Shapes.Circle(WorldGen.genRand.Next(1, 3)), Actions.Chain(new GenAction[]
                        {
                             new Actions.ClearWall(true),
@@ -1483,7 +1495,13 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                                    //new Actions.Smooth(true)
                                }));
 
-
+                            Rectangle areaToPlaceIn = new Rectangle(
+                                (int)WallPosition.X - 12,
+                                (int)WallPosition.Y - 12,
+                                24, 24);
+                            bool success = StructureLoader.TryPlaceAndProtectStructure(areaToPlaceIn);
+                            if (!success)
+                                continue;
                         }
 
                         
@@ -1497,8 +1515,11 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                                     Point Loc = new Point(smx, smy -5);
                                     //StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
                                     string path = "WorldGeneration/STRUCT/IceStruct/HouseSurfaceIce1";//
+                                    /*bool success = StructureLoader.TryPlaceAndProtectStructure(Loc, path);
+                                    if (!success)
+                                        continue;*/
                                     int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path);
-                                    StructureLoader.ProtectStructure(Loc, path);
+                      
                                     foreach (int chestIndex in ChestIndexs)
                                     {
                                         var chest = Main.chest[chestIndex];
@@ -1608,8 +1629,11 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                                     Point Loc = new Point(smx, smy - 8);
                                     //StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
                                     string path = "WorldGeneration/STRUCT/IceStruct/HouseSurfaceIce2";//
+                                    /*bool success = StructureLoader.TryPlaceAndProtectStructure(Loc, path);
+                                    if (!success)
+                                        continue;*/
                                     int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path);
-                                    StructureLoader.ProtectStructure(Loc, path);
+                  
                                     foreach (int chestIndex in ChestIndexs)
                                     {
                                         var chest = Main.chest[chestIndex];
@@ -2091,11 +2115,9 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                                     //StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
                                     string path = "WorldGeneration/STRUCT/IceStruct/BridgeIce1";//
 
-                                    bool success = StructureLoader.TryPlaceAndProtectStructure(Loc, path);
-                                    if (!success)
-                                        break;
+                                    
                                     int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path);
-                      
+                                    //StructureLoader.ProtectStructure(Loc, path);
                                     foreach (int chestIndex in ChestIndexs)
                                     {
                                         var chest = Main.chest[chestIndex];
@@ -2192,11 +2214,9 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                                     //StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
                                     string path = "WorldGeneration/STRUCT/IceStruct/BridgeIce2";//
 
-                                    bool success = StructureLoader.TryPlaceAndProtectStructure(Loc, path);
-                                    if (!success)
-                                        break;
+        
                                     int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path);
-                           
+                                    //StructureLoader.ProtectStructure(Loc, path);
                                     foreach (int chestIndex in ChestIndexs)
                                     {
                                         var chest = Main.chest[chestIndex];
@@ -2293,11 +2313,8 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                                     //StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
                                     string path = "WorldGeneration/STRUCT/IceStruct/BridgeIce3";//
 
-                                    bool success = StructureLoader.TryPlaceAndProtectStructure(Loc, path);
-                                    if (!success)
-                                        break;
                                     int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path);
-                       
+                                    //StructureLoader.ProtectStructure(Loc, path);
                                     foreach (int chestIndex in ChestIndexs)
                                     {
                                         var chest = Main.chest[chestIndex];
@@ -2394,11 +2411,8 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                                     //StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
                                     string path = "WorldGeneration/STRUCT/IceStruct/BridgeIce4";//
 
-                                    bool success = StructureLoader.TryPlaceAndProtectStructure(Loc, path);
-                                    if (!success)
-                                        break;
                                     int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path);
-                            
+                                    //StructureLoader.ProtectStructure(Loc, path);
                                     foreach (int chestIndex in ChestIndexs)
                                     {
                                         var chest = Main.chest[chestIndex];

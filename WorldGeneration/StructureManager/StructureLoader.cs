@@ -39,8 +39,16 @@ namespace LunarVeil.WorldGeneration.StructureManager
             rectangle.Location = location;
             structures.AddProtectedStructure(rectangle);
         }
+        public static bool TryPlaceAndProtectStructure(Rectangle areaToPlaceIn, bool ignoreStructures = false)
+        {
+            StructureMap structures = GenVars.structures;
+            if (!ignoreStructures && !structures.CanPlace(areaToPlaceIn))
+                return false;
 
-        public static bool TryPlaceAndProtectStructure(Point location, string path, bool ignoreStructures = false)
+            structures.AddProtectedStructure(areaToPlaceIn);
+            return true;
+        }
+            public static bool TryPlaceAndProtectStructure(Point location, string path, bool ignoreStructures = false)
         {
             StructureMap structures = GenVars.structures;
             Rectangle rectangle = ReadRectangle(path);
