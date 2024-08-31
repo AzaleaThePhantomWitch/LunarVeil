@@ -1430,7 +1430,9 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                     // We go down until we hit a solid tile or go under the world's surface
                     Tile tile = Main.tile[smx, smy];
 
-                    while (!WorldGen.SolidTile(smx, smy) && smy <= Main.UnderworldLayer || (!(tile.TileType == TileID.SnowBlock) && WorldGen.SolidTile(smx, smy)))
+                    while (!WorldGen.SolidTile(smx, smy) && smy <= Main.UnderworldLayer 
+                        || (!(tile.TileType == TileID.SnowBlock) && WorldGen.SolidTile(smx, smy) 
+                        || (!(tile.TileType == ModContent.TileType<RunicIceCathedralTile>()) && WorldGen.SolidTile(smx, smy))))
                     {
                         smy++;
                         tile = Main.tile[smx, smy];
@@ -1454,12 +1456,12 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                     //	Main.npc[num].homeless = true;
                     if (Main.tile[smx, smy].TileType == TileID.SnowBlock)
                     {
-                        Vector2 WallPosition = new Vector2(smx, smy + 5);
+                        Vector2 WallPosition = new Vector2(smx - 1, smy + 5);
 
                         if (!WorldGen.SolidTile(smx, smy))
                             continue;
 
-                        if (Main.tile[smx, smy].TileType == TileID.SnowBlock)
+                        if (Main.tile[smx + 5, smy].TileType == TileID.SnowBlock)
                         {
                             
                             WorldUtils.Gen(WallPosition.ToPoint(), new Shapes.Circle(10), Actions.Chain(new GenAction[]
