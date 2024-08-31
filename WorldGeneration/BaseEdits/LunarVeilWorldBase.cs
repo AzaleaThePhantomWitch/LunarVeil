@@ -1431,8 +1431,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                     Tile tile = Main.tile[smx, smy];
 
                     while (!WorldGen.SolidTile(smx, smy) && smy <= Main.UnderworldLayer 
-                        || (!(tile.TileType == TileID.SnowBlock) && WorldGen.SolidTile(smx, smy) 
-                        || (!(tile.TileType == ModContent.TileType<RunicIceCathedralTile>()) && WorldGen.SolidTile(smx, smy))))
+                        || (!(tile.TileType == TileID.SnowBlock) && !(tile.TileType == ModContent.TileType<RunicIceCathedralTile>()) && WorldGen.SolidTile(smx, smy)))
                     {
                         smy++;
                         tile = Main.tile[smx, smy];
