@@ -173,6 +173,9 @@ namespace LunarVeil.WorldGeneration.StructureManager
                             t.TileFrameX = reader.ReadInt16();
                             t.TileFrameY = reader.ReadInt16();
                             t.TileColor = reader.ReadByte();
+                            t.IsTileInvisible = reader.ReadBoolean();
+                            t.IsTileFullbright = reader.ReadBoolean();
+             
                             bool Chest = reader.ReadBoolean();
                             if (Chest)
                             {
@@ -204,7 +207,8 @@ namespace LunarVeil.WorldGeneration.StructureManager
                         t.WallFrameX = reader.ReadInt32();
                         t.WallFrameY = reader.ReadInt32();
                         t.WallColor = reader.ReadByte();
-
+                        t.IsWallInvisible = reader.ReadBoolean();
+                        t.IsWallFullbright = reader.ReadBoolean();
 
                         if (makeOld && t.WallType == 0)
                         {
@@ -347,6 +351,9 @@ namespace LunarVeil.WorldGeneration.StructureManager
 
                                 //Paint
                                 writer.Write(t.TileColor);
+                                writer.Write(t.IsTileInvisible);
+                                writer.Write(t.IsTileFullbright);
+          
                                 bool Chest = false;
                                 foreach (Chest c in Main.chest)
                                 {
@@ -372,6 +379,8 @@ namespace LunarVeil.WorldGeneration.StructureManager
                             writer.Write(t.WallFrameX);
                             writer.Write(t.WallFrameY);
                             writer.Write(t.WallColor);
+                            writer.Write(t.IsWallInvisible);
+                            writer.Write(t.IsWallFullbright);
                         }
                     }
 
