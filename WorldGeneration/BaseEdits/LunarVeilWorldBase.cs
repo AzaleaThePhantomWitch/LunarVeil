@@ -2644,7 +2644,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
             progress.Message = "Icy Crystals!";
             for (int k = 60; k < Main.maxTilesX - 60; k++)
             {
-                if (k > 200 && k < Main.maxTilesX - 200 && WorldGen.genRand.NextBool(8)) //inner part of the world
+                if (k > 200 && k < Main.maxTilesX - 200 && WorldGen.genRand.NextBool(2)) //inner part of the world
                 {
                     for (int y = 10; y < Main.UnderworldLayer; y++)
                     {
