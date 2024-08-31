@@ -1404,8 +1404,6 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
            
         }
-
-
         private void SurfaceIceHouses(GenerationProgress progress, GameConfiguration configuration)
         {
             progress.Message = "The frozen folk making village homes";
