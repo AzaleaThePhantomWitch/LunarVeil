@@ -48,7 +48,7 @@ namespace LunarVeil.Systems.Players
                 }
             }
 
-            if (Main._shouldUseWindyDayMusic)
+            if (Main._shouldUseWindyDayMusic && !Player.ZoneDesert)
             {
                 int leafFGChance = Cherryblossom.SpawnChance(Player);
                 if (leafFGChance != -1 && Main.rand.NextBool(leafFGChance))
