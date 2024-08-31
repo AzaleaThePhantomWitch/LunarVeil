@@ -66,3 +66,8 @@ SmallIceyStoneBlock: {
 	DisplayName: Small Icey Stone Block
 	Tooltip: ""
 }
+
+BorealReinforcementBlock: {
+	DisplayName: Boreal Reinforcement Block
+	Tooltip: ""
+}
