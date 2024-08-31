@@ -166,9 +166,9 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                 tasks.Insert(IceGen + 3, new PassLegacy("Abysm Clumping", AbysmClump));
                 tasks.Insert(IceGen + 4, new PassLegacy("Walls ice underground", MakingIcyWalls));
                 tasks.Insert(IceGen + 5, new PassLegacy("Icy Waters", MakingIcyPonds));
-                tasks.Insert(IceGen + 6, new PassLegacy("Icy Pikes Overground", MakingIcyRandomness));
-                tasks.Insert(IceGen + 7, new PassLegacy("Icy Pikes Underground", MakingIcyUndergroundSpikes));
-                tasks.Insert(IceGen + 8, new PassLegacy("Icy Surface Gremlins", SurfaceIceHouses));
+                tasks.Insert(IceGen + 6, new PassLegacy("Icy Surface Gremlins", SurfaceIceHouses));
+                tasks.Insert(IceGen + 7, new PassLegacy("Icy Pikes Overground", MakingIcyRandomness));
+                tasks.Insert(IceGen + 8, new PassLegacy("Icy Pikes Underground", MakingIcyUndergroundSpikes));
                 tasks.Insert(IceGen + 9, new PassLegacy("Ice Crystals Spwning", IceCrystalsSpawning));
                 tasks.Insert(IceGen + 10, new PassLegacy("Boreal Trees!", BorealTreeSpawning));
 
@@ -1409,7 +1409,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
             progress.Message = "The frozen folk making village homes";
 
 
-            for (int k = 0; k < (int)(4); k++)
+            for (int k = 0; k < (int)(5); k++)
             {
                 bool placed = false;
                 int attempts = 0;
@@ -1431,7 +1431,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                     Tile tile = Main.tile[smx, smy];
 
                     while (!WorldGen.SolidTile(smx, smy) && smy <= Main.UnderworldLayer 
-                        || (!(tile.TileType == TileID.SnowBlock) && !(tile.TileType == ModContent.TileType<RunicIceCathedralTile>()) && WorldGen.SolidTile(smx, smy)))
+                        || (!(tile.TileType == TileID.IceBlock) && !(tile.TileType == ModContent.TileType<RunicIceCathedralTile>()) && WorldGen.SolidTile(smx, smy)))
                     {
                         smy++;
                         tile = Main.tile[smx, smy];
@@ -1453,14 +1453,14 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                     //	Main.npc[num].homeTileY = -1;
                     //	Main.npc[num].direction = 1;
                     //	Main.npc[num].homeless = true;
-                    if (Main.tile[smx, smy].TileType == TileID.SnowBlock || (Main.tile[smx, smy].TileType == ModContent.TileType<RunicIceCathedralTile>()))
+                    if (Main.tile[smx, smy].TileType == TileID.IceBlock || (Main.tile[smx, smy].TileType == ModContent.TileType<RunicIceCathedralTile>()))
                     {
-                        Vector2 WallPosition = new Vector2(smx - 1, smy + 6);
+                        Vector2 WallPosition = new Vector2(smx + 8, smy + 1);
 
                         if (!WorldGen.SolidTile(smx, smy))
                             continue;
 
-                        if (Main.tile[smx, smy].TileType == TileID.SnowBlock || (Main.tile[smx, smy].TileType == ModContent.TileType<RunicIceCathedralTile>()))
+                        if (Main.tile[smx, smy].TileType == TileID.IceBlock || (Main.tile[smx, smy].TileType == ModContent.TileType<RunicIceCathedralTile>()))
                         {
                             
                             WorldUtils.Gen(WallPosition.ToPoint(), new Shapes.Circle(12), Actions.Chain(new GenAction[]
@@ -1481,7 +1481,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                                 //Start Left
                                 for (int da = 0; da < 1; da++)
                                 {
-                                    Point Loc = new Point(smx, smy + 5);
+                                    Point Loc = new Point(smx, smy -5);
                                     //StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
                                     string path = "WorldGeneration/STRUCT/IceStruct/HouseSurfaceIce1";//
                                     int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path);
@@ -1592,7 +1592,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                             case 1:
                                 for (int da = 0; da < 1; da++)
                                 {
-                                    Point Loc = new Point(smx, smy + 4);
+                                    Point Loc = new Point(smx, smy - 8);
                                     //StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
                                     string path = "WorldGeneration/STRUCT/IceStruct/HouseSurfaceIce2";//
                                     int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path);
