@@ -1207,7 +1207,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
                     WorldUtils.Gen(WallPosition.ToPoint(), new Shapes.Tail(10, WallPosition2), Actions.Chain(new GenAction[]
                        {    
-                           new Actions.ClearWall(true),
+                           //new Actions.ClearWall(true),
                             new Actions.SetTile(TileID.IceBlock),
                             //new Actions.Smooth(true)
                        }));
@@ -1244,7 +1244,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                         continue;
                     WorldUtils.Gen(WallPosition.ToPoint(), new Shapes.Circle(WorldGen.genRand.Next(1, 3)), Actions.Chain(new GenAction[]
                        {
-                            new Actions.ClearWall(true),
+                            //new Actions.ClearWall(true),
                             new Actions.SetTile(TileID.IceBlock),
                             new Actions.Smooth(true)
                        }));
