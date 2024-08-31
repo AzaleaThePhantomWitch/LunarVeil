@@ -870,8 +870,8 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
                          }));
 
-                WorldGen.digTunnel(AbysmStart2.X - contdownx2 - 100, AbysmStart2.Y - 40 - Main.rand.Next(30), 0, 0, 1, Main.rand.Next(30) + 10, false);
-                WorldGen.digTunnel(AbysmStart2.X + contdownx2 + 100, AbysmStart2.Y - 40 - Main.rand.Next(30), 0, 0, 1, Main.rand.Next(30) + 10, false);
+                WorldGen.digTunnel(AbysmStart2.X - contdownx2 - 100, AbysmStart2.Y - 40 - Main.rand.Next(30), 0, 0, 1, Main.rand.Next(20) + 10, false);
+                WorldGen.digTunnel(AbysmStart2.X + contdownx2 + 100, AbysmStart2.Y - 40 - Main.rand.Next(30), 0, 0, 1, Main.rand.Next(20) + 10, false);
 
 
             }
@@ -2012,7 +2012,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                     WorldGen.digTunnel(WallPosition.X, WallPosition.Y, 0, 0, 1, (int)(10), true);
                     WorldUtils.Gen(WallPosition.ToPoint(), new Shapes.HalfCircle(WorldGen.genRand.Next(30) + 5), Actions.Chain(new GenAction[]
                        {
-                           new Actions.ClearWall(true),
+                          // new Actions.ClearWall(true),
                            new Actions.ClearTile(true),
                             new Actions.Smooth(true)
                             //new Actions.Smooth(true)
