@@ -2068,7 +2068,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                     //	Main.npc[num].homeless = true;
                     if (Main.tile[smx, smy].TileType == TileID.SnowBlock)
                     {
-                        switch (Main.rand.Next(2))
+                        switch (Main.rand.Next(4))
                         {
                             case 0:
                                 //Start Left
@@ -2174,6 +2174,200 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                                     Point Loc = new Point(smx - 20, smy + 30);
                                     //StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
                                     string path = "WorldGeneration/STRUCT/IceStruct/BridgeIce2";//
+                                    int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path);
+                                    StructureLoader.ProtectStructure(Loc, path);
+                                    foreach (int chestIndex in ChestIndexs)
+                                    {
+                                        var chest = Main.chest[chestIndex];
+                                        // etc
+
+                                        // itemsToAdd will hold type and stack data for each item we want to add to the chest
+                                        var itemsToAdd = new List<(int type, int stack)>();
+
+                                        // Here is an example of using WeightedRandom to choose randomly with different weights for different items.
+                                        int specialItem = new Terraria.Utilities.WeightedRandom<int>(
+
+                                            Tuple.Create(ModContent.ItemType<RainforestGrassBlock>(), 0.5)
+
+
+                                        // Choose no item with a high weight of 7.
+                                        );
+                                        if (specialItem != ItemID.None)
+                                        {
+                                            itemsToAdd.Add((specialItem, 1));
+                                        }
+                                        // Using a switch statement and a random choice to add sets of items.
+                                        switch (Main.rand.Next(5))
+                                        {
+                                            case 0:
+                                                itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 3)));
+                                                itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
+                                                itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 3)));
+                                                break;
+                                            case 1:
+                                                itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 3)));
+                                                itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
+                                                itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 3)));
+                                                break;
+                                            case 2:
+                                                //   itemsToAdd.Add((ModContent.ItemType<VeroshotBow>(), Main.rand.Next(1, 1)));
+                                                //     itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(10, 30)));
+                                                //  itemsToAdd.Add((ModContent.ItemType<ArncharChunk>(), Main.rand.Next(3, 10)));
+                                                itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 3)));
+                                                itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
+                                                itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 3)));
+                                                break;
+                                            case 3:
+                                                itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 3)));
+                                                itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
+                                                itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 3)));
+
+                                                break;
+                                            case 4:
+                                                itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 3)));
+                                                itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
+                                                itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 3)));
+                                                break;
+
+
+
+
+                                        }
+
+                                        // Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+                                        int chestItemIndex = 0;
+                                        foreach (var itemToAdd in itemsToAdd)
+                                        {
+                                            Item item = new Item();
+                                            item.SetDefaults(itemToAdd.type);
+                                            item.stack = itemToAdd.stack;
+                                            chest.item[chestItemIndex] = item;
+                                            chestItemIndex++;
+                                            if (chestItemIndex >= 40)
+                                                break; // Make sure not to exceed the capacity of the chest
+                                        }
+                                    }
+
+
+
+
+
+
+
+
+
+
+
+
+                                    // GenVars.structures.AddProtectedStructure(new Rectangle(smx, smy, 433, 100));
+
+
+                                    placed = true;
+                                }
+                                break;
+                            case 2:
+                                for (int da = 0; da < 1; da++)
+                                {
+                                    Point Loc = new Point(smx - 15, smy + 10);
+                                    //StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
+                                    string path = "WorldGeneration/STRUCT/IceStruct/BridgeIce3";//
+                                    int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path);
+                                    StructureLoader.ProtectStructure(Loc, path);
+                                    foreach (int chestIndex in ChestIndexs)
+                                    {
+                                        var chest = Main.chest[chestIndex];
+                                        // etc
+
+                                        // itemsToAdd will hold type and stack data for each item we want to add to the chest
+                                        var itemsToAdd = new List<(int type, int stack)>();
+
+                                        // Here is an example of using WeightedRandom to choose randomly with different weights for different items.
+                                        int specialItem = new Terraria.Utilities.WeightedRandom<int>(
+
+                                            Tuple.Create(ModContent.ItemType<RainforestGrassBlock>(), 0.5)
+
+
+                                        // Choose no item with a high weight of 7.
+                                        );
+                                        if (specialItem != ItemID.None)
+                                        {
+                                            itemsToAdd.Add((specialItem, 1));
+                                        }
+                                        // Using a switch statement and a random choice to add sets of items.
+                                        switch (Main.rand.Next(5))
+                                        {
+                                            case 0:
+                                                itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 3)));
+                                                itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
+                                                itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 3)));
+                                                break;
+                                            case 1:
+                                                itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 3)));
+                                                itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
+                                                itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 3)));
+                                                break;
+                                            case 2:
+                                                //   itemsToAdd.Add((ModContent.ItemType<VeroshotBow>(), Main.rand.Next(1, 1)));
+                                                //     itemsToAdd.Add((ModContent.ItemType<Cinderscrap>(), Main.rand.Next(10, 30)));
+                                                //  itemsToAdd.Add((ModContent.ItemType<ArncharChunk>(), Main.rand.Next(3, 10)));
+                                                itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 3)));
+                                                itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
+                                                itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 3)));
+                                                break;
+                                            case 3:
+                                                itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 3)));
+                                                itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
+                                                itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 3)));
+
+                                                break;
+                                            case 4:
+                                                itemsToAdd.Add((ItemID.SwiftnessPotion, Main.rand.Next(1, 3)));
+                                                itemsToAdd.Add((ItemID.WormholePotion, Main.rand.Next(1, 2)));
+                                                itemsToAdd.Add((ItemID.SpelunkerPotion, Main.rand.Next(1, 3)));
+                                                break;
+
+
+
+
+                                        }
+
+                                        // Finally, iterate through itemsToAdd and actually create the Item instances and add to the chest.item array
+                                        int chestItemIndex = 0;
+                                        foreach (var itemToAdd in itemsToAdd)
+                                        {
+                                            Item item = new Item();
+                                            item.SetDefaults(itemToAdd.type);
+                                            item.stack = itemToAdd.stack;
+                                            chest.item[chestItemIndex] = item;
+                                            chestItemIndex++;
+                                            if (chestItemIndex >= 40)
+                                                break; // Make sure not to exceed the capacity of the chest
+                                        }
+                                    }
+
+
+
+
+
+
+
+
+
+
+
+
+                                    // GenVars.structures.AddProtectedStructure(new Rectangle(smx, smy, 433, 100));
+
+
+                                    placed = true;
+                                }
+                                break;
+                            case 3:
+                                for (int da = 0; da < 1; da++)
+                                {
+                                    Point Loc = new Point(smx - 20, smy + 12);
+                                    //StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
+                                    string path = "WorldGeneration/STRUCT/IceStruct/BridgeIce4";//
                                     int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path);
                                     StructureLoader.ProtectStructure(Loc, path);
                                     foreach (int chestIndex in ChestIndexs)
