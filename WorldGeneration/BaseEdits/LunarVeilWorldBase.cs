@@ -1433,7 +1433,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
         {
             progress.Message = "The frozen folk making village homes";
 
-
+            StructureMap circleStructures = new StructureMap();
             for (int k = 0; k < (int)(5); k++)
             {
                 bool placed = false;
@@ -1499,9 +1499,10 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                                 (int)WallPosition.X - 12,
                                 (int)WallPosition.Y - 12,
                                 24, 24);
-                            bool success = StructureLoader.TryPlaceAndProtectStructure(areaToPlaceIn);
+                            bool success = circleStructures.CanPlace(areaToPlaceIn);
                             if (!success)
                                 continue;
+                            circleStructures.AddProtectedStructure(areaToPlaceIn);
                         }
 
                         
@@ -1750,6 +1751,8 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
                 }
             }
+
+
         }
         private void InGroundIceHouses(GenerationProgress progress, GameConfiguration configuration)
         {
