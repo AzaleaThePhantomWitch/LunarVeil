@@ -64,7 +64,7 @@ namespace LunarVeil.Systems.Players
 
             }
 
-            if (Main.raining && (Player.ZoneForest))
+            if (Main.raining && Player.ZoneForest)
             {
                 int leafFGChance = Cherryblossom.SpawnChance(Player);
                 if (leafFGChance != -1 && Main.rand.NextBool(leafFGChance))
