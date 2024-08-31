@@ -1454,27 +1454,27 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                     //	Main.npc[num].homeTileY = -1;
                     //	Main.npc[num].direction = 1;
                     //	Main.npc[num].homeless = true;
-                    if (Main.tile[smx, smy].TileType == TileID.SnowBlock)
+                    if (Main.tile[smx, smy].TileType == TileID.SnowBlock || (Main.tile[smx, smy].TileType == ModContent.TileType<RunicIceCathedralTile>()))
                     {
-                        Vector2 WallPosition = new Vector2(smx - 1, smy + 5);
+                        Vector2 WallPosition = new Vector2(smx - 1, smy + 6);
 
                         if (!WorldGen.SolidTile(smx, smy))
                             continue;
 
-                        if (Main.tile[smx + 5, smy].TileType == TileID.SnowBlock)
+                        if (Main.tile[smx, smy].TileType == TileID.SnowBlock || (Main.tile[smx, smy].TileType == ModContent.TileType<RunicIceCathedralTile>()))
                         {
                             
-                            WorldUtils.Gen(WallPosition.ToPoint(), new Shapes.Circle(10), Actions.Chain(new GenAction[]
+                            WorldUtils.Gen(WallPosition.ToPoint(), new Shapes.Circle(12), Actions.Chain(new GenAction[]
                                {
 
-                            new Actions.SetTile(TileID.SnowBlock),
+                            new Actions.SetTile(TileID.SnowBlock)
                                    //new Actions.Smooth(true)
                                }));
 
 
                         }
 
-                        placed = true;
+                       
                         
                         switch (Main.rand.Next(2))
                         {
