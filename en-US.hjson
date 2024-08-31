@@ -1,1 +1,8 @@
-Mods.LunarVeil.NPCs.IvythornSlime.DisplayName: Ivythorn Slime
+Mods: {
+	LunarVeil: {
+		NPCs: {
+			IvythornSlime.DisplayName: Ivythorn Slime
+			IvythornSlimeScaled.DisplayName: Ivythorn Slime Scaled
+		}
+	}
+}

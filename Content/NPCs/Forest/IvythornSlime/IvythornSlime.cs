@@ -56,7 +56,7 @@ namespace LunarVeil.Content.NPCs.Forest.IvythornSlime
             }
 
             spriteBatch.Draw(texture, NPC.Center - Main.screenPosition + new Vector2(0, NPC.gfxOffY), NPC.frame,
-                drawColor, NPC.rotation, NPC.frame.Size() / 2, NPC.scale, SpriteEffects.None, 0);
+                new Color(drawColor.R, drawColor.G, drawColor.B, 190), NPC.rotation, NPC.frame.Size() / 2, NPC.scale, SpriteEffects.None, 0);
             return false;
         }
         public override float SpawnChance(NPCSpawnInfo spawnInfo)

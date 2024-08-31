@@ -1,5 +1,6 @@
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -11,6 +12,7 @@ namespace LunarVeil.Content.NPCs.Forest.IvythornSlime
 
     public class IvythornSlimeScaled : ModNPC
     {
+        private int _style = 1;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Ivythorn Slime");
@@ -19,8 +21,8 @@ namespace LunarVeil.Content.NPCs.Forest.IvythornSlime
 
         public override void SetDefaults()
         {
-            NPC.width = 32;
-            NPC.height = 24;
+            NPC.width = 52;
+            NPC.height = 32;
             NPC.damage = 10;
             NPC.defense = 5;
             NPC.lifeMax = 60;
@@ -34,6 +36,24 @@ namespace LunarVeil.Content.NPCs.Forest.IvythornSlime
             NPC.aiStyle = 1;
             AIType = NPCID.BlueSlime;
             AnimationType = NPCID.BlueSlime;
+            _style = Main.rand.Next(0, 2);
+        }
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            var texture = ModContent.Request<Texture2D>(Texture).Value;
+            switch (_style)
+            {
+                case 0:
+                    break;
+                case 1:
+                    texture = ModContent.Request<Texture2D>(Texture + "_2").Value;
+                    break;
+  
+            }
+
+            spriteBatch.Draw(texture, NPC.Center - Main.screenPosition + new Vector2(0, NPC.gfxOffY), NPC.frame,
+                new Color(drawColor.R, drawColor.G, drawColor.B, 190), NPC.rotation, NPC.frame.Size() / 2, NPC.scale, SpriteEffects.None, 0);
+            return false;
         }
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
