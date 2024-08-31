@@ -8,6 +8,10 @@
 		
 	</PropertyGroup>
 	<ItemGroup>
+	  <None Remove="Assets\Gores\ForegroundGores\Cherryblossom.png" />
+	  <None Remove="Assets\Gores\ForegroundGores\Sandstrike.png" />
+	  <None Remove="Assets\Gores\ForegroundGores\Snowstrike.png" />
+	  <None Remove="Assets\Gores\ForegroundGores\Starstrike.png" />
 	  <None Remove="Tiles\AbysmTiles\AbyssalDirt.png" />
 	  <None Remove="Tiles\AbysmTiles\AbyssalVines.png" />
 	  <None Remove="Tiles\AbysmTiles\AbyssalVines2.png" />
