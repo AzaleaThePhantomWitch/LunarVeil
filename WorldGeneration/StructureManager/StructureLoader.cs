@@ -39,8 +39,16 @@ namespace LunarVeil.WorldGeneration.StructureManager
             rectangle.Location = location;
             structures.AddProtectedStructure(rectangle);
         }
+        public static bool TryPlaceAndProtectStructure(Rectangle areaToPlaceIn, bool ignoreStructures = false)
+        {
+            StructureMap structures = GenVars.structures;
+            if (!ignoreStructures && !structures.CanPlace(areaToPlaceIn))
+                return false;
 
-        public static bool TryPlaceAndProtectStructure(Point location, string path, bool ignoreStructures = false)
+            structures.AddProtectedStructure(areaToPlaceIn);
+            return true;
+        }
+            public static bool TryPlaceAndProtectStructure(Point location, string path, bool ignoreStructures = false)
         {
             StructureMap structures = GenVars.structures;
             Rectangle rectangle = ReadRectangle(path);
@@ -86,7 +94,7 @@ namespace LunarVeil.WorldGeneration.StructureManager
         }
 
 
-        private static int[] ReadStruct(FileStream stream, Point bottomLeft, int[] tileBlend = null)
+        private static int[] ReadStruct(Stream stream, Point bottomLeft, int[] tileBlend = null)
         {
             using (var reader = new BinaryReader(stream, Encoding.UTF8, false))
             {
@@ -158,6 +166,10 @@ namespace LunarVeil.WorldGeneration.StructureManager
 
                                     }
                                 }
+                                else
+                                {
+             
+                                }
                             }
 
                             t.TileType = (ushort)TileType;
@@ -169,6 +181,9 @@ namespace LunarVeil.WorldGeneration.StructureManager
                             t.TileFrameX = reader.ReadInt16();
                             t.TileFrameY = reader.ReadInt16();
                             t.TileColor = reader.ReadByte();
+                            t.IsTileInvisible = reader.ReadBoolean();
+                            t.IsTileFullbright = reader.ReadBoolean();
+             
                             bool Chest = reader.ReadBoolean();
                             if (Chest)
                             {
@@ -178,6 +193,13 @@ namespace LunarVeil.WorldGeneration.StructureManager
 
 
                         }
+
+                        //Auto air blend
+                        if (tileBlend == null && !hastile)
+                        {
+                            makeOld = true;
+                        }
+
                         //wall
                         int WallType = 0;
                         bool ModdedWall = reader.ReadBoolean();
@@ -193,9 +215,10 @@ namespace LunarVeil.WorldGeneration.StructureManager
                         t.WallFrameX = reader.ReadInt32();
                         t.WallFrameY = reader.ReadInt32();
                         t.WallColor = reader.ReadByte();
+                        t.IsWallInvisible = reader.ReadBoolean();
+                        t.IsWallFullbright = reader.ReadBoolean();
 
-
-                        if (makeOld)
+                        if (makeOld && t.WallType == 0 && t.LiquidAmount <= 0)
                         {
                             t.LiquidType = oldLiquidType;
                             t.LiquidAmount = oldLiquidAmount;
@@ -232,7 +255,7 @@ namespace LunarVeil.WorldGeneration.StructureManager
         /// <returns>A array of ints, corrsponding to the index of chests placed in the struct, from bottom left to top right</returns>
         public static int[] ReadStruct(Point BottomLeft, string Path, int[] tileBlend = null)
         {
-            using (FileStream stream = (FileStream)Mod.GetFileStream(Path + ".str"))
+            using (Stream stream = Mod.GetFileStream(Path + ".str"))
             {
                 return ReadStruct(stream, BottomLeft, tileBlend);
             }
@@ -336,6 +359,9 @@ namespace LunarVeil.WorldGeneration.StructureManager
 
                                 //Paint
                                 writer.Write(t.TileColor);
+                                writer.Write(t.IsTileInvisible);
+                                writer.Write(t.IsTileFullbright);
+          
                                 bool Chest = false;
                                 foreach (Chest c in Main.chest)
                                 {
@@ -361,6 +387,8 @@ namespace LunarVeil.WorldGeneration.StructureManager
                             writer.Write(t.WallFrameX);
                             writer.Write(t.WallFrameY);
                             writer.Write(t.WallColor);
+                            writer.Write(t.IsWallInvisible);
+                            writer.Write(t.IsWallFullbright);
                         }
                     }
 

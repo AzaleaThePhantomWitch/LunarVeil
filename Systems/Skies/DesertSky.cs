@@ -71,7 +71,7 @@ namespace LunarVeil.Systems.Skies
 
         private void DrawFrontClouds(SpriteBatch spriteBatch)
         {
-            var texture = ModContent.Request<Texture2D>("LunarVeil/Assets/NoiseTextures/Clouds3");
+            var texture = ModContent.Request<Texture2D>("LunarVeil/Assets/NoiseTextures/Clouds5");
             var colorMapTexture = ModContent.Request<Texture2D>("LunarVeil/Assets/NoiseTextures/ColorMapYellow");
             MiscShaderData eff = LunarVeilUtils.CloudsDesertShader;
             if (!Main.dayTime)
@@ -91,7 +91,7 @@ namespace LunarVeil.Systems.Skies
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, eff.Shader, Main.BackgroundViewMatrix.TransformationMatrix);
 
-            spriteBatch.Draw(texture.Value, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.White * 0.3f);
+            spriteBatch.Draw(texture.Value, Vector2.Zero, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.White * 0.3f, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
 
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.BackgroundViewMatrix.TransformationMatrix);

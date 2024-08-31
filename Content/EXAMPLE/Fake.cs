@@ -1,3 +1,4 @@
+using LunarVeil.Systems;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -22,7 +23,7 @@ namespace LunarVeil.Content.EXAMPLE
             Item.knockBack = 6;
             Item.value = Item.buyPrice(silver: 1);
             Item.rare = ItemRarityID.Blue;
-            Item.UseSound = SoundID.Item1;
+            Item.UseSound = SoundRegistry.StormDragonLightningRain;
             Item.autoReuse = true;
         }
 

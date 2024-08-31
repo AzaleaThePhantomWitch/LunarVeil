@@ -31,3 +31,43 @@ RainforestGrassBlock: {
 	Tooltip: ""
 	DisplayName: Rainforest Grass Block
 }
+
+RainforestTreeAcorn: {
+	DisplayName: Rainforest Tree Acorn
+	Tooltip: ""
+}
+
+RunicIceBlock: {
+	DisplayName: Runic Ice Block
+	Tooltip: ""
+}
+
+ExampleDecorativeTileItem: {
+	Tooltip: ""
+	DisplayName: Example Decorative Tile Item
+}
+
+ExampleDecorativeWallItem: {
+	DisplayName: Example Decorative Wall Item
+	Tooltip: ""
+}
+
+LargeIceyStoneBlock: {
+	DisplayName: Large Icey Stone Block
+	Tooltip: ""
+}
+
+MediumIceyStoneBlock: {
+	DisplayName: Medium Icey Stone Block
+	Tooltip: ""
+}
+
+SmallIceyStoneBlock: {
+	DisplayName: Small Icey Stone Block
+	Tooltip: ""
+}
+
+BorealReinforcementBlock: {
+	DisplayName: Boreal Reinforcement Block
+	Tooltip: ""
+}
