@@ -77,6 +77,9 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                 if (tasks[i].Name == "Cave Walls")
                     continue;
 
+                if (tasks[i].Name == "Slush")
+                    continue;
+
 
                 tasks[i] = new PassLegacy(tasks[i].Name, DoNothing);
                
