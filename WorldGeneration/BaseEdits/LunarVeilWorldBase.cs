@@ -2651,13 +2651,13 @@ namespace LunarVeil.WorldGeneration.BaseEdits
             progress.Message = "Icy Crystals!";
             for (int k = 60; k < Main.maxTilesX - 60; k++)
             {
-                if (k > 200 && k < Main.maxTilesX - 200 && WorldGen.genRand.NextBool(1)) //inner part of the world
+                if (k > 200 && k < Main.maxTilesX - 200 && WorldGen.genRand.NextBool(8)) //inner part of the world
                 {
                     for (int y = 10; y < Main.UnderworldLayer; y++)
                     {
                         if (IsGroundIce(k, y, 8))
                         {
-                            PlaceIcyCrystals(k, y, Main.rand.Next(1, 1));
+                            PlaceIcyCrystals(k, y,1);
                             k += 1;
 
                             break;
@@ -2815,43 +2815,26 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                     WorldGen.KillWall(treex + x, treey - y);
                 }
             }
-
+           
             // MultitileHelper.PlaceMultitile(new Point16(treex, treey - 1), ModContent.TileType<RainforestTreeBase>());
-
-            for (int x = 0; x < 1; x++)
+            switch (Main.rand.Next(3))
             {
-                for (int y = 0; y < height; y++)
-                {
-                    switch (Main.rand.Next(3))
-                    {
-                        case 0:
-                            //Start Left
+                case 0:
+                    //Start Left
+                    WorldGen.PlaceWall(treex + 3, treey + 3, (ushort)ModContent.WallType<LargeIceyStone>());
+                    break;
 
+                case 1:
+                    //Start Right
+                    WorldGen.PlaceWall(treex + 3, treey + 2, (ushort)ModContent.WallType<MediumIceyStone>());
+                    break;
 
-                            WorldGen.PlaceWall(treex + 3, treey - (y) + 3, (ushort)ModContent.WallType<LargeIceyStone>());
-                            break;
-
-
-                        case 1:
-                            //Start Right
-
-
-                            WorldGen.PlaceWall(treex + 3, treey - (y) + 2, (ushort)ModContent.WallType<MediumIceyStone>());
-                            break;
-
-                        case 2:
-                            //Start Right
-
-
-                            WorldGen.PlaceWall(treex + 3, treey - (y) + 2, (ushort)ModContent.WallType<SmallIceyStone>());
-                            break;
-
-
-                    }
-                    
-                    
-                }
+                case 2:
+                    //Start Right
+                    WorldGen.PlaceWall(treex + 3, treey + 2, (ushort)ModContent.WallType<SmallIceyStone>());
+                    break;
             }
+
 
             for (int x = -1; x < 3; x++)
             {
