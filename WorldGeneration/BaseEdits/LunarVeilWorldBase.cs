@@ -905,7 +905,6 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
 
         }
-
         private void AbysmClump(GenerationProgress progress, GameConfiguration configuration)
         {
             int contdown = 0;
@@ -1091,7 +1090,6 @@ namespace LunarVeil.WorldGeneration.BaseEdits
           
 
         }
-
         private void MakingIcyWalls(GenerationProgress progress, GameConfiguration configuration)
         {
             progress.Message = "Walls forming in the ice and abysm";
@@ -1300,7 +1298,6 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
 
         }
-
         private void MakingIcyUndergroundSpikes(GenerationProgress progress, GameConfiguration configuration)
         {
             progress.Message = "Ice settling in the underground";
@@ -2075,7 +2072,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                                 //Start Left
                                 for (int da = 0; da < 1; da++)
                                 {
-                                    Point Loc = new Point(smx - 15, smy + 15);
+                                    Point Loc = new Point(smx - 15, smy + 10);
                                     //StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
                                     string path = "WorldGeneration/STRUCT/IceStruct/BridgeIce1";//
                                     int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path);
@@ -2172,7 +2169,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                             case 1:
                                 for (int da = 0; da < 1; da++)
                                 {
-                                    Point Loc = new Point(smx - 20, smy + 30);
+                                    Point Loc = new Point(smx - 20, smy + 20);
                                     //StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
                                     string path = "WorldGeneration/STRUCT/IceStruct/BridgeIce2";//
                                     int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path);
@@ -2366,7 +2363,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                             case 3:
                                 for (int da = 0; da < 1; da++)
                                 {
-                                    Point Loc = new Point(smx - 20, smy + 12);
+                                    Point Loc = new Point(smx - 20, smy + 10);
                                     //StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
                                     string path = "WorldGeneration/STRUCT/IceStruct/BridgeIce4";//
                                     int[] ChestIndexs = StructureLoader.ReadStruct(Loc, path);
@@ -2467,7 +2464,6 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                 }
             }
         }
-
         private void IceyCaves(GenerationProgress progress, GameConfiguration configuration)
         {
 
@@ -2556,7 +2552,6 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
             
         }
-
         private void IceyUndergroundCaves(GenerationProgress progress, GameConfiguration configuration)
         {
 
@@ -2644,8 +2639,6 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
 
         }
-
-
         private void IceCrystalsSpawning(GenerationProgress progress, GameConfiguration configuration)
         {
             progress.Message = "Icy Crystals!";
@@ -2696,7 +2689,6 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
 
         }
-
         private void IceFog(GenerationProgress progress, GameConfiguration configuration)
         {
             progress.Message = "The fog is cuming";
@@ -2739,7 +2731,6 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
 
         }
-
         public static bool IsGroundIceyFog(int x, int y, int w)
         {
             for (int k = 0; k < w; k++)
@@ -2785,7 +2776,6 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
             return true;
         }
-
         public static bool IsGroundFoggy(int x, int y, int w)
         {
             for (int k = 0; k < w; k++)
@@ -2844,7 +2834,6 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                 }
             }
         }
-
         public static void PlaceBorealTrees(int treex, int treey, int height)
         {
             treey -= 1;
@@ -2880,7 +2869,6 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                 }
             }
         }
-
         public static void PlaceTheFog(int treex, int treey, int height)
         {
             treey -= 1;
