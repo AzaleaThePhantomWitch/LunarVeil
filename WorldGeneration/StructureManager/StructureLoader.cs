@@ -210,7 +210,7 @@ namespace LunarVeil.WorldGeneration.StructureManager
                         t.IsWallInvisible = reader.ReadBoolean();
                         t.IsWallFullbright = reader.ReadBoolean();
 
-                        if (makeOld && t.WallType == 0)
+                        if (makeOld && t.WallType == 0 && t.LiquidAmount <= 0)
                         {
                             t.LiquidType = oldLiquidType;
                             t.LiquidAmount = oldLiquidAmount;
