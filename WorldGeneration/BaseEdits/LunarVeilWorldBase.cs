@@ -1474,7 +1474,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
                         }
 
-                       
+                        
                         
                         switch (Main.rand.Next(2))
                         {
@@ -1703,10 +1703,12 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                                 break;
 
 
-                                
-                                
-                                
+
+                               
+
                         }
+
+                        placed = true;
 
                     }
 
