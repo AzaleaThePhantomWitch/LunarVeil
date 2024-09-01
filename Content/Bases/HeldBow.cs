@@ -11,6 +11,7 @@ using Terraria.Audio;
 using LunarVeil.Systems.Particles;
 using LunarVeil.Systems.WeaponUtils;
 using LunarVeil.Systems.Players;
+using LunarVeil.Systems;
 
 namespace LunarVeil.Content.Bases
 {
@@ -157,10 +158,6 @@ namespace LunarVeil.Content.Bases
         /// Determines what arrow type is needed in order to convert the arrows to if ArrowType is given. Uses Item ID.
         /// </summary>
         public virtual int ConvertArrow => ItemID.None;
-
-        //public virtual SoundStyle DrawbackSound => new SoundStyle($"{nameof(OvermorrowMod)}/Sounds/bowCharge");
-
-        public virtual SoundStyle ShootSound => SoundID.Item5;
         public abstract int ParentItem { get; }
 
         public virtual void SafeSetDefaults() { }
@@ -240,7 +237,7 @@ namespace LunarVeil.Content.Bases
 
                 if (drawCounter == 0)
                 {
-                   // if (FindAmmo()) SoundEngine.PlaySound(DrawbackSound);
+                    SoundEngine.PlaySound(SoundRegistry.BowCharge);
                     BowUtils.AutofillAmmoSlots(player, AmmoID.Arrow);
                 }
 
@@ -289,7 +286,7 @@ namespace LunarVeil.Content.Bases
             Vector2 velocity = Vector2.Normalize(player.Center.DirectionTo(Main.MouseWorld));
             float speed = MathHelper.Lerp(1, MaxSpeed, progress);
 
-            SoundEngine.PlaySound(ShootSound);
+            SoundEngine.PlaySound(SoundRegistry.BowShoot);
 
             float damage = MathHelper.Lerp(0.25f, 1, Utils.Clamp(drawCounter, 0, ModifiedChargeTime) / (float)ModifiedChargeTime) * Projectile.damage;
 

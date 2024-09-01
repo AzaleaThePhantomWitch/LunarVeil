@@ -8,6 +8,7 @@ namespace LunarVeil.Systems
 
         //Example how to add
         public static SoundStyle StormDragonLightningRain => new SoundStyle($"{RootAssetPath}StormDragon_LightingZap");
+
         public static SoundStyle BowCharge => new SoundStyle($"{RootAssetPath}BowCharge",
             variantSuffixesStart: 1,
             numVariants: 2);
