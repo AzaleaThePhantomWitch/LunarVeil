@@ -20,7 +20,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
             if (JustPressed(Keys.D1))
                 TestMethod((int)Main.MouseWorld.X / 16, (int)Main.MouseWorld.Y / 16);
         }
-        /*
+
         private void WormCaves()
         {
                     var genRand = WorldGen.genRand;
@@ -54,8 +54,8 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                 }
             }
 
-        }*/
-        /*
+        }
+
         private void NoodleCaves()
         {
             var genRand = WorldGen.genRand;
@@ -89,8 +89,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                 }
             }
         }
-        */
-        /*
+ 
         private void LinearCave()
         {
           var genRand = WorldGen.genRand;
@@ -124,8 +123,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                 }
             }
         }
-        */
-        /*
+
         private void VeinyCaves()
         {
 
@@ -155,7 +153,8 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                     cavePosition += caveDirection * caveWidth * 0.5f;
                 }
             }
-        }*/
+        }
+
         private void TestMethod(int x, int y)
         {
 
