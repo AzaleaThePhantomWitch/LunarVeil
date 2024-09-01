@@ -1,4 +1,8 @@
-Headers.Visuals: Visuals
+Headers: {
+	Visuals: Visuals
+	Screenshake: Screenshake Header
+}
+
 DisplayName: Lunar Veil Config
 
 SkiesToggle: {
@@ -19,4 +23,9 @@ VanillaRespritesToggle: {
 VanillaUIRespritesToggle: {
 	Label: Vanilla UI Resprites
 	Tooltip: Makes the vanilla ui textures look a bit different.
+}
+
+ShakeToggle: {
+	Label: Shake Toggle
+	Tooltip: ""
 }
