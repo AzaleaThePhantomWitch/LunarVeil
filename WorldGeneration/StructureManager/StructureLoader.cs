@@ -311,8 +311,10 @@ namespace LunarVeil.WorldGeneration.StructureManager
             if (BottomLeft == null)
             {
                 BottomLeft = Pos;
+                Main.NewText("Bottom Left Set");
                 return;
             }
+     
             //string Path = Main.SavePath + "/" + "ModSources" + "/" + Mod.Name + "/" + "SavedStruct.str";
             using (var stream = File.Open(Main.SavePath + "/SavedStruct.str", FileMode.Create))
             {
@@ -394,7 +396,7 @@ namespace LunarVeil.WorldGeneration.StructureManager
 
                 }
             }
-
+            Main.NewText("Structure Saved");
             BottomLeft = null;
         }
 
@@ -453,6 +455,10 @@ namespace LunarVeil.WorldGeneration.StructureManager
         public override bool? UseItem(Player player)
         {
             StructureLoader.SaveStruct(Main.MouseWorld.ToTileCoordinates());
+            int x = (int)Main.MouseWorld.X / 16;
+            int y = (int)Main.MouseWorld.Y / 16;
+            Dust.QuickBox(new Vector2(x, y) * 16, new Vector2(x + 1, y + 1) * 16, 2, Color.YellowGreen, null);
+          
             return true;
         }
     }

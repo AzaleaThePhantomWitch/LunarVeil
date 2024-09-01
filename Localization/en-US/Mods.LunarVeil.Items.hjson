@@ -71,3 +71,8 @@ BorealReinforcementBlock: {
 	DisplayName: Boreal Reinforcement Block
 	Tooltip: ""
 }
+
+IceyAlterBlock: {
+	DisplayName: Icey Alter Block
+	Tooltip: ""
+}
