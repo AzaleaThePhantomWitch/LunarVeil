@@ -1,6 +1,9 @@
 Mods: {
 	LunarVeil: {
-		NPCs.IvythornSlime.DisplayName: Ivythorn Slime
+		NPCs: {
+			IvythornSlime.DisplayName: Ivythorn Slime
+			IvythornSlimeScaled.DisplayName: Ivythorn Slime Scaled
+		}
 
 		Tiles: {
 			RainforestTree.MapEntry: Rainforest Tree
