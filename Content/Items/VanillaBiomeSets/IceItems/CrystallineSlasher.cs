@@ -21,7 +21,7 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
     
     public class CrystallineSlasher : ModItem
     {
-        int AttackCounter;
+        int AttackCounter = 1;
         int ComboAtt;
         // The Display Name and Tooltip of this item can be edited in the 'Localization/en-US_Mods.LunarVeil.hjson' file.
         public override void SetDefaults()
@@ -51,24 +51,14 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
            
             
 
-            if (ComboAtt > 5)
+            if (ComboAtt >= 6)
                 ComboAtt = 0;
 
             int combo = ComboAtt;
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback,
                 player.whoAmI, combo, dir);
 
-            if (ComboAtt == 1)
-            {
-                Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, ai1: dir);
 
-            }
-
-            if (ComboAtt == 2)
-            {
-                Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, ai1: dir);
-
-            }
 
 
             ComboAtt++;
@@ -88,12 +78,13 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
         int slash1time = 0;
 
         ref float ComboAtt => ref Projectile.ai[0];
-        private ref float Timer2 => ref Projectile.ai[0];
+        private float Timer2;
         private ref float Dir2 => ref Projectile.ai[1];
         private Player Owner => Main.player[Projectile.owner];
         private float ExtraUpdates => 16;
-        private float SwingTime2 => 32 / Owner.GetTotalAttackSpeed(Projectile.DamageType) * ExtraUpdates;
-        private float SwingRange2 => MathHelper.Pi + MathHelper.PiOver2 + MathHelper.PiOver4;
+        
+
+        private float SwingRange2 = MathHelper.Pi + MathHelper.PiOver2 + MathHelper.PiOver4;
         private float SwingYRadius => 32;
         private float SwingXRadius => 128;
 
@@ -109,6 +100,7 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
             switch (ComboAtt)
             {
                 case 0:
+                   
                     swingTime = 34;
 
                     //How far the trail extends upward (away the player)
@@ -130,19 +122,20 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
 
                 case 1:
 
-
+                    swingTime = 34;
 
                     break;
 
                 case 2:
 
-
+                    swingTime = 44;
+                    SwingRange2 = MathHelper.Pi + MathHelper.PiOver2 + MathHelper.PiOver2;
 
                     break;
 
                 case 3:
-                    swingTime = 44;
-
+                    swingTime = 52;
+                    
                     //How far the trail extends upward (away the player)
                     trailTopWidth = 10;
 
@@ -160,8 +153,36 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
 
 
                     break;
+
+                case 4:
+                    swingTime = 60;
+                    
+                    //How far the trail extends upward (away the player)
+                    trailTopWidth = 10;
+
+                    //How far the trail extends downward (towards the player)
+                    trailBottomWidth = 250;
+
+                    //The number of points in the trail, higher means the trail is longer
+                    trailCount = 65;
+
+                    //The distance from the player where the trail starts
+                    distanceToOwner = 0;
+
+                    //Brightness/Transparency of trail, 255 is fully opaque
+                    alpha = 200;
+
+
+                    break;
+
+                case 5:
+
+                    swingTime = 80;
+                    SwingRange2 = MathHelper.TwoPi + MathHelper.PiOver2 + MathHelper.PiOver2;
+
+                    break;
             }
-            
+
 
             Projectile.timeLeft = SwingTime;
             Projectile.penetrate = -1;
@@ -259,7 +280,6 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
 
                     break;
 
-
                 case 1:
                     {
                         if (Timer > 0)
@@ -278,7 +298,7 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
                             }
                         }
 
-                        float swingProgress2 = Timer2 / SwingTime2;
+                        float swingProgress2 = Timer2 / SwingTime;
                         float easedSwingProgress = Easing.InOutExpo(swingProgress2, 5f);
                         float targetRotation = Projectile.velocity.ToRotation();
 
@@ -319,7 +339,6 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
 
                     break;
 
-
                 case 2:
                     {
 
@@ -339,7 +358,9 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
                             }
                         }
 
-                        float swingProgress2 = Timer2 / SwingTime2;
+
+
+                        float swingProgress2 = Timer2 / SwingTime;
                         float easedSwingProgress = Easing.InOutExpo(swingProgress2, 5f);
                         float targetRotation = Projectile.velocity.ToRotation();
 
@@ -404,6 +425,57 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
 
                         //How wide is the swing, in radians
                         float swingRange = MathHelper.PiOver2 + MathHelper.PiOver2;
+                        float start = defRot - swingRange;
+
+                        // ending rotation
+                        float end = (defRot + swingRange);
+
+                        // current rotation obv
+                        // angle lerp causes some weird things here, so just use a normal lerp
+                        float rotation = dir == 1 ? MathHelper.Lerp(start, end, swingProgress) : MathHelper.Lerp(end, start, swingProgress);
+
+                        // offsetted cuz sword sprite
+                        Vector2 position = Owner.RotatedRelativePoint(Owner.MountedCenter);
+                        position += rotation.ToRotationVector2() * holdOffset;
+                        Projectile.Center = position;
+                        Projectile.rotation = (position - Owner.Center).ToRotation() + MathHelper.PiOver4;
+
+                        Owner.heldProj = Projectile.whoAmI;
+                        Owner.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);
+                        Owner.itemRotation = rotation * Owner.direction;
+                        Owner.itemTime = 2;
+                        Owner.itemAnimation = 2;
+
+
+                    }
+
+                    break;
+
+                case 4:
+                    {
+                        if (Timer > 0)
+                        {
+                            Projectile.timeLeft++;
+                            Timer--;
+                        }
+                        Vector3 RGB = new Vector3(1.28f, 0f, 1.28f);
+                        float multiplier = 0.2f;
+                        RGB *= multiplier;
+
+                        Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
+
+                        int dir = (int)Projectile.ai[1];
+                        float lerpValue = Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft, true);
+
+                        //Smooth it some more
+                        float swingProgress = Easing.InExpo(lerpValue, 6);
+
+                        // the actual rotation it should have
+                        float defRot = Projectile.velocity.ToRotation();
+                        // starting rotation
+
+                        //How wide is the swing, in radians
+                        float swingRange = MathHelper.TwoPi + MathHelper.PiOver2;
                         float start = defRot - swingRange;
 
                         // ending rotation
