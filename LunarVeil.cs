@@ -36,9 +36,9 @@ namespace LunarVeil
         }
         public int GlobalTimer { get; private set; }
 
-     
+        public Asset<Effect> Whiteout;
 
-     
+
 
         // this is alright, and i'll expand it so it can still be used, but really this shouldn't be used
         public static ModPacket WriteToPacket(ModPacket packet, byte msg, params object[] param)
@@ -82,7 +82,7 @@ namespace LunarVeil
             LunarVeilUtils.LoadShaders();
             LunarVeilUtils.LoadOrderedLoadables();
             Instance = this;
-
+            Whiteout = Assets.Request<Effect>("Effects/Whiteout");
             Ref<Effect> GenericLaserShader = new(Assets.Request<Effect>("Assets/Effects/LaserShader", AssetRequestMode.ImmediateLoad).Value);
             GameShaders.Misc["LunarVeil:LaserShader"] = new MiscShaderData(GenericLaserShader, "TrailPass");
 
@@ -258,6 +258,9 @@ namespace LunarVeil
             On_UIWorldListItem.DrawSelf -= DrawWorldSelecItemOverlayUI;
             On_UIWorldCreationPreview.DrawSelf -= DrawWorldPreviewUI;
             LunarVeilUtils.UnloadOrderedLoadables();
+            
+            Whiteout = null;
+
 
             if (!Main.dedServ)
             {

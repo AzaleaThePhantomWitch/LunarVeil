@@ -60,7 +60,7 @@ namespace LunarVeil.Content.EXAMPLE
             trailTopWidth = 10;
 
             //How far the trail extends downward (towards the player)
-            trailBottomWidth = 300;
+            trailBottomWidth = 324;
 
             //The number of points in the trail, higher means the trail is longer
             trailCount = 65;
@@ -121,7 +121,7 @@ namespace LunarVeil.Content.EXAMPLE
                 Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
 
                 int dir = (int)Projectile.ai[1];
-                float lerpValue = Utils.GetLerpValue(0f, SwingTime, SwingTime, true);
+                float lerpValue = Utils.GetLerpValue(0f, SwingTime, slash1time, true);
 
                 //Smooth it some more
                 float swingProgress = Easing.InBack(lerpValue);
@@ -164,7 +164,7 @@ namespace LunarVeil.Content.EXAMPLE
                 Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
 
                 int dir = (int)Projectile.ai[1];
-                float lerpValue = Utils.GetLerpValue(0f, SwingTime, SwingTime, true);
+                float lerpValue = Utils.GetLerpValue(0f, SwingTime, slash1time, true);
 
                 //Smooth it some more
                 float swingProgress = Easing.InOutExpo(lerpValue);
@@ -242,7 +242,7 @@ namespace LunarVeil.Content.EXAMPLE
 
 
 
-            if (Projectile.timeLeft >= 48 && Projectile.timeLeft < 72)
+            if (Projectile.timeLeft < 48)
             {
 
                 Vector3 RGB = new Vector3(1.28f, 0f, 1.28f);
@@ -255,7 +255,7 @@ namespace LunarVeil.Content.EXAMPLE
                 float lerpValue = Utils.GetLerpValue(0f, 48, 48, true);
 
                 //Smooth it some more
-                float swingProgress = Easing.SpikeInBack(lerpValue);
+                float swingProgress = Easing.InBack(lerpValue);
 
                 // the actual rotation it should have
                 float defRot = Projectile.velocity.ToRotation();
@@ -263,10 +263,10 @@ namespace LunarVeil.Content.EXAMPLE
 
                 //How wide is the swing, in radians
                 float swingRange = MathHelper.PiOver2 + MathHelper.PiOver4 + MathHelper.PiOver4;
-                float start = defRot - swingRange;
+                float start = defRot + swingRange;
 
                 // ending rotation
-                float end = (defRot + swingRange);
+                float end = (defRot - swingRange);
 
                 // current rotation obv
                 // angle lerp causes some weird things here, so just use a normal lerp

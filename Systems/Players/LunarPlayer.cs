@@ -14,7 +14,7 @@ namespace LunarVeil.Systems.Players
     public class LunarPlayer : ModPlayer
     {
 
-
+        public bool PracticeTarget;
         public override void PostUpdate()
         {
 
