@@ -1,4 +1,6 @@
-﻿using LunarVeil.Systems.Skies;
+﻿using LunarVeil.Systems.Particles;
+using LunarVeil.Systems.Skies;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
@@ -7,6 +9,7 @@ using System.Linq;
 using Terraria;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
+using Terraria.ModLoader;
 
 namespace LunarVeil.Systems
 {
@@ -105,5 +108,12 @@ namespace LunarVeil.Systems
              //   Logger.Warn("load cache was null, IOrderedLoadable's may not have been unloaded...");
             }
         }
+        public static int ParticleType<T>() where T : Particle => ModContent.GetInstance<T>()?.Type ?? 0;
+
+        public static bool OnScreen(Vector2 pos) => pos.X > -16 && pos.X < Main.screenWidth + 16 && pos.Y > -16 && pos.Y < Main.screenHeight + 16;
+
+        public static bool OnScreen(Rectangle rect) => rect.Intersects(new Rectangle(0, 0, Main.screenWidth, Main.screenHeight));
+
+        public static bool OnScreen(Vector2 pos, Vector2 size) => OnScreen(new Rectangle((int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y));
     }
 }
