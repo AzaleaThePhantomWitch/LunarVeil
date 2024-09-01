@@ -50,7 +50,7 @@ namespace LunarVeil.Content.Bases
         //This is for smoothin the trail
         public const int Swing_Speed_Multiplier = 8;
 
-        protected int SwingTime => (int)((swingTime * Swing_Speed_Multiplier) / Owner.GetAttackSpeed(DamageClass.Melee));
+        protected int SwingTime => (int)((swingTime * Swing_Speed_Multiplier) / Owner.GetAttackSpeed(Projectile.DamageType));
         public float holdOffset = 60f;
 
         //Ending Swing Time so it doesn't immediately go away after the swing ends, makes it look cleaner I think
