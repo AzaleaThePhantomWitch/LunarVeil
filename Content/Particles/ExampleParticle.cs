@@ -27,7 +27,7 @@ namespace LunarVeil.Content.Particles
             color *= 0.99f;
 
             fadeIn++;
-            if (fadeIn > 60 || color.A < 10)
+            if (fadeIn > 60)
                 active = false;
         }
     }

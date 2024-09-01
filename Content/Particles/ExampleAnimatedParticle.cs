@@ -40,7 +40,7 @@ namespace LunarVeil.Content.Particles
             }
 
             fadeIn++;
-            if (fadeIn > 60 || color.A < 10)
+            if (fadeIn > 60)
                 active = false;
         }
     }
