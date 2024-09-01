@@ -1,5 +1,7 @@
 ﻿using LunarVeil.Content.Bases;
+using LunarVeil.Content.Particles;
 using LunarVeil.Systems.MiscellaneousMath;
+using LunarVeil.Systems.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -36,7 +38,7 @@ namespace LunarVeil.Content.EXAMPLE
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-       //     Particle.NewParticle<SnowflakeParticle>(position, -velocity, Color.White);
+            Particle.NewBlackParticle<SnowflakeParticle>(position, -velocity, new Color(255, 255, 255, 0));
 
             int dir = AttackCounter;
             AttackCounter = -AttackCounter;

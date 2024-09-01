@@ -337,11 +337,11 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                 }
             }
         }
-      
+
 
 
         #endregion
-
+        Point RFCenter;
         #region RainforestGeneration
         private void RainforestClump(GenerationProgress progress, GameConfiguration configuration)
         {
@@ -367,6 +367,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                 for (int da = 0; da < 1; da++)
                 {
                     Point Loc7 = new Point(smx, smy);
+                    RFCenter = Loc7;
                     WorldGen.TileRunner(Loc7.X, Loc7.Y, 900, 2, ModContent.TileType<Tiles.RainforestTiles.RainforestGrass>(), false, 0f, 0f, true, true);
                     WorldGen.TileRunner(Loc7.X, Loc7.Y + 300, 1200, 2, ModContent.TileType<Tiles.RainforestTiles.RainforestGrass>(), false, 0f, 0f, true, true);
                     WorldGen.TileRunner(Loc7.X, Loc7.Y + 600, 1000, 2, ModContent.TileType<Tiles.RainforestTiles.RainforestGrass>(), false, 0f, 0f, true, true);
@@ -394,6 +395,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                 for (int da = 0; da < 1; da++)
                 {
                     Point Loc7 = new Point(smx, smy);
+                    RFCenter = Loc7;
                     WorldGen.TileRunner(Loc7.X, Loc7.Y, 900, 2, ModContent.TileType<Tiles.RainforestTiles.RainforestGrass>(), false, 0f, 0f, true, true);
                     WorldGen.TileRunner(Loc7.X, Loc7.Y + 300, 1200, 2, ModContent.TileType<Tiles.RainforestTiles.RainforestGrass>(), false, 0f, 0f, true, true);
                     WorldGen.TileRunner(Loc7.X, Loc7.Y + 600, 1000, 2, ModContent.TileType<Tiles.RainforestTiles.RainforestGrass>(), false, 0f, 0f, true, true);
@@ -419,8 +421,11 @@ namespace LunarVeil.WorldGeneration.BaseEdits
         private void RainforestDeeps(GenerationProgress progress, GameConfiguration configuration)
         {
             progress.Message = "Forest Becoming deep";
-          
 
+
+
+
+            bool RainCircles = false;
 
 
             int attempts = 0;
@@ -465,25 +470,60 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                 {
                     continue;
                 }
-                // If the type of the tile we are placing the tower on doesn't match what we want, try again
 
+
+                if (!RainCircles)
+                {
+                    int Circle = Main.rand.Next(60, 90);
+                    for (int V = 0; V < Circle; V++)
+                    {
+                        RainCircles = true;
+
+                        int CirclesY = smy + Main.rand.Next(200, 1000);
+                        float x = (float)RFCenter.X + (float)Main.rand.Next(-900, 900);
+                        float targetX = RFCenter.X;
+                        float lerpValue = (float)CirclesY / ((float)RFCenter.Y + 1500);
+                        lerpValue = MathHelper.Clamp(lerpValue, 0, 1);
+                        int CirclesX = (int)MathHelper.Lerp(x, targetX, lerpValue);
+
+
+
+                        Point Loc8 = new Point(CirclesX, CirclesY);
+                        int Radi = (int)Main.rand.NextFloat(50 * (1 - lerpValue), 70 * (1 - lerpValue));
+                        WorldUtils.Gen(Loc8, new Shapes.Circle(Radi, Radi), Actions.Chain(new GenAction[]
+                        {
+                    new Actions.ClearTile(true)
+                            //new Actions.SetTile(TileID.SnowBlock),
+                            //new Actions.Smooth(true)
+                        }));
+                        WorldUtils.Gen(Loc8, new Shapes.HalfCircle(Radi), Actions.Chain(new GenAction[]
+                        {
+                    new Actions.SetLiquid(LiquidID.Water)
+                            //new Actions.SetTile(TileID.SnowBlock),
+                            //new Actions.Smooth(true)
+                        }));
+                    }
+
+                }
 
                 for (int da = 0; da < 1; da++)
                 {
 
+
                     //StructureLoader.ReadStruct(Loc, "Struct/Underground/Manor", tileBlend);
                     //the true at the end makes it wet?
+
                     WorldGen.digTunnel(smx, smy + 5, 0, 2, 125, 1, true);
-                  
-                    WorldGen.digTunnel(smx, smy + 150, 0, 2, 100, 2, true);
 
-                    WorldGen.digTunnel(smx, smy + 300, 0, 2, 100, 3, true);
+                    //WorldGen.digTunnel(smx, smy + 150, 0, 2, 100, 2, true);
 
-                    WorldGen.digTunnel(smx, smy + 500, 0, 2, 150, 2, true);
+                    //WorldGen.digTunnel(smx, smy + 300, 0, 2, 100, 3, true);
 
-                    WorldGen.digTunnel(smx, smy + 700, 0, 2, 50, 2, true);
+                    //WorldGen.digTunnel(smx, smy + 500, 0, 2, 150, 2, true);
 
-                    WorldGen.digTunnel(smx, smy + 750, 0, 2, 100, 1, true);
+                    //WorldGen.digTunnel(smx, smy + 700, 0, 2, 50, 2, true);
+
+                    //WorldGen.digTunnel(smx, smy + 750, 0, 2, 100, 1, true);
 
                     Point Loc7 = new Point(smx, smy + 150);
                     WorldGen.TileRunner(Loc7.X, Loc7.Y, 80, 4, ModContent.TileType<Tiles.RainforestTiles.RainforestGrass>(), false, 0f, 0f, true, true);
@@ -492,10 +532,6 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
 
             }
-
-
-
-
 
 
 

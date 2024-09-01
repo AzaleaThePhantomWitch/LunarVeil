@@ -25,6 +25,7 @@ namespace LunarVeil.Systems.Particles
         public float[] oldRot;
         public bool active;
         public bool shouldKilledOutScreen = true;
+        public bool isBlack;
         public Color color;
         public Rectangle Frame;
         public ArmorShaderData shader;
@@ -84,6 +85,30 @@ namespace LunarVeil.Systems.Particles
 
             return p;
         }
+
+        public static T NewBlackParticle<T>(Vector2 center, Vector2 velocity, Color newColor = default, float Scale = 1f) where T : Particle
+        {
+            if (Main.netMode == NetmodeID.Server)
+                return null;
+
+            if (ParticleSystem.BlackParticles.Count > ParticleSystem.MaxParticleCount - 2)
+                return null;
+
+            T p = ParticleLoader.GetParticle(LunarVeilUtils.ParticleType<T>()).NewInstance() as T;
+
+            //设置各种初始值
+            p.active = true;
+            p.color = newColor;
+            p.Center = center;
+            p.Velocity = velocity;
+            p.Scale = Scale;
+            p.OnSpawn();
+
+            ParticleSystem.BlackParticles.Add(p);
+
+            return p;
+        }
+
 
         /// <summary>
         /// 生成例子，返回粒子在数组中的索引
