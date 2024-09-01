@@ -123,12 +123,13 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
                 case 1:
 
                     swingTime = 34;
-
+                    trailBottomWidth = 250 / 2;
                     break;
 
                 case 2:
 
                     swingTime = 44;
+                    trailBottomWidth = 250/2;
                     SwingRange2 = MathHelper.Pi + MathHelper.PiOver2 + MathHelper.PiOver2;
 
                     break;
@@ -179,6 +180,7 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
                     SwingYRadius = 32;
                     SwingXRadius = 170;
                     swingTime = 80;
+                    trailBottomWidth = 250 / 2;
                     SwingRange2 = MathHelper.TwoPi + MathHelper.PiOver2 + MathHelper.PiOver2;
 
                     break;
@@ -320,6 +322,7 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
 
 
                         Projectile.Center = Owner.Center + new Vector2(xOffset, yOffset).RotatedBy(targetRotation);
+                        distanceToOwner = Vector2.Distance(Projectile.Center, Owner.Center) / 2;
                         Projectile.rotation = (Projectile.Center - Owner.Center).ToRotation() + MathHelper.PiOver4;
 
                         Owner.heldProj = Projectile.whoAmI;
@@ -382,6 +385,7 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
 
 
                         Projectile.Center = Owner.Center + new Vector2(xOffset, yOffset).RotatedBy(targetRotation);
+                        distanceToOwner = Vector2.Distance(Projectile.Center, Owner.Center) / 2;
                         Projectile.rotation = (Projectile.Center - Owner.Center).ToRotation() + MathHelper.PiOver4;
 
                         Owner.heldProj = Projectile.whoAmI;
@@ -542,6 +546,7 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
 
 
                         Projectile.Center = Owner.Center + new Vector2(xOffset, yOffset).RotatedBy(targetRotation);
+                        distanceToOwner = Vector2.Distance(Projectile.Center, Owner.Center) / 2;
                         Projectile.rotation = (Projectile.Center - Owner.Center).ToRotation() + MathHelper.PiOver4;
 
                         Owner.heldProj = Projectile.whoAmI;

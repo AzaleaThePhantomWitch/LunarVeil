@@ -165,11 +165,12 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                 tasks.Insert(IceGen + 3, new PassLegacy("Abysm Clumping", AbysmClump));               
                 tasks.Insert(IceGen + 4, new PassLegacy("Icy Waters", MakingIcyPonds));
                 tasks.Insert(IceGen + 5, new PassLegacy("Icy Surface Gremlins", SurfaceIceHouses));
-                tasks.Insert(IceGen + 6, new PassLegacy("Ice Caves Underground", IceyUndergroundCaves));
-                tasks.Insert(IceGen + 7, new PassLegacy("The icy spook", MakingIcySnows));
-                tasks.Insert(IceGen + 8, new PassLegacy("Walls ice underground", MakingIcyWalls));
-                tasks.Insert(IceGen + 9, new PassLegacy("Icy Pikes Underground", MakingIcyUndergroundSpikes));
-                tasks.Insert(IceGen + 10, new PassLegacy("Icy Pikes Overground", MakingIcyRandomness));
+             
+                tasks.Insert(IceGen + 6, new PassLegacy("The icy spook", MakingIcySnows));
+                tasks.Insert(IceGen + 7, new PassLegacy("Walls ice underground", MakingIcyWalls));
+                tasks.Insert(IceGen + 8, new PassLegacy("Icy Pikes Underground", MakingIcyUndergroundSpikes));
+                tasks.Insert(IceGen + 9, new PassLegacy("Icy Pikes Overground", MakingIcyRandomness));
+                tasks.Insert(IceGen + 10, new PassLegacy("Ice Caves Underground", IceyUndergroundCaves));
                 tasks.Insert(IceGen + 11, new PassLegacy("Ice Crystals Spwning", IceCrystalsSpawning));
                 tasks.Insert(IceGen + 12, new PassLegacy("Ice Fog", IceFog));
                 tasks.Insert(IceGen + 13, new PassLegacy("Boreal Trees!", BorealTreeSpawning));
@@ -2742,8 +2743,8 @@ namespace LunarVeil.WorldGeneration.BaseEdits
         private void IceyUndergroundCaves(GenerationProgress progress, GameConfiguration configuration)
         {
 
-
-            for (int id = 0; id < 24; id++)
+            var genRand = WorldGen.genRand;
+            for (int id = 0; id < WorldGen.genRand.Next(150, 200); id++)
             {
                 bool placed = false;
                 int attempts = 0;
@@ -2752,49 +2753,63 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                     // Select a place in the first 6th of the world, avoiding the oceans
                     int smx = WorldGen.genRand.Next(1000, (Main.maxTilesX - 1000)); // from 50 since there's a unaccessible area at the world's borders
                                                                                     // 50% of choosing the last 6th of the world
-                                                                                    // Choose which side of the world to be on randomly
-                    ///if (WorldGen.genRand.NextBool())
-                    ///{
-                    ///	towerX = Main.maxTilesX - towerX;
-                    ///}
-
-                    //Start at 200 tiles above the surface instead of 0, to exclude floating islands
-                    int smy = (int)GenVars.worldSurfaceHigh - 500;
+                                                                                    //Start at 200 tiles above the surface instead of 0, to exclude floating islands
+                    int smy = (int)GenVars.worldSurfaceLow + genRand.Next(0, 2500);
 
                     // We go down until we hit a solid tile or go under the world's surface
                     Tile tile = Main.tile[smx, smy];
 
-                    while (!WorldGen.SolidTile(smx, smy) && smy <= Main.UnderworldLayer || (!(tile.TileType == TileID.IceBlock) && WorldGen.SolidTile(smx, smy)))
-                    {
-                        smy++;
-                        tile = Main.tile[smx, smy];
-                    }
-
-                    // If we went under the world's surface, try again
-                    if (smy > Main.UnderworldLayer - 1000)
+                    if (!WorldGen.SolidTile(smx, smy)  ||
+                        (tile.TileType != TileID.IceBlock && tile.TileType != TileID.SnowBlock))
                     {
                         continue;
                     }
 
-                    // If the type of the tile we are placing the tower on doesn't match what we want, try again
 
-
-
-                    // place the Rogue
-                    //	int num = NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (towerX + 12) * 16, (towerY - 24) * 16, ModContent.NPCType<BoundGambler>(), 0, 0f, 0f, 0f, 0f, 255);
-                    //Main.npc[num].homeTileX = -1;
-                    //	Main.npc[num].homeTileY = -1;
-                    //	Main.npc[num].direction = 1;
-                    //	Main.npc[num].homeless = true;
-
-                    if (Main.tile[smx, smy].TileType == TileID.IceBlock || Main.tile[smx, smy].TileType == TileID.SnowBlock)
+                    if (genRand.NextBool(25))
                     {
-                        int caveWidth = WorldGen.genRand.Next(1, 6); // Width
-                        int caveSteps = WorldGen.genRand.Next(200, 1500 + id); // How many carves
+                        //Make Open Area
+                        for(int i =0; i < 2; i++)
+                        {
+                            WorldGen.Caverer(smx, smy);
+                        }
 
-                        int caveSeed = WorldGen.genRand.Next();
-                        Vector2 baseCaveDirection = Vector2.UnitY.RotatedBy(WorldGen.genRand.NextFloatDirection() * 0.54f);
-                        Vector2 cavePosition = new Vector2(smx, smy + 10);
+                        int caveWidth = genRand.Next(6, 10); // Width
+                        int caveSteps = genRand.Next(30, 50); // How many carves
+
+                        int caveSeed = genRand.Next();
+                        Vector2 baseCaveDirection = Vector2.UnitY.RotatedBy(genRand.NextFloatDirection() * 0.54f);
+                        Vector2 cavePosition = new Vector2(smx, smy);
+
+                        for (int j = 0; j < caveSteps; j++)
+                        {
+                            float caveOffsetAngleAtStep = WorldMath.PerlinNoise2D(1 / 50f, j / 50f, 4, caveSeed) * MathHelper.TwoPi * 1.9f;
+                            Vector2 caveDirection = baseCaveDirection.RotatedBy(caveOffsetAngleAtStep);
+
+                            // Carve out at the current position.
+                            if (cavePosition.X < Main.maxTilesX - 15 && cavePosition.X >= 15)
+                            {
+                                //digging 
+                                WorldGen.TileRunner(
+                                    (int)cavePosition.X,
+                                    (int)cavePosition.Y,
+                                    genRand.NextFloat(15, 20),
+                                    genRand.Next(5, 10), -1);
+                            }
+
+                            // Update the cave position.
+                            cavePosition += caveDirection * caveWidth * 0.5f;
+                        }
+                    }
+                    else
+                    {
+                        // If the type of the tile we are placing the tower on doesn't match what we want, try again
+                        int caveWidth = genRand.Next(2, 6); // Width
+                        int caveSteps = genRand.Next(200, 500); // How many carves
+
+                        int caveSeed = genRand.Next();
+                        Vector2 baseCaveDirection = Vector2.UnitY.RotatedBy(genRand.NextFloatDirection() * 0.54f);
+                        Vector2 cavePosition = new Vector2(smx, smy);
 
                         for (int j = 0; j < caveSteps; j++)
                         {
@@ -2805,20 +2820,47 @@ namespace LunarVeil.WorldGeneration.BaseEdits
                             if (cavePosition.X < Main.maxTilesX - 15 && cavePosition.X >= 15)
                             {
                                 //digging 
-
-                                WorldGen.digTunnel(cavePosition.X, cavePosition.Y, caveDirection.X, caveDirection.Y, 1, (int)(caveWidth * 1.18f), false);
-                                WorldUtils.Gen(cavePosition.ToPoint(), new Shapes.Circle(caveWidth), Actions.Chain(new GenAction[]
-                                {
-                                     new Actions.ClearTile(true)
-                                }));
+                                WorldGen.TileRunner(
+                                    (int)cavePosition.X,
+                                    (int)cavePosition.Y,
+                                    genRand.NextFloat(6, 11),
+                                    genRand.Next(2, 5), -1);
                             }
 
                             // Update the cave position.
-                            cavePosition += caveDirection * caveWidth;
+                            cavePosition += caveDirection * caveWidth * 0.5f;
                         }
-                        placed = true;
-
                     }
+               
+                    placed = true;
+                    /*
+                    int caveWidth = WorldGen.genRand.Next(1, 6); // Width
+                    int caveSteps = WorldGen.genRand.Next(200, 1500 + id); // How many carves
+
+                    int caveSeed = WorldGen.genRand.Next();
+                    Vector2 baseCaveDirection = Vector2.UnitY.RotatedBy(WorldGen.genRand.NextFloatDirection() * 0.54f);
+                    Vector2 cavePosition = new Vector2(smx, smy + 10);
+
+                    for (int j = 0; j < caveSteps; j++)
+                    {
+                        float caveOffsetAngleAtStep = WorldMath.PerlinNoise2D(1 / 50f, j / 50f, 4, caveSeed) * MathHelper.Pi * 1.9f;
+                        Vector2 caveDirection = baseCaveDirection.RotatedBy(caveOffsetAngleAtStep);
+
+                        // Carve out at the current position.
+                        if (cavePosition.X < Main.maxTilesX - 15 && cavePosition.X >= 15)
+                        {
+                            //digging 
+
+                            WorldGen.digTunnel(cavePosition.X, cavePosition.Y, caveDirection.X, caveDirection.Y, 1, (int)(caveWidth * 1.18f), false);
+                            WorldUtils.Gen(cavePosition.ToPoint(), new Shapes.Circle(caveWidth), Actions.Chain(new GenAction[]
+                            {
+                                 new Actions.ClearTile(true)
+                            }));
+                        }
+
+                        // Update the cave position.
+                        cavePosition += caveDirection * caveWidth;
+                    }*/
 
 
 
@@ -2827,6 +2869,7 @@ namespace LunarVeil.WorldGeneration.BaseEdits
 
 
         }
+
         private void IceCrystalsSpawning(GenerationProgress progress, GameConfiguration configuration)
         {
             progress.Message = "Icy Crystals!";
