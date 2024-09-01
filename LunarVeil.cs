@@ -178,21 +178,24 @@ namespace LunarVeil
 
                 TextureAssets.ScrollLeftButton = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/BackButton");
                 TextureAssets.ScrollRightButton = ModContent.Request<Texture2D>("LunarVeil/Tiles/VanillaRedo/UI/ForwardButton");
-               
-                On_UIWorldListItem.DrawSelf += (orig, self, spriteBatch) =>
-                {
-                    orig(self, spriteBatch);
-                    DrawWorldSelectItemOverlay(self, spriteBatch);
-                };
 
-                On_UIWorldCreationPreview.DrawSelf += (orig, self, spriteBatch) =>
-                {
-                    orig(self, spriteBatch);
-                    DrawWorldPreview(self, spriteBatch);
-                };
+                On_UIWorldListItem.DrawSelf += DrawWorldSelecItemOverlayUI;
+                On_UIWorldCreationPreview.DrawSelf += DrawWorldPreviewUI;
             }
 
             Instance = this;
+        }
+
+        private void DrawWorldPreviewUI(On_UIWorldCreationPreview.orig_DrawSelf orig, UIWorldCreationPreview self, SpriteBatch spriteBatch)
+        {
+            orig(self, spriteBatch);
+            DrawWorldPreview(self, spriteBatch);
+        }
+
+        private void DrawWorldSelecItemOverlayUI(On_UIWorldListItem.orig_DrawSelf orig, UIWorldListItem self, SpriteBatch spriteBatch)
+        {
+            orig(self, spriteBatch);
+            DrawWorldSelectItemOverlay(self, spriteBatch);
         }
 
         private void DrawWorldSelectItemOverlay(UIWorldListItem uiItem, SpriteBatch spriteBatch)
@@ -252,6 +255,8 @@ namespace LunarVeil
 
         public override void Unload()
         {
+            On_UIWorldListItem.DrawSelf -= DrawWorldSelecItemOverlayUI;
+            On_UIWorldCreationPreview.DrawSelf -= DrawWorldPreviewUI;
             LunarVeilUtils.UnloadOrderedLoadables();
 
             if (!Main.dedServ)

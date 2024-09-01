@@ -7,5 +7,7 @@ Mods: {
 			RainforestTreeBase.MapEntry: Rainforest Tree Base
 			RainforestTreeSapling.MapEntry: Rainforest Tree Sapling
 		}
+
+		Projectiles.FakeSwordSlash.DisplayName: Fake Sword Slash
 	}
 }

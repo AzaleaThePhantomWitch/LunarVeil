@@ -65,6 +65,7 @@ namespace LunarVeil.Systems
         public static MiscShaderData MiscDistortionShader => GameShaders.Misc[DistortionShaderName];
 
 
+        public static Filter SimpleGradientTrailFilter => Filters.Scene["LunarVeil:SimpleGradientTrail"];
 
         private static void RegisterMiscShader(string name, string path, string pass)
         {
@@ -72,6 +73,9 @@ namespace LunarVeil.Systems
             var miscShaderData = new MiscShaderData(miscShader, pass);
             GameShaders.Misc[name] = miscShaderData;
         }
+
+
+
 
         public static void LoadShaders()
         {
@@ -110,6 +114,10 @@ namespace LunarVeil.Systems
             Asset<Effect> gradient = Assets.Request<Effect>("Assets/Effects/Gradient", AssetRequestMode.ImmediateLoad);
             GameShaders.Misc["LunarVeil:Gradient"] = new MiscShaderData(gradient, "ScreenPass");
 
+            Asset<Effect> gradientTrail = Assets.Request<Effect>("Assets/Effects/SimpleGradientTrail", AssetRequestMode.ImmediateLoad);
+            Filters.Scene["LunarVeil:SimpleGradientTrail"] = new Filter(new ScreenShaderData(gradientTrail, "PrimitivesPass"), EffectPriority.VeryHigh);
+            Filters.Scene["LunarVeil:SimpleGradientTrail"].Load();
+
             SkyManager.Instance["LunarVeil:CloudySky"] = new CloudySky();
             SkyManager.Instance["LunarVeil:CloudySky"].Load();
             Filters.Scene["LunarVeil:CloudySky"] = new Filter((new ScreenShaderData("FilterMiniTower")).UseColor(0f, 0f, 0f).UseOpacity(0f), EffectPriority.VeryHigh);
@@ -133,30 +141,31 @@ namespace LunarVeil.Systems
 
 
 
-            Ref<Effect> BasicTrailRef = new(Assets.Request<Effect>("Effects/Primitives/BasicTrailShader", AssetRequestMode.ImmediateLoad).Value);
-            Ref<Effect> LightningTrailRef = new(Assets.Request<Effect>("Effects/Primitives/LightningTrailShader", AssetRequestMode.ImmediateLoad).Value);
+            Ref<Effect> BasicTrailRef = new(Assets.Request<Effect>("Assets/Effects/BasicTrailShader", AssetRequestMode.ImmediateLoad).Value);
+            Ref<Effect> LightningTrailRef = new(Assets.Request<Effect>("Assets/Effects/LightningTrailShader", AssetRequestMode.ImmediateLoad).Value);
             GameShaders.Misc[LunarVeilUtils.VampKnives_Basic_Trail] = new MiscShaderData(BasicTrailRef, "TrailPass");
             GameShaders.Misc[LunarVeilUtils.VampKnives_Lightning_Trail] = new MiscShaderData(LightningTrailRef, "TrailPass");
 
+            /*
             Asset<Effect> shader2 = ModContent.Request<Effect>("Stellamod/Trails/SilhouetteShader", AssetRequestMode.ImmediateLoad);
             GameShaders.Misc[LunarVeilUtils.Silhouette_Shader] = new MiscShaderData(new Ref<Effect>(shader2.Value), "SilhouettePass");
-
-            Ref<Effect> genericLaserShader = new(Assets.Request<Effect>("Effects/Primitives/GenericLaserShader", AssetRequestMode.ImmediateLoad).Value);
+            */
+            Ref<Effect> genericLaserShader = new(Assets.Request<Effect>("Assets/Effects/GenericLaserShader", AssetRequestMode.ImmediateLoad).Value);
             GameShaders.Misc[LunarVeilUtils.VampKnives_Generic_Laser_Shader] = new MiscShaderData(genericLaserShader, "TrailPass");
 
-            Ref<Effect> LightBeamVertexShader = new(Assets.Request<Effect>("Effects/Primitives/LightBeamVertexShader", AssetRequestMode.ImmediateLoad).Value);
+            Ref<Effect> LightBeamVertexShader = new(Assets.Request<Effect>("Assets/Effects/LightBeamVertexShader", AssetRequestMode.ImmediateLoad).Value);
             GameShaders.Misc[LunarVeilUtils.VampKnives_Light_Beam_Vertex_Shader] = new MiscShaderData(LightBeamVertexShader, "TrailPass");
 
-            Ref<Effect> ArtemisLaserShader = new(Assets.Request<Effect>("Effects/Primitives/ArtemisLaserShader", AssetRequestMode.ImmediateLoad).Value);
+            Ref<Effect> ArtemisLaserShader = new(Assets.Request<Effect>("Assets/Effects/ArtemisLaserShader", AssetRequestMode.ImmediateLoad).Value);
             GameShaders.Misc[LunarVeilUtils.VampKnives_Artemis_Laser_Shader] = new MiscShaderData(ArtemisLaserShader, "TrailPass");
 
-            Ref<Effect> shadowflameShader = new(Assets.Request<Effect>("Effects/Primitives/Shadowflame", AssetRequestMode.ImmediateLoad).Value);
+            Ref<Effect> shadowflameShader = new(Assets.Request<Effect>("Assets/Effects/Shadowflame", AssetRequestMode.ImmediateLoad).Value);
             GameShaders.Misc[LunarVeilUtils.VampKnives_Fire] = new MiscShaderData(shadowflameShader, "TrailPass");
 
-            Ref<Effect> whiteflameShader = new(Assets.Request<Effect>("Effects/Whiteflame", AssetRequestMode.ImmediateLoad).Value);
+            Ref<Effect> whiteflameShader = new(Assets.Request<Effect>("Assets/Effects/Whiteflame", AssetRequestMode.ImmediateLoad).Value);
             GameShaders.Misc[LunarVeilUtils.LunarVeilFireWhiteShader] = new MiscShaderData(whiteflameShader, "TrailPass");
 
-
+            /*
             Asset<Effect> blackShader = Assets.Request<Effect>("Effects/Black");
             Filters.Scene[LunarVeilUtils.Screen_Black] = new Filter(new ScreenShaderData(blackShader, "BlackPass"), EffectPriority.Medium);
 
@@ -168,7 +177,7 @@ namespace LunarVeil.Systems
 
             Asset<Effect> vignetteShader = Assets.Request<Effect>("Effects/Vignette");
             Filters.Scene[LunarVeilUtils.Screen_Vignette] = new Filter(new ScreenShaderData(vignetteShader, "ScreenPass"), EffectPriority.Medium);
-
+       
             //White Flame Pixel Shader
             RegisterMiscShader(FireWhitePixelShaderName, "Effects/WhiteflamePixelShader", "TrailPass");
 
@@ -180,6 +189,7 @@ namespace LunarVeil.Systems
 
             //Distortion Shader
             RegisterMiscShader(DistortionShaderName, "Effects/NormalDistortion", "ScreenPass");
+                 */
 
         }
 
@@ -226,5 +236,46 @@ namespace LunarVeil.Systems
         public static bool OnScreen(Rectangle rect) => rect.Intersects(new Rectangle(0, 0, Main.screenWidth, Main.screenHeight));
 
         public static bool OnScreen(Vector2 pos, Vector2 size) => OnScreen(new Rectangle((int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y));
+
+        public static void DrawTrail(GraphicsDevice device, Action draw
+        , BlendState blendState = null, SamplerState samplerState = null, RasterizerState rasterizerState = null)
+        {
+            RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
+            BlendState originalBlendState = Main.graphics.GraphicsDevice.BlendState;
+            SamplerState originalSamplerState = Main.graphics.GraphicsDevice.SamplerStates[0];
+
+            device.BlendState = blendState ?? originalBlendState;
+            device.SamplerStates[0] = samplerState ?? originalSamplerState;
+            device.RasterizerState = rasterizerState ?? originalState;
+
+            draw();
+
+            device.RasterizerState = originalState;
+            device.BlendState = originalBlendState;
+            device.SamplerStates[0] = originalSamplerState;
+            Main.pixelShader.CurrentTechnique.Passes[0].Apply();
+        }
+
+        public static Matrix GetTransfromMaxrix()
+        {
+            Vector3 screenPosition = new Vector3(Main.screenPosition.X, Main.screenPosition.Y, 0);
+            Matrix world = Matrix.CreateTranslation(-screenPosition);
+            Matrix view = Main.GameViewMatrix.TransformationMatrix;
+            Matrix projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, -1, 1);
+
+            return world * view * projection;
+        }
+
+        public static Vector3 ToVector3(this Vector2 vector2)
+        {
+            return new Vector3(vector2.X, vector2.Y, 0);
+        }
+
+        public static float EllipticalEase(float rotation, float halfShortAxis, float halfLongAxis)
+        {
+            float halfFocalLength2 = (halfLongAxis * halfLongAxis) - (halfShortAxis * halfShortAxis);
+            float cosX = MathF.Cos(rotation);
+            return (halfLongAxis * halfShortAxis) / MathF.Sqrt(halfLongAxis * halfLongAxis - halfFocalLength2 * cosX * cosX);
+        }
     }
 }

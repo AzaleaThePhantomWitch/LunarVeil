@@ -57,14 +57,14 @@ namespace LunarVeil.Systems.Primitives
             var arr = new Asset<Texture2D>[arrLength];
             for (int i = 0; i < arrLength; i++)
             {
-                arr[i] = ModContent.Request<Texture2D>("LunarVeil/" + folderSpace + "/Assets/Trail");
+                arr[i] = ModContent.Request<Texture2D>("LunarVeil/" + folderSpace +"/Trail");
             }
             p.SetMethod.Invoke(null, new object[] { arr });
         }
         private void InnerLoadProperty(PropertyInfo p)
         {
             string folderSpace = InnerGetPath(p);
-            p.SetMethod.Invoke(null, new object[] { ModContent.Request<Texture2D>("LunarVeil/" + folderSpace + "/Assets/Trail") });
+            p.SetMethod.Invoke(null, new object[] { ModContent.Request<Texture2D>("LunarVeil/" + folderSpace + "/Trail") });
         }
         private string InnerGetPath(PropertyInfo p)
         {
