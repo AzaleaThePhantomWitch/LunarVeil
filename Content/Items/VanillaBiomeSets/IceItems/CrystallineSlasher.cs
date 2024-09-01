@@ -582,7 +582,7 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
                 }
                 Hit = true;
                 ProjectileVelocityBeforeHit = Projectile.velocity;
-                Timer = 64;
+                Timer = 7 * 15;
             }
 
 
