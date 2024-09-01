@@ -501,6 +501,65 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
                     }
 
                     break;
+
+                case 5:
+                    {
+                        if (Timer > 0)
+                        {
+                            Projectile.timeLeft++;
+                            Timer--;
+                        }
+
+
+                        Timer2++;
+                        if (Timer2 == 1)
+                        {
+                            for (int i = 0; i < Projectile.oldPos.Length; i++)
+                            {
+                                Projectile.oldPos[i] = Projectile.position;
+                            }
+                        }
+
+                        float swingProgress2 = Timer2 / SwingTime;
+                        float easedSwingProgress = Easing.InOutExpo(swingProgress2, 5f);
+                        float targetRotation = Projectile.velocity.ToRotation();
+
+                        int dir2 = (int)Dir2;
+
+                        float xOffset;
+                        float yOffset;
+                        if (dir2 == 1)
+                        {
+                            xOffset = SwingXRadius * MathF.Sin(easedSwingProgress * SwingRange2 + SwingRange2);
+                            yOffset = SwingYRadius * MathF.Cos(easedSwingProgress * SwingRange2 + SwingRange2);
+                        }
+                        else
+                        {
+                            xOffset = SwingXRadius * MathF.Sin((1f - easedSwingProgress) * SwingRange2 + SwingRange2);
+                            yOffset = SwingYRadius * MathF.Cos((1f - easedSwingProgress) * SwingRange2 + SwingRange2);
+                        }
+
+
+                        Projectile.Center = Owner.Center + new Vector2(xOffset, yOffset).RotatedBy(targetRotation);
+                        Projectile.rotation = (Projectile.Center - Owner.Center).ToRotation() + MathHelper.PiOver4;
+
+                        Owner.heldProj = Projectile.whoAmI;
+                        Owner.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);
+                        Owner.itemRotation = Projectile.rotation * Owner.direction;
+                        Owner.itemTime = 2;
+                        Owner.itemAnimation = 2;
+
+                        // Set composite arm allows you to set the rotation of the arm and stretch of the front and back arms independently
+                        Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.ToRadians(90f)); // set arm position (90 degree offset since arm starts lowered)
+                        Vector2 armPosition = Owner.GetFrontHandPosition(Player.CompositeArmStretchAmount.Full, Projectile.rotation - (float)Math.PI / 2); // get position of hand
+
+                        armPosition.Y += Owner.gfxOffY;
+
+
+                    }
+
+
+                    break;
             }
         
 
