@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Stellamod.Trails
+namespace LunarVeil.Systems.Primitives
 {
     public class TrailRenderer : IDrawing, ILoadable
     {
@@ -217,7 +217,7 @@ namespace Stellamod.Trails
         {
             if (!Main.dedServ)
             {
-                shader = ModContent.Request<Effect>("Stellamod/Trails/Trailshader");
+                shader = ModContent.Request<Effect>("LunarVeil/Systems/Primitives/Trailshader");
             }
         }
 

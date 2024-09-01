@@ -83,6 +83,8 @@ namespace LunarVeil
             LunarVeilUtils.LoadOrderedLoadables();
             Instance = this;
 
+            Ref<Effect> GenericLaserShader = new(Assets.Request<Effect>("Assets/Effects/LaserShader", AssetRequestMode.ImmediateLoad).Value);
+            GameShaders.Misc["LunarVeil:LaserShader"] = new MiscShaderData(GenericLaserShader, "TrailPass");
 
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

@@ -8,7 +8,15 @@
 		
 	</PropertyGroup>
 	<ItemGroup>
+	  <None Remove="Assets\Effects\ArtemisLaserShader.fx" />
+	  <None Remove="Assets\Effects\BasicTrailShader.fx" />
+	  <None Remove="Assets\Effects\GenericLaserShader.fx" />
 	  <None Remove="Assets\Effects\GlowingDust.fx" />
+	  <None Remove="Assets\Effects\LaserShader.fx" />
+	  <None Remove="Assets\Effects\LightBeamVertexShader.fx" />
+	  <None Remove="Assets\Effects\LightningTrailShader.fx" />
+	  <None Remove="Assets\Effects\PrismaticRayShader.fx" />
+	  <None Remove="Assets\Effects\Shadowflame.fx" />
 	  <None Remove="Assets\Effects\Whiteflame.fx" />
 	  <None Remove="Assets\Gores\ForegroundGores\Cherryblossom.png" />
 	  <None Remove="Assets\Gores\ForegroundGores\Sandstrike.png" />
@@ -45,6 +53,7 @@
 	  <None Remove="Assets\Trails\CausticTrail.png" />
 	  <None Remove="Assets\Trails\CircleGradient.png" />
 	  <None Remove="Assets\Trails\CorkscrewTrail.png" />
+	  <None Remove="Assets\Trails\Crystals.png" />
 	  <None Remove="Assets\Trails\CrystalTrail.png" />
 	  <None Remove="Assets\Trails\DimLight.png" />
 	  <None Remove="Assets\Trails\DirmTrail.png" />

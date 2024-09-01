@@ -7,7 +7,7 @@ using System.Reflection;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.ModLoader;
 
-namespace LunarVeil.Systems.Primitives
+namespace LunarVeil.Systems.Primitives;
 
 public sealed class BaseRenderTargetOverrider
 {

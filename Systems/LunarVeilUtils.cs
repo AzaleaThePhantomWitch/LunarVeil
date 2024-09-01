@@ -15,6 +15,9 @@ namespace LunarVeil.Systems
 {
     internal static class LunarVeilUtils
     {
+
+        public static AssetRepository Assets => LunarVeil.Instance.Assets;
+
         private static List<IOrderedLoadable> _loadCache;
         public static MiscShaderData CloudsShader => GameShaders.Misc["LunarVeil:Clouds"];
         public static MiscShaderData CloudsFrontShader => GameShaders.Misc["LunarVeil:CloudsFront"];
@@ -27,9 +30,48 @@ namespace LunarVeil.Systems
         public static MiscShaderData GradientShader => GameShaders.Misc["LunarVeil:Gradient"];
         public static Filter CloudySkyFilter => Filters.Scene["LunarVeil:CloudySky"];
         public static Filter DesertSkyFilter => Filters.Scene["LunarVeil:DesertSky"];
-        public static AssetRepository Assets => LunarVeil.Instance.Assets;
-        private static string GlowingDustShader => "Stellamod:GlowingDust";
+        
+
+        public static string Screen_Black => "LunarVeil:Black";
+        public static string Screen_Tint => "LunarVeil:Tint";
+        public static string Screen_NormalDistortion => "LunarVeil:NormalDistortion";
+        public static string Screen_Vignette => "LunarVeil:Vignette";
+
+        public static string VampKnives_Basic_Trail => "VampKnives:BasicTrail";
+        public static string VampKnives_Lightning_Trail => "VampKnives:LightningTrail";
+        public static string VampKnives_Generic_Laser_Shader => "VampKnives:GenericLaserShader";
+        public static string VampKnives_Light_Beam_Vertex_Shader => "VampKnives:LightBeamVertexShader";
+        public static string VampKnives_Artemis_Laser_Shader => "VampKnives:ArtemisLaserShader";
+        public static string VampKnives_Fire => "VampKnives:Fire";
+        public static string LunarVeilFireWhiteShader => "VampKnives:FireWhite";
+
+
+        private static string GlowingDustShader => "LunarVeil:GlowingDust";
         public static MiscShaderData MiscGlowingDust => GameShaders.Misc[GlowingDustShader];
+
+
+
+        private static string Silhouette_Shader => "Stellamod:SilhouetteShader";
+        private static string FireWhitePixelShaderName => "LunarVeil:FireWhitePixelShader";
+        public static MiscShaderData MiscFireWhitePixelShader => GameShaders.Misc[FireWhitePixelShaderName];
+
+        private static string TestPixelShaderName => "LunarVeil:TestPixelShader";
+        public static MiscShaderData MiscTestPixelShader => GameShaders.Misc[TestPixelShaderName];
+
+        private static string SilShaderName => "LunarVeil:SilShader";
+        public static MiscShaderData MiscSilPixelShader => GameShaders.Misc[SilShaderName];
+
+        private static string DistortionShaderName => "LunarVeil:DistortionShader";
+        public static MiscShaderData MiscDistortionShader => GameShaders.Misc[DistortionShaderName];
+
+
+
+        private static void RegisterMiscShader(string name, string path, string pass)
+        {
+            Asset<Effect> miscShader = Assets.Request<Effect>(path, AssetRequestMode.ImmediateLoad);
+            var miscShaderData = new MiscShaderData(miscShader, pass);
+            GameShaders.Misc[name] = miscShaderData;
+        }
 
         public static void LoadShaders()
         {
@@ -78,6 +120,66 @@ namespace LunarVeil.Systems
             Filters.Scene["LunarVeil:DesertSky"] = new Filter((new ScreenShaderData("FilterMiniTower")).UseColor(0f, 0f, 0f).UseOpacity(0f), EffectPriority.VeryHigh);
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+            Ref<Effect> BasicTrailRef = new(Assets.Request<Effect>("Effects/Primitives/BasicTrailShader", AssetRequestMode.ImmediateLoad).Value);
+            Ref<Effect> LightningTrailRef = new(Assets.Request<Effect>("Effects/Primitives/LightningTrailShader", AssetRequestMode.ImmediateLoad).Value);
+            GameShaders.Misc[LunarVeilUtils.VampKnives_Basic_Trail] = new MiscShaderData(BasicTrailRef, "TrailPass");
+            GameShaders.Misc[LunarVeilUtils.VampKnives_Lightning_Trail] = new MiscShaderData(LightningTrailRef, "TrailPass");
+
+            Asset<Effect> shader2 = ModContent.Request<Effect>("Stellamod/Trails/SilhouetteShader", AssetRequestMode.ImmediateLoad);
+            GameShaders.Misc[LunarVeilUtils.Silhouette_Shader] = new MiscShaderData(new Ref<Effect>(shader2.Value), "SilhouettePass");
+
+            Ref<Effect> genericLaserShader = new(Assets.Request<Effect>("Effects/Primitives/GenericLaserShader", AssetRequestMode.ImmediateLoad).Value);
+            GameShaders.Misc[LunarVeilUtils.VampKnives_Generic_Laser_Shader] = new MiscShaderData(genericLaserShader, "TrailPass");
+
+            Ref<Effect> LightBeamVertexShader = new(Assets.Request<Effect>("Effects/Primitives/LightBeamVertexShader", AssetRequestMode.ImmediateLoad).Value);
+            GameShaders.Misc[LunarVeilUtils.VampKnives_Light_Beam_Vertex_Shader] = new MiscShaderData(LightBeamVertexShader, "TrailPass");
+
+            Ref<Effect> ArtemisLaserShader = new(Assets.Request<Effect>("Effects/Primitives/ArtemisLaserShader", AssetRequestMode.ImmediateLoad).Value);
+            GameShaders.Misc[LunarVeilUtils.VampKnives_Artemis_Laser_Shader] = new MiscShaderData(ArtemisLaserShader, "TrailPass");
+
+            Ref<Effect> shadowflameShader = new(Assets.Request<Effect>("Effects/Primitives/Shadowflame", AssetRequestMode.ImmediateLoad).Value);
+            GameShaders.Misc[LunarVeilUtils.VampKnives_Fire] = new MiscShaderData(shadowflameShader, "TrailPass");
+
+            Ref<Effect> whiteflameShader = new(Assets.Request<Effect>("Effects/Whiteflame", AssetRequestMode.ImmediateLoad).Value);
+            GameShaders.Misc[LunarVeilUtils.LunarVeilFireWhiteShader] = new MiscShaderData(whiteflameShader, "TrailPass");
+
+
+            Asset<Effect> blackShader = Assets.Request<Effect>("Effects/Black");
+            Filters.Scene[LunarVeilUtils.Screen_Black] = new Filter(new ScreenShaderData(blackShader, "BlackPass"), EffectPriority.Medium);
+
+            Asset<Effect> tintShader = Assets.Request<Effect>("Effects/Tint");
+            Filters.Scene[LunarVeilUtils.Screen_Tint] = new Filter(new ScreenShaderData(tintShader, "ScreenPass"), EffectPriority.Medium);
+
+            Asset<Effect> distortionShader = Assets.Request<Effect>("Effects/NormalDistortion");
+            Filters.Scene[LunarVeilUtils.Screen_NormalDistortion] = new Filter(new ScreenShaderData(distortionShader, "ScreenPass"), EffectPriority.Medium);
+
+            Asset<Effect> vignetteShader = Assets.Request<Effect>("Effects/Vignette");
+            Filters.Scene[LunarVeilUtils.Screen_Vignette] = new Filter(new ScreenShaderData(vignetteShader, "ScreenPass"), EffectPriority.Medium);
+
+            //White Flame Pixel Shader
+            RegisterMiscShader(FireWhitePixelShaderName, "Effects/WhiteflamePixelShader", "TrailPass");
+
+            //Test Shader (For Testing)
+            RegisterMiscShader(TestPixelShaderName, "Effects/TestShader", "PixelPass");
+
+            //Sil Shader
+            RegisterMiscShader(SilShaderName, "Effects/SilShader", "PixelPass");
+
+            //Distortion Shader
+            RegisterMiscShader(DistortionShaderName, "Effects/NormalDistortion", "ScreenPass");
 
         }
 
