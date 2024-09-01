@@ -28,9 +28,15 @@ namespace LunarVeil.Systems
         public static Filter CloudySkyFilter => Filters.Scene["LunarVeil:CloudySky"];
         public static Filter DesertSkyFilter => Filters.Scene["LunarVeil:DesertSky"];
         public static AssetRepository Assets => LunarVeil.Instance.Assets;
+        private static string GlowingDustShader => "Stellamod:GlowingDust";
+        public static MiscShaderData MiscGlowingDust => GameShaders.Misc[GlowingDustShader];
 
         public static void LoadShaders()
         {
+
+            Asset<Effect> glowingDustShader = Assets.Request<Effect>("Assets/Effects/GlowingDust");
+            GameShaders.Misc[LunarVeilUtils.GlowingDustShader] = new MiscShaderData(glowingDustShader, "GlowingDustPass");
+
             Asset<Effect> miscShader = Assets.Request<Effect>("Assets/Effects/Clouds", AssetRequestMode.ImmediateLoad);
             GameShaders.Misc["LunarVeil:Clouds"] = new MiscShaderData(miscShader, "ScreenPass");
 
@@ -70,6 +76,9 @@ namespace LunarVeil.Systems
             SkyManager.Instance["LunarVeil:DesertSky"] = new DesertSky();
             SkyManager.Instance["LunarVeil:DesertSky"].Load();
             Filters.Scene["LunarVeil:DesertSky"] = new Filter((new ScreenShaderData("FilterMiniTower")).UseColor(0f, 0f, 0f).UseOpacity(0f), EffectPriority.VeryHigh);
+
+
+
         }
 
         public static void LoadOrderedLoadables()
