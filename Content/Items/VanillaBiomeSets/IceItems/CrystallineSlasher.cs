@@ -85,8 +85,8 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
         
 
         private float SwingRange2 = MathHelper.Pi + MathHelper.PiOver2 + MathHelper.PiOver4;
-        private float SwingYRadius => 32;
-        private float SwingXRadius => 128;
+        private float SwingYRadius = 32;
+        private float SwingXRadius = 128;
 
         public override void SetStaticDefaults()
         {
@@ -176,7 +176,8 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
                     break;
 
                 case 5:
-
+                    SwingYRadius = 32;
+                    SwingXRadius = 170;
                     swingTime = 80;
                     SwingRange2 = MathHelper.TwoPi + MathHelper.PiOver2 + MathHelper.PiOver2;
 
