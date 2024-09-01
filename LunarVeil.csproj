@@ -86,6 +86,7 @@
 	  <None Remove="Assets\Trails\WhiteTrail.png" />
 	  <None Remove="Content\Dusts\GlowDust.png" />
 	  <None Remove="Content\Dusts\TSmokeDust.png" />
+	  <None Remove="Content\Items\VanillaBiomeSets\IceItems\FrostFractal_Held.png" />
 	  <None Remove="Tiles\AbysmTiles\AbyssalDirt.png" />
 	  <None Remove="Tiles\AbysmTiles\AbyssalVines.png" />
 	  <None Remove="Tiles\AbysmTiles\AbyssalVines2.png" />

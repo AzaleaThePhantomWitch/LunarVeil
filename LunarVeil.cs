@@ -82,7 +82,7 @@ namespace LunarVeil
             LunarVeilUtils.LoadShaders();
             LunarVeilUtils.LoadOrderedLoadables();
             Instance = this;
-            Whiteout = Assets.Request<Effect>("Effects/Whiteout");
+            Whiteout = Assets.Request<Effect>("Assets/Effects/Whiteout");
             Ref<Effect> GenericLaserShader = new(Assets.Request<Effect>("Assets/Effects/LaserShader", AssetRequestMode.ImmediateLoad).Value);
             GameShaders.Misc["LunarVeil:LaserShader"] = new MiscShaderData(GenericLaserShader, "TrailPass");
 

@@ -11,6 +11,10 @@ Mods: {
 			RainforestTreeSapling.MapEntry: Rainforest Tree Sapling
 		}
 
-		Projectiles.FakeSwordSlash.DisplayName: Fake Sword Slash
+		Projectiles: {
+			FakeSwordSlash.DisplayName: Fake Sword Slash
+			CrystallineSwordSlash.DisplayName: Crystalline Sword Slash
+			FrostFractal_Held.DisplayName: Frost Fractal_ Held
+		}
 	}
 }

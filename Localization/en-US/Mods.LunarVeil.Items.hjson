@@ -76,3 +76,13 @@ IceyAlterBlock: {
 	DisplayName: Icey Alter Block
 	Tooltip: ""
 }
+
+CrystallineSlasher: {
+	DisplayName: Crystalline Slasher
+	Tooltip: ""
+}
+
+FrostFractal: {
+	DisplayName: Frost Fractal
+	Tooltip: ""
+}

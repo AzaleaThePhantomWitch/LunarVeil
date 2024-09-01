@@ -7,7 +7,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria;
 
-namespace LunarVeil.Content.EXAMPLE
+namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
 {
     // This is a basic item template.
     // Please see tModLoader's ExampleMod for every other example:
@@ -48,19 +48,20 @@ namespace LunarVeil.Content.EXAMPLE
 
     public class CrystallineSwordSlash : BaseSwingProjectile
     {
+        public override string Texture => "LunarVeil/Content/Items/VanillaBiomeSets/IceItems/CrystallineSlasher";
 
         int slash1time = 0;
         public override void SetDefaults()
         {
             //Set swing variables here
             //How long the swing lasts in ticks
-            swingTime = 24;
+            swingTime = 120;
 
             //How far the trail extends upward (away the player)
             trailTopWidth = 10;
 
             //How far the trail extends downward (towards the player)
-            trailBottomWidth = 324;
+            trailBottomWidth = 304;
 
             //The number of points in the trail, higher means the trail is longer
             trailCount = 65;
@@ -69,7 +70,7 @@ namespace LunarVeil.Content.EXAMPLE
             distanceToOwner = 0;
 
             //Brightness/Transparency of trail, 255 is fully opaque
-            alpha = 255;
+            alpha = 200;
 
             slash1time = SwingTime;
 
