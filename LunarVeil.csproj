@@ -114,7 +114,6 @@
 	  <Folder Include="Content\Items\ModdedBiomeSets\SirenCity-Items\" />
 	  <Folder Include="Content\Items\ModdedBiomeSets\Vaellus-Items\" />
 	  <Folder Include="Content\Items\MiscelleniousSets\" />
-	  <Folder Include="Content\Items\VanillaBiomeSets\Ice-Items\" />
 	  <Folder Include="Content\Items\VanillaBiomeSets\Desert-Items\" />
 	  <Folder Include="Content\Items\VanillaBiomeSets\Jungle-Items\" />
 	  <Folder Include="Content\Items\VanillaBiomeSets\Caverns-Items\" />
