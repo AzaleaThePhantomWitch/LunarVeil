@@ -52,7 +52,9 @@ namespace LunarVeil.WorldGeneration.StructureManager
         {
             StructureMap structures = GenVars.structures;
             Rectangle rectangle = ReadRectangle(path);
+            location.Y -= rectangle.Height;
             rectangle.Location = location;
+
 
             int[] tilesToCheckFor = new int[]
             {

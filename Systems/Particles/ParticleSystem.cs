@@ -137,6 +137,7 @@ namespace LunarVeil.Systems.Particles
 
         private void DrawMainParticles(On_Main.orig_DrawDust orig, Main self)
         {
+            orig(self);
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointWrap, default, default, default, Main.GameViewMatrix.TransformationMatrix);
             DrawParticles(spriteBatch);

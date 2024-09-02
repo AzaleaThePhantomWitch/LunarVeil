@@ -28,7 +28,25 @@ namespace LunarVeil.Systems.MiscellaneousMath
 		public static readonly EaseFunction EaseCircularOut = new PolynomialEase((float x) => { return (float)Math.Sqrt(1.0 - Math.Pow(x - 1.0, 2)); });
 		public static readonly EaseFunction EaseCircularInOut = new PolynomialEase((float x) => { return (x < 0.5f) ? (1f - (float)Math.Sqrt(1.0 - Math.Pow(x * 2, 2))) * 0.5f : (float)((Math.Sqrt(1.0 - Math.Pow(-2 * x + 2, 2)) + 1) * 0.5); });
 
-		public abstract float Ease(float time);
+
+        public static readonly EaseFunction EaseInBack = new PolynomialEase(Easing.InBack);
+        public static readonly EaseFunction EaseOutBack = new PolynomialEase(Easing.OutBack);
+        public static readonly EaseFunction EaseInOutBack = new PolynomialEase(Easing.InOutBack);
+
+
+        public static readonly EaseFunction EaseInBounce = new PolynomialEase(Easing.InBounce);
+        public static readonly EaseFunction EaseOutBounce = new PolynomialEase(Easing.OutBounce);
+        public static readonly EaseFunction EaseInOutBounce = new PolynomialEase(Easing.InOutBounce);
+
+        public static readonly EaseFunction EaseInCirc = new PolynomialEase(Easing.InCirc);
+        public static readonly EaseFunction EaseOutCirc = new PolynomialEase(Easing.OutCirc);
+        public static readonly EaseFunction EaseInOutCirc = new PolynomialEase(Easing.InOutCirc);
+
+        public static readonly EaseFunction EaseInElastic = new PolynomialEase(Easing.InElastic);
+        public static readonly EaseFunction EaseOutElastic = new PolynomialEase(Easing.OutElastic);
+        public static readonly EaseFunction EaseInOutElastic = new PolynomialEase(Easing.InOutElastic);
+
+        public abstract float Ease(float time);
 	}
 
 	public class PolynomialEase : EaseFunction
@@ -42,6 +60,7 @@ namespace LunarVeil.Systems.MiscellaneousMath
 
 		public override float Ease(float time)
 		{
+			time = MathHelper.Clamp(time, 0f, 1f);
 			return _function(time);
 		}
 

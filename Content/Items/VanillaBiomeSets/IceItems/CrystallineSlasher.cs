@@ -21,8 +21,6 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
     
     public class CrystallineSlasher : ModItem
     {
-        int AttackCounter = 1;
-        int ComboAtt;
         // The Display Name and Tooltip of this item can be edited in the 'Localization/en-US_Mods.LunarVeil.hjson' file.
         public override void SetDefaults()
         {
@@ -44,49 +42,30 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            //     Particle.NewParticle<SnowflakeParticle>(position, -velocity, Color.White);
+            ComboPlayer comboPlayer = player.GetModPlayer<ComboPlayer>();
+            comboPlayer.ComboWaitTime = 100;
 
-            int dir = AttackCounter;
-            AttackCounter = -AttackCounter;
-           
-            
-
-            if (ComboAtt >= 6)
-                ComboAtt = 0;
-
-            int combo = ComboAtt;
+            int combo = comboPlayer.ComboCounter;
+            int dir = comboPlayer.ComboDirection;
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback,
                 player.whoAmI, combo, dir);
 
-
-
-
-            ComboAtt++;
-
-
-
-
+            comboPlayer.IncreaseCombo(maxCombo: 6);
             return false;
         }
-
     }
 
     public class CrystallineSwordSlash : BaseSwingProjectile
     {
         public override string Texture => "LunarVeil/Content/Items/VanillaBiomeSets/IceItems/CrystallineSlasher";
-
-        int slash1time = 0;
-
         ref float ComboAtt => ref Projectile.ai[0];
-        private float Timer2;
-        private ref float Dir2 => ref Projectile.ai[1];
-        private Player Owner => Main.player[Projectile.owner];
-        private float ExtraUpdates => 16;
-        
 
         private float SwingRange2 = MathHelper.Pi + MathHelper.PiOver2 + MathHelper.PiOver4;
-        private float SwingYRadius = 32;
-        private float SwingXRadius = 128;
+        private float SwingYRadius = 64/1.5f;
+        private float SwingXRadius = 128/1.5f;
+
+        public bool Hit;
+        int Timer;
 
         public override void SetStaticDefaults()
         {
@@ -99,8 +78,7 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
             //How long the swing lasts in ticks
             switch (ComboAtt)
             {
-                case 0:
-                   
+                case 0:         
                     swingTime = 34;
 
                     //How far the trail extends upward (away the player)
@@ -119,9 +97,7 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
                     alpha = 200;
                     break;
 
-
                 case 1:
-
                     swingTime = 34;
                     trailBottomWidth = 250 / 2;
                     break;
@@ -131,7 +107,6 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
                     swingTime = 44;
                     trailBottomWidth = 250/2;
                     SwingRange2 = MathHelper.Pi + MathHelper.PiOver2 + MathHelper.PiOver2;
-
                     break;
 
                 case 3:
@@ -151,8 +126,6 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
 
                     //Brightness/Transparency of trail, 255 is fully opaque
                     alpha = 200;
-
-
                     break;
 
                 case 4:
@@ -172,8 +145,6 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
 
                     //Brightness/Transparency of trail, 255 is fully opaque
                     alpha = 200;
-
-
                     break;
 
                 case 5:
@@ -182,10 +153,8 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
                     swingTime = 80;
                     trailBottomWidth = 250 / 2;
                     SwingRange2 = MathHelper.TwoPi + MathHelper.PiOver2 + MathHelper.PiOver2;
-
                     break;
             }
-
 
             Projectile.timeLeft = SwingTime;
             Projectile.penetrate = -1;
@@ -198,10 +167,11 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
             Projectile.scale = 1f;
 
             Projectile.extraUpdates = Swing_Speed_Multiplier - 1;
+         
             Projectile.usesLocalNPCImmunity = true;
 
             //Multiplying by the thing so it's still 10 ticks
-            Projectile.localNPCHitCooldown = 10 * Swing_Speed_Multiplier;
+            Projectile.localNPCHitCooldown = Projectile.timeLeft;
         }
 
         public override void Load()
@@ -221,377 +191,68 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
             TrailTexture = null;
             GradientTexture = null;
         }
-        public Vector2 ProjectileVelocityBeforeHit;
-        public bool Hit;
-        public bool Swinging = false;
-        public bool Swinging2 = false;
-        int Timer;
+    
         protected override void SwingAI()
         {
-
             switch (ComboAtt)
             {
-                case 0:
-                    {
-                        if (Timer > 0)
-                        {
-                            Projectile.timeLeft++;
-                            Timer--;
-                        }
-                        Vector3 RGB = new Vector3(1.28f, 0f, 1.28f);
-                        float multiplier = 0.2f;
-                        RGB *= multiplier;
-
-                        Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
-
-                        int dir = (int)Projectile.ai[1];
-                        float lerpValue = Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft, true);
-
-                        //Smooth it some more
-                        float swingProgress = Easing.InOutBack(lerpValue);
-
-                        // the actual rotation it should have
-                        float defRot = Projectile.velocity.ToRotation();
-                        // starting rotation
-
-                        //How wide is the swing, in radians
-                        float swingRange = MathHelper.PiOver2 + MathHelper.PiOver4;
-                        float start = defRot - swingRange;
-
-                        // ending rotation
-                        float end = (defRot + swingRange);
-
-                        // current rotation obv
-                        // angle lerp causes some weird things here, so just use a normal lerp
-                        float rotation = dir == 1 ? MathHelper.Lerp(start, end, swingProgress) : MathHelper.Lerp(end, start, swingProgress);
-
-                        // offsetted cuz sword sprite
-                        Vector2 position = Owner.RotatedRelativePoint(Owner.MountedCenter);
-                        position += rotation.ToRotationVector2() * holdOffset;
-                        Projectile.Center = position;
-                        Projectile.rotation = (position - Owner.Center).ToRotation() + MathHelper.PiOver4;
-
-                        Owner.heldProj = Projectile.whoAmI;
-                        Owner.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);
-                        Owner.itemRotation = rotation * Owner.direction;
-                        Owner.itemTime = 2;
-                        Owner.itemAnimation = 2;
-
-
-
-                    }
-
+                case 0:               
+                    SimpleEasedSwingAI(EaseFunction.EaseQuinticInOut);
                     break;
 
                 case 1:
-                    {
-                        if (Timer > 0)
-                        {
-                            Projectile.timeLeft++;
-                            Timer--;
-                        }
-
-
-                        Timer2++;
-                        if (Timer2 == 1)
-                        {
-                            for (int i = 0; i < Projectile.oldPos.Length; i++)
-                            {
-                                Projectile.oldPos[i] = Projectile.position;
-                            }
-                        }
-
-                        float swingProgress2 = Timer2 / SwingTime;
-                        float easedSwingProgress = Easing.InOutExpo(swingProgress2, 5f);
-                        float targetRotation = Projectile.velocity.ToRotation();
-
-                        int dir2 = (int)Dir2;
-
-                        float xOffset;
-                        float yOffset;
-                        if (dir2 == 1)
-                        {
-                            xOffset = SwingXRadius * MathF.Sin(easedSwingProgress * SwingRange2 + SwingRange2);
-                            yOffset = SwingYRadius * MathF.Cos(easedSwingProgress * SwingRange2 + SwingRange2);
-                        }
-                        else
-                        {
-                            xOffset = SwingXRadius * MathF.Sin((1f - easedSwingProgress) * SwingRange2 + SwingRange2);
-                            yOffset = SwingYRadius * MathF.Cos((1f - easedSwingProgress) * SwingRange2 + SwingRange2);
-                        }
-
-
-                        Projectile.Center = Owner.Center + new Vector2(xOffset, yOffset).RotatedBy(targetRotation);
-                        distanceToOwner = Vector2.Distance(Projectile.Center, Owner.Center) / 2;
-                        Projectile.rotation = (Projectile.Center - Owner.Center).ToRotation() + MathHelper.PiOver4;
-
-                        Owner.heldProj = Projectile.whoAmI;
-                        Owner.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);
-                        Owner.itemRotation = Projectile.rotation * Owner.direction;
-                        Owner.itemTime = 2;
-                        Owner.itemAnimation = 2;
-
-                        // Set composite arm allows you to set the rotation of the arm and stretch of the front and back arms independently
-                        Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.ToRadians(90f)); // set arm position (90 degree offset since arm starts lowered)
-                        Vector2 armPosition = Owner.GetFrontHandPosition(Player.CompositeArmStretchAmount.Full, Projectile.rotation - (float)Math.PI / 2); // get position of hand
-
-                        armPosition.Y += Owner.gfxOffY;
-
-
-                    }
-
-
+                    OvalEasedSwingAI(EaseFunction.EaseQuinticInOut, SwingXRadius, SwingYRadius, SwingRange2);
                     break;
 
                 case 2:
-                    {
-
-                        if (Timer > 0)
-                        {
-                            Projectile.timeLeft++;
-                            Timer--;
-                        }
-
-
-                        Timer2++;
-                        if (Timer2 == 1)
-                        {
-                            for (int i = 0; i < Projectile.oldPos.Length; i++)
-                            {
-                                Projectile.oldPos[i] = Projectile.position;
-                            }
-                        }
-
-
-
-                        float swingProgress2 = Timer2 / SwingTime;
-                        float easedSwingProgress = Easing.InOutExpo(swingProgress2, 5f);
-                        float targetRotation = Projectile.velocity.ToRotation();
-
-                        int dir2 = (int)Dir2;
-
-                        float xOffset;
-                        float yOffset;
-                        if (dir2 == 1)
-                        {
-                            xOffset = SwingXRadius * MathF.Sin(easedSwingProgress * SwingRange2 + SwingRange2);
-                            yOffset = SwingYRadius * MathF.Cos(easedSwingProgress * SwingRange2 + SwingRange2);
-                        }
-                        else
-                        {
-                            xOffset = SwingXRadius * MathF.Sin((1f - easedSwingProgress) * SwingRange2 + SwingRange2);
-                            yOffset = SwingYRadius * MathF.Cos((1f - easedSwingProgress) * SwingRange2 + SwingRange2);
-                        }
-
-
-                        Projectile.Center = Owner.Center + new Vector2(xOffset, yOffset).RotatedBy(targetRotation);
-                        distanceToOwner = Vector2.Distance(Projectile.Center, Owner.Center) / 2;
-                        Projectile.rotation = (Projectile.Center - Owner.Center).ToRotation() + MathHelper.PiOver4;
-
-                        Owner.heldProj = Projectile.whoAmI;
-                        Owner.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);
-                        Owner.itemRotation = Projectile.rotation * Owner.direction;
-                        Owner.itemTime = 2;
-                        Owner.itemAnimation = 2;
-
-                        // Set composite arm allows you to set the rotation of the arm and stretch of the front and back arms independently
-                        Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.ToRadians(90f)); // set arm position (90 degree offset since arm starts lowered)
-                        Vector2 armPosition = Owner.GetFrontHandPosition(Player.CompositeArmStretchAmount.Full, Projectile.rotation - (float)Math.PI / 2); // get position of hand
-
-                        armPosition.Y += Owner.gfxOffY;
-
-                    }
-
-
+                    OvalEasedSwingAI(EaseFunction.EaseQuinticInOut, SwingXRadius, SwingYRadius, SwingRange2);
                     break;
 
-                case 3:
-                    {
-                        if (Timer > 0)
-                        {
-                            Projectile.timeLeft++;
-                            Timer--;
-                        }
-                        Vector3 RGB = new Vector3(1.28f, 0f, 1.28f);
-                        float multiplier = 0.2f;
-                        RGB *= multiplier;
-
-                        Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
-
-                        int dir = (int)Projectile.ai[1];
-                        float lerpValue = Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft, true);
-
-                        //Smooth it some more
-                        float swingProgress = Easing.InExpo(lerpValue, 6);
-
-                        // the actual rotation it should have
-                        float defRot = Projectile.velocity.ToRotation();
-                        // starting rotation
-
-                        //How wide is the swing, in radians
-                        float swingRange = MathHelper.PiOver2 + MathHelper.PiOver2;
-                        float start = defRot - swingRange;
-
-                        // ending rotation
-                        float end = (defRot + swingRange);
-
-                        // current rotation obv
-                        // angle lerp causes some weird things here, so just use a normal lerp
-                        float rotation = dir == 1 ? MathHelper.Lerp(start, end, swingProgress) : MathHelper.Lerp(end, start, swingProgress);
-
-                        // offsetted cuz sword sprite
-                        Vector2 position = Owner.RotatedRelativePoint(Owner.MountedCenter);
-                        position += rotation.ToRotationVector2() * holdOffset;
-                        Projectile.Center = position;
-                        Projectile.rotation = (position - Owner.Center).ToRotation() + MathHelper.PiOver4;
-
-                        Owner.heldProj = Projectile.whoAmI;
-                        Owner.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);
-                        Owner.itemRotation = rotation * Owner.direction;
-                        Owner.itemTime = 2;
-                        Owner.itemAnimation = 2;
-
-
-                    }
-
+                case 3:                
+                    SimpleEasedSwingAI(EaseFunction.EaseQuinticInOut);    
                     break;
 
-                case 4:
-                    {
-                        if (Timer > 0)
-                        {
-                            Projectile.timeLeft++;
-                            Timer--;
-                        }
-                        Vector3 RGB = new Vector3(1.28f, 0f, 1.28f);
-                        float multiplier = 0.2f;
-                        RGB *= multiplier;
-
-                        Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
-
-                        int dir = (int)Projectile.ai[1];
-                        float lerpValue = Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft, true);
-
-                        //Smooth it some more
-                        float swingProgress = Easing.InExpo(lerpValue, 6);
-
-                        // the actual rotation it should have
-                        float defRot = Projectile.velocity.ToRotation();
-                        // starting rotation
-
-                        //How wide is the swing, in radians
-                        float swingRange = MathHelper.TwoPi + MathHelper.PiOver2;
-                        float start = defRot - swingRange;
-
-                        // ending rotation
-                        float end = (defRot + swingRange);
-
-                        // current rotation obv
-                        // angle lerp causes some weird things here, so just use a normal lerp
-                        float rotation = dir == 1 ? MathHelper.Lerp(start, end, swingProgress) : MathHelper.Lerp(end, start, swingProgress);
-
-                        // offsetted cuz sword sprite
-                        Vector2 position = Owner.RotatedRelativePoint(Owner.MountedCenter);
-                        position += rotation.ToRotationVector2() * holdOffset;
-                        Projectile.Center = position;
-                        Projectile.rotation = (position - Owner.Center).ToRotation() + MathHelper.PiOver4;
-
-                        Owner.heldProj = Projectile.whoAmI;
-                        Owner.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);
-                        Owner.itemRotation = rotation * Owner.direction;
-                        Owner.itemTime = 2;
-                        Owner.itemAnimation = 2;
-
-
-                    }
-
+                case 4:               
+                    SimpleEasedSwingAI(EaseFunction.EaseQuinticInOut);
                     break;
 
                 case 5:
-                    {
-                        if (Timer > 0)
-                        {
-                            Projectile.timeLeft++;
-                            Timer--;
-                        }
-
-
-                        Timer2++;
-                        if (Timer2 == 1)
-                        {
-                            for (int i = 0; i < Projectile.oldPos.Length; i++)
-                            {
-                                Projectile.oldPos[i] = Projectile.position;
-                            }
-                        }
-
-                        float swingProgress2 = Timer2 / SwingTime;
-                        float easedSwingProgress = Easing.InOutExpo(swingProgress2, 5f);
-                        float targetRotation = Projectile.velocity.ToRotation();
-
-                        int dir2 = (int)Dir2;
-
-                        float xOffset;
-                        float yOffset;
-                        if (dir2 == 1)
-                        {
-                            xOffset = SwingXRadius * MathF.Sin(easedSwingProgress * SwingRange2 + SwingRange2);
-                            yOffset = SwingYRadius * MathF.Cos(easedSwingProgress * SwingRange2 + SwingRange2);
-                        }
-                        else
-                        {
-                            xOffset = SwingXRadius * MathF.Sin((1f - easedSwingProgress) * SwingRange2 + SwingRange2);
-                            yOffset = SwingYRadius * MathF.Cos((1f - easedSwingProgress) * SwingRange2 + SwingRange2);
-                        }
-
-
-                        Projectile.Center = Owner.Center + new Vector2(xOffset, yOffset).RotatedBy(targetRotation);
-                        distanceToOwner = Vector2.Distance(Projectile.Center, Owner.Center) / 2;
-                        Projectile.rotation = (Projectile.Center - Owner.Center).ToRotation() + MathHelper.PiOver4;
-
-                        Owner.heldProj = Projectile.whoAmI;
-                        Owner.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);
-                        Owner.itemRotation = Projectile.rotation * Owner.direction;
-                        Owner.itemTime = 2;
-                        Owner.itemAnimation = 2;
-
-                        // Set composite arm allows you to set the rotation of the arm and stretch of the front and back arms independently
-                        Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.ToRadians(90f)); // set arm position (90 degree offset since arm starts lowered)
-                        Vector2 armPosition = Owner.GetFrontHandPosition(Player.CompositeArmStretchAmount.Full, Projectile.rotation - (float)Math.PI / 2); // get position of hand
-
-                        armPosition.Y += Owner.gfxOffY;
-
-
-                    }
-
-
+                    OvalEasedSwingAI(EaseFunction.EaseQuinticInOut, SwingXRadius, SwingYRadius, SwingRange2);
                     break;
             }
-        
-
-
         }
-
-
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             if (!Hit)
             {
                 Main.LocalPlayer.GetModPlayer<EffectsPlayer>().ShakeAtPosition(target.Center, 1024f, 8f);
-                Particle.NewParticle<IceStrikeParticle>(target.Center, Projectile.velocity *= 0f, Color.White);
+                
+                Particle.NewParticle<IceStrikeParticle>(target.Center,Vector2.Zero, Color.White);
                 // Main.LocalPlayer.GetModPlayer<MyPlayer>().ShakeAtPosition(Projectile.Center, 1024f, 16f);
                 for (int i = 0; i < 15; i++)
                 {
                     //Particles Here
                 }
                 Hit = true;
-                ProjectileVelocityBeforeHit = Projectile.velocity;
-                Timer = 7 * 15;
+                hitstopTimer = 6 * Swing_Speed_Multiplier;
             }
-
-
         }
+        /*
+        public override bool PreDraw(ref Color lightColor)
+        {
+            DrawSlashTrail();
+            float rot = Projectile.rotation % 80 / 80f * 6.28f;
+            float x = (float)Math.Cos(-rot) * 120;
 
+            Texture2D tex = ModContent.Request<Texture2D>(Texture).Value;
+            Player owner = Main.player[Projectile.owner];
+
+            var target = new Rectangle((int)(owner.Center.X - Main.screenPosition.X), (int)(owner.Center.Y - Main.screenPosition.Y), (int)Math.Abs(x / 120f * tex.Size().Length()), 40);
+
+            Main.spriteBatch.Draw(tex, target, null, lightColor, -rot, new Vector2(0, tex.Height), SpriteEffects.None, default);
+
+            return false;
+        }*/
     }
 }
