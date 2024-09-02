@@ -132,6 +132,7 @@ namespace LunarVeil.Content.Items.ModdedBiomeSets.SoulPrisonItems
 
             if (!stuck)
             {
+
                 if (!Main.dayTime)
                 {
                     var da = Dust.NewDustPerfect(Projectile.Bottom + Vector2.One.RotatedByRandom(6.28f) * Main.rand.NextFloat(15), ModContent.DustType<Dusts.TSmokeDust>(), Vector2.Zero, 0, new Color(20, 190, 230), 0.3f);

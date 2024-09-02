@@ -73,7 +73,7 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
 
         public override void SetDefaults()
         {
-
+          
       
 
             //           swingTime /= 2;
@@ -114,6 +114,8 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
             GradientTexture = null;
         }
     
+
+
         private void InitializeSwingAI()
         {
             if (initSwingAI)
@@ -144,13 +146,15 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
 
                 case 1:
                     swingTime = 34;
-                    trailBottomWidth = 250;
+                    trailBottomWidth = 150;
+                    trailTopWidth = 5;
                     break;
 
                 case 2:
+                    trailTopWidth = 5;
 
                     swingTime = 34;
-                    trailBottomWidth = 250;
+                    trailBottomWidth = 150;
                     SwingRange2 = MathHelper.Pi + MathHelper.PiOver2 + MathHelper.PiOver2;
                     break;
 
@@ -196,9 +200,9 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
                 case 5:
                     SwingYRadius = 32;
                     SwingXRadius = 170;
-                    swingTime = 34;
-                    trailBottomWidth = 250;
-                    SwingRange2 = MathHelper.TwoPi + MathHelper.PiOver2 + MathHelper.PiOver2;
+                    swingTime = 60;
+                    trailBottomWidth = 100;
+                    SwingRange2 = MathHelper.TwoPi + MathHelper.PiOver2 + MathHelper.PiOver4;
                   //  windUpTime = 20 * Swing_Speed_Multiplier;
 
                     break;
@@ -216,11 +220,11 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
                     break;
 
                 case 1:
-                    OvalEasedSwingAI(EaseFunction.EaseInOutExpo, SwingXRadius, SwingYRadius, SwingRange2);
+                    OvalEasedSwingAI(EaseFunction.EaseInOutExpo, SwingXRadius + 20, SwingYRadius - 20, SwingRange2);
                     break;
 
                 case 2:
-                    OvalEasedSwingAI(EaseFunction.EaseInOutExpo, SwingXRadius, SwingYRadius, SwingRange2);
+                    OvalEasedSwingAI(EaseFunction.EaseInOutExpo, SwingXRadius + 20, SwingYRadius - 20, SwingRange2);
                     break;
 
                 case 3:                
@@ -232,7 +236,44 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
                     break;
 
                 case 5:
-                    SimpleEasedSwingAI(EaseFunction.EaseInOutExpo, swingRange: MathHelper.TwoPi * 2);
+                    Vector3 RGB = new Vector3(1.28f, 0f, 1.28f);
+                    float multiplier = 0.2f;
+                    RGB *= multiplier;
+
+                    Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
+
+                    int dir = (int)Projectile.ai[1];
+                    float lerpValue = Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft, true);
+
+                    //Smooth it some more
+                    float swingProgress = Easing.InOutExpo(lerpValue, 6f);
+
+                    // the actual rotation it should have
+                    float defRot = Projectile.velocity.ToRotation();
+                    // starting rotation
+
+                    //How wide is the swing, in radians
+                    float swingRange = MathHelper.PiOver2 + MathHelper.PiOver4 + MathHelper.TwoPi;
+                    float start = defRot - swingRange;
+
+                    // ending rotation
+                    float end = (defRot + swingRange);
+
+                    // current rotation obv
+                    // angle lerp causes some weird things here, so just use a normal lerp
+                    float rotation = dir == 1 ? MathHelper.Lerp(start, end, swingProgress) : MathHelper.Lerp(end, start, swingProgress);
+
+                    // offsetted cuz sword sprite
+                    Vector2 position = Owner.RotatedRelativePoint(Owner.MountedCenter);
+                    position += rotation.ToRotationVector2() * holdOffset;
+                    Projectile.Center = position;
+                    Projectile.rotation = (position - Owner.Center).ToRotation() + MathHelper.PiOver4;
+
+                    Owner.heldProj = Projectile.whoAmI;
+                    Owner.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);
+                    Owner.itemRotation = rotation * Owner.direction;
+                    Owner.itemTime = 2;
+                    Owner.itemAnimation = 2;
                     //OvalEasedSwingAI(EaseFunction.EaseInOutCirc, SwingXRadius, SwingYRadius, SwingRange2);
                     break;
             }
