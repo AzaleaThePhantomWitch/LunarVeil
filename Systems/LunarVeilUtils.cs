@@ -51,7 +51,7 @@ namespace LunarVeil.Systems
 
 
 
-        private static string Silhouette_Shader => "Stellamod:SilhouetteShader";
+        private static string Silhouette_Shader => "LunarVeil:SilhouetteShader";
         private static string FireWhitePixelShaderName => "LunarVeil:FireWhitePixelShader";
         public static MiscShaderData MiscFireWhitePixelShader => GameShaders.Misc[FireWhitePixelShaderName];
 
@@ -170,6 +170,11 @@ namespace LunarVeil.Systems
             Ref<Effect> whiteflameShader = new(Assets.Request<Effect>("Assets/Effects/Whiteflame", AssetRequestMode.ImmediateLoad).Value);
             GameShaders.Misc[LunarVeilUtils.LunarVeilFireWhiteShader] = new MiscShaderData(whiteflameShader, "TrailPass");
 
+
+            Ref<Effect> GenericLaserShader = new(Assets.Request<Effect>("Assets/Effects/LaserShader", AssetRequestMode.ImmediateLoad).Value);
+            GameShaders.Misc["LunarVeil:LaserShader"] = new MiscShaderData(GenericLaserShader, "TrailPass");
+
+            //Filters.Scene["LunarVeil:LaserShader"].Load();
             /*
             Asset<Effect> blackShader = Assets.Request<Effect>("Effects/Black");
             Filters.Scene[LunarVeilUtils.Screen_Black] = new Filter(new ScreenShaderData(blackShader, "BlackPass"), EffectPriority.Medium);

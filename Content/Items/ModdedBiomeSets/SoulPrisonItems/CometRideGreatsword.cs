@@ -12,6 +12,11 @@ using Terraria.Graphics.Effects;
 using Microsoft.Xna.Framework;
 using LunarVeil.Systems.Primitives;
 using Terraria.DataStructures;
+using LunarVeil.Content.Dusts;
+using LunarVeil.Systems.MiscellaneousMath;
+using LunarVeil.Systems;
+using ReLogic.Content;
+using Terraria.Graphics.Shaders;
 
 
 namespace LunarVeil.Content.Items.ModdedBiomeSets.SoulPrisonItems
@@ -35,9 +40,9 @@ namespace LunarVeil.Content.Items.ModdedBiomeSets.SoulPrisonItems
                 Item.DamageType = DamageClass.Melee;
                 Item.width = 36;
                 Item.height = 38;
-                Item.useTime = 25;
-                Item.useAnimation = 25;
-                Item.useStyle = ItemUseStyleID.Swing;
+            Item.useTime = 5;
+            Item.useAnimation = 100;
+            Item.useStyle = ItemUseStyleID.Swing;
                 Item.knockBack = 7.5f;
                 Item.value = Item.sellPrice(gold: 1);
                 Item.rare = ItemRarityID.Green;
@@ -78,28 +83,11 @@ namespace LunarVeil.Content.Items.ModdedBiomeSets.SoulPrisonItems
 
             public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
             {
-                if (cooldown > 0)
-                    return false;
 
-                cooldown = 95;
                 return true;
             }
 
-            public override void ModifyHitNPC(Player player, NPC target, ref NPC.HitModifiers modifiers)
-            {
-                
 
-                
-                    modifiers.FlatBonusDamage += 20;
-                    modifiers.FlatBonusDamage += (int)(target.defense / 5f);
-                    Projectile.NewProjectile(player.GetSource_ItemUse(Item), target.Center, Vector2.Zero, ModContent.ProjectileType<PhantasmalRing>(), 0, 0, player.whoAmI);
-
-                    for (int i = 0; i < 16; i++)
-                    {
-                        Dust.NewDustPerfect(target.Center, ModContent.DustType<Dusts.GlowDust>(), Vector2.UnitX.RotatedBy(Main.rand.NextFloat(6.28f)) * Main.rand.NextFloat(12), 0, new Color(50, 50, 255), 0.4f);
-                    }
-                
-            }
         }
 
         public class PhantasmalCometProj : ModProjectile, IDrawPrimitive, IDrawAdditive
@@ -144,10 +132,12 @@ namespace LunarVeil.Content.Items.ModdedBiomeSets.SoulPrisonItems
 
             if (!stuck)
             {
-                var d = Dust.NewDustPerfect(Projectile.Bottom + Vector2.One.RotatedByRandom(6.28f) * Main.rand.NextFloat(15), ModContent.DustType<Dusts.TSmokeDust>(), Vector2.Zero, 0, new Color(20, 40, 100), 0.8f);
-                d.customData = Main.rand.NextFloat(0.6f, 1.3f);
-                d.fadeIn = 10;
-                Dust.NewDustPerfect(Projectile.Bottom + Vector2.One.RotatedByRandom(6.28f) * Main.rand.NextFloat(15), ModContent.DustType<Dusts.GlowDust>(), Vector2.Zero, 0, new Color(50, 150, 255), 0.4f).fadeIn = 10;
+                
+
+                var da = Dust.NewDustPerfect(Projectile.Bottom + Vector2.One.RotatedByRandom(6.28f) * Main.rand.NextFloat(15), ModContent.DustType<Dusts.TSmokeDust>(), Vector2.Zero, 0, new Color(20, 140, 250), 0.3f);
+                da.customData = Main.rand.NextFloat(0.6f, 1.3f);
+                da.fadeIn = 10;
+                Dust.NewDustPerfect(Projectile.Bottom + Vector2.One.RotatedByRandom(6.28f) * Main.rand.NextFloat(15), ModContent.DustType<Dusts.GlowDust>(), Vector2.Zero, 0, new Color(50, 200, 255), 0.4f).fadeIn = 10;
                 ManageCaches();
 
                 Projectile.rotation = Projectile.velocity.ToRotation() - 1.44f;
@@ -180,7 +170,7 @@ namespace LunarVeil.Content.Items.ModdedBiomeSets.SoulPrisonItems
                 {
                     Vector2 pos = Projectile.Bottom + Vector2.One.RotatedByRandom(6.28f) * Main.rand.NextFloat(15);
                     Vector2 velocity = (-Vector2.UnitY).RotatedByRandom(0.7f) * Main.rand.NextFloat(1f, 2f);
-                    Dust.NewDustPerfect(pos, ModContent.DustType<Dusts.GlowDust>(), velocity, 0, new Color(50, 50, 255), Main.rand.NextFloat(0.4f, 0.8f)).fadeIn = 10;
+                    Dust.NewDustPerfect(pos, ModContent.DustType<Dusts.GlowDust>(), velocity, 0, new Color(50, 180, 255), Main.rand.NextFloat(0.4f, 0.8f)).fadeIn = 10;
 
                     if (Main.rand.NextBool(3))
                     {
@@ -197,6 +187,15 @@ namespace LunarVeil.Content.Items.ModdedBiomeSets.SoulPrisonItems
                 Projectile.extraUpdates = 0;
                 Projectile.velocity = Vector2.Zero;
                 Projectile.timeLeft = 1;
+
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero,
+               ModContent.ProjectileType<PhantasmalRingExplosion>(), Projectile.damage * 2, 0f, Projectile.owner, 0f, 0f);
+
+                for (int i = 0; i < 16; i++)
+                {
+                    Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<Dusts.GlowStarDust>(), Vector2.UnitX.RotatedBy(Main.rand.NextFloat(6.28f)) * Main.rand.NextFloat(12), 0, new Color(50, 250, 255), 0.4f);
+                }
+
             }
 
             return false;
@@ -239,12 +238,12 @@ namespace LunarVeil.Content.Items.ModdedBiomeSets.SoulPrisonItems
         private void ManageTrail()
         {
             if (trail is null || trail.IsDisposed)
-                trail = new Trail(Main.instance.GraphicsDevice, 50, new RoundedTip(12), factor => (10 + factor * 25) * trailWidth, factor => new Color(20, 20 + (int)(100 * factor.X), 255) * factor.X * trailWidth);
+                trail = new Trail(Main.instance.GraphicsDevice, 50, new RoundedTip(12), factor => (10 + factor * 25) * trailWidth, factor => new Color(20 + (int)(100 * factor.X), 255 , 255) * factor.X * trailWidth);
 
             trail.Positions = cache.ToArray();
 
             if (trail2 is null || trail2.IsDisposed)
-                trail2 = new Trail(Main.instance.GraphicsDevice, 50, new RoundedTip(6), factor => (80 + 0 + factor * 0) * trailWidth, factor => new Color(10, 20 + (int)(60 * factor.X), 255) * factor.X * 0.15f * trailWidth);
+                trail2 = new Trail(Main.instance.GraphicsDevice, 50, new RoundedTip(6), factor => (80 + 0 + factor * 0) * trailWidth, factor => new Color(10 + (int)(100 * factor.X), 255, 255) * factor.X * 0.15f * trailWidth);
 
             trail2.Positions = cache.ToArray();
 
@@ -266,7 +265,7 @@ namespace LunarVeil.Content.Items.ModdedBiomeSets.SoulPrisonItems
             effect.Parameters["time"].SetValue(Main.GameUpdateCount * 0.02f);
             effect.Parameters["repeats"].SetValue(8f);
             effect.Parameters["transformMatrix"].SetValue(world * view * projection);
-            effect.Parameters["sampleTexture"].SetValue(ModContent.Request<Texture2D>("LunarVeil/Assets/Trails/BeamTrail").Value);
+            effect.Parameters["sampleTexture"].SetValue(ModContent.Request<Texture2D>("LunarVeil/Assets/Trails/GlowTrail").Value);
             effect.Parameters["sampleTexture2"].SetValue(ModContent.Request<Texture2D>("LunarVeil/Assets/Trails/CrystalTrail").Value);
 
             trail?.Render(effect);
@@ -284,117 +283,163 @@ namespace LunarVeil.Content.Items.ModdedBiomeSets.SoulPrisonItems
         }
     }
 
-    internal class PhantasmalRing : ModProjectile, IDrawPrimitive
+
+    internal class PhantasmalRingExplosion : ModProjectile,
+    IPixelPrimitiveDrawer
     {
-        private List<Vector2> cache;
+        //Texture
+        public override string Texture => TextureRegistry.EmptyTexturePath;
 
-        private Trail trail;
-        private Trail trail2;
+        //AI
+        private float LifeTime => 32f;
+        private ref float Timer => ref Projectile.ai[0];
+        private float Progress
+        {
+            get
+            {
+                float p = Timer / LifeTime;
+                return MathHelper.Clamp(p, 0, 1);
+            }
+        }
 
-        protected float Progress => 1 - Projectile.timeLeft / 10f;
+        //Draw Code
+        private PrimitiveTrailCopy BeamDrawer;
+        private int DrawMode;
+        private bool SpawnDustCircle;
 
-        protected virtual float Radius => 66 * (float)Math.Sqrt(Math.Sqrt(Progress));
+        //Trailing
+        private Asset<Texture2D> FrontTrailTexture => TrailRegistry.WaterTrail;
+        private MiscShaderData FrontTrailShader => TrailRegistry.LaserShader;
 
-        public override string Texture => "LunarVeil/Content/Items/ModdedBiomeSets/SoulPrisonItems/PhantasmalCometProj";
+        private Asset<Texture2D> BackTrailTexture => TrailRegistry.SimpleTrail;
+        private MiscShaderData BackTrailShader => TrailRegistry.LaserShader;
+
+        //Radius
+        private float StartRadius => 4;
+        private float EndRadius => 62;
+        private float Width => 64;
+
+        //Colors
+        private Color FrontCircleStartDrawColor => Color.Turquoise;
+        private Color FrontCircleEndDrawColor => Color.Black;
+        private Color BackCircleStartDrawColor => Color.Lerp(Color.White, Color.Turquoise, 0.4f);
+        private Color BackCircleEndDrawColor => Color.Lerp(Color.Black, Color.Black, 0.7f);
+        private Vector2[] CirclePos;
 
         public override void SetDefaults()
         {
-            Projectile.width = 80;
-            Projectile.height = 80;
-            Projectile.DamageType = DamageClass.Ranged;
-            Projectile.friendly = true;
+            Projectile.width = 16;
+            Projectile.height = 16;
+            Projectile.hostile = false;
+            Projectile.friendly = false;
+            Projectile.timeLeft = (int)LifeTime;
             Projectile.tileCollide = false;
-            Projectile.penetrate = -1;
-            Projectile.timeLeft = 10;
-        }
 
-        public override void SetStaticDefaults()
-        {
-           // DisplayName.SetDefault("Orbital Strike");
+            //Points on the circle
+            CirclePos = new Vector2[64];
         }
 
         public override void AI()
         {
-            ManageCaches();
-            ManageTrail();
+            Timer++;
+            AI_ExpandCircle();
+            AI_DustCircle();
         }
 
-        public override bool PreDraw(ref Color lightColor)
+        private void AI_ExpandCircle()
+        {
+            float easedProgess = Easing.InOutCirc(Progress);
+            float radius = MathHelper.Lerp(StartRadius, EndRadius, easedProgess);
+            DrawCircle(radius);
+        }
+
+        private void AI_DustCircle()
+        {
+            if (!SpawnDustCircle && Timer >= 15)
+            {
+                for (int i = 0; i < 48; i++)
+                {
+                    Vector2 rand = Main.rand.NextVector2CircularEdge(EndRadius, EndRadius);
+                    Vector2 pos = Projectile.Center + rand;
+                    Dust d = Dust.NewDustPerfect(pos, ModContent.DustType<GlowDust>(), Vector2.Zero,
+                        newColor: BackCircleStartDrawColor,
+                        Scale: Main.rand.NextFloat(0.3f, 0.6f));
+                    d.noGravity = true;
+                }
+                SpawnDustCircle = true;
+            }
+        }
+
+        public override bool ShouldUpdatePosition()
         {
             return false;
         }
 
-        public override bool? CanHitNPC(NPC target)
+        private void DrawCircle(float radius)
         {
-            if (target.whoAmI == (int)Projectile.ai[0])
-                return false;
-
-            return base.CanHitNPC(target);
-        }
-
-        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
-        {
-            Vector2 line = targetHitbox.Center.ToVector2() - Projectile.Center;
-            line.Normalize();
-            line *= Radius;
-
-            if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), Projectile.Center, Projectile.Center + line))
-                return true;
-
-            return false;
-        }
-
-        private void ManageCaches()
-        {
-            cache = new List<Vector2>();
-            float radius = Radius;
-
-            for (int i = 0; i < 33; i++)
+            Vector2 startDirection = Vector2.UnitY;
+            for (int i = 0; i < CirclePos.Length; i++)
             {
-                double rad = i / 32f * 6.28f;
-                var offset = new Vector2((float)Math.Sin(rad), (float)Math.Cos(rad));
-                offset *= radius;
-                cache.Add(Projectile.Center + offset);
-            }
-
-            while (cache.Count > 33)
-            {
-                cache.RemoveAt(0);
+                float circleProgress = i / (float)CirclePos.Length;
+                float radiansToRotateBy = circleProgress * (MathHelper.TwoPi + MathHelper.PiOver4 / 2);
+                CirclePos[i] = Projectile.Center + startDirection.RotatedBy(radiansToRotateBy) * radius;
             }
         }
 
-        private void ManageTrail()
+        public float WidthFunction(float completionRatio)
         {
-            if (trail is null || trail.IsDisposed)
-                trail = new Trail(Main.instance.GraphicsDevice, 33, new NoTip(), factor => 38 * (1 - Progress), factor => new Color(0, 1000, 255));
+            float width = Width;
+            float startExplosionScale = 4f;
+            float endExplosionScale = 0f;
+            float easedProgess = Easing.OutCirc(Progress);
+            float scale = MathHelper.Lerp(startExplosionScale, endExplosionScale, easedProgess);
+            switch (DrawMode)
+            {
+                default:
+                case 0:
+                    return Projectile.scale * scale * width * Easing.SpikeInOutCirc(Progress);
+                case 1:
+                    return Projectile.scale * width * 2.2f * Easing.SpikeInOutCirc(Progress);
 
-            if (trail2 is null || trail2.IsDisposed)
-                trail2 = new Trail(Main.instance.GraphicsDevice, 33, new NoTip(), factor => 20 * (1 - Progress), factor => Color.Lerp(new Color(10, 180, 255), new Color(85, 105, 200), Progress));
-            float nextplace = 33f / 32f;
-            var offset = new Vector2((float)Math.Sin(nextplace), (float)Math.Cos(nextplace));
-            offset *= Radius;
-
-            trail.Positions = cache.ToArray();
-            trail.NextPosition = Projectile.Center + offset;
-
-            trail2.Positions = cache.ToArray();
-            trail2.NextPosition = Projectile.Center + offset;
+            }
         }
 
-        public void DrawPrimitives()
+        public Color ColorFunction(float completionRatio)
         {
-            Effect effect = Filters.Scene["LunarVeil:FadingTrail"].GetShader().Shader;
+            switch (DrawMode)
+            {
+                default:
+                case 0:
+                    //Front Trail
+                    return Color.Transparent;
+                case 1:
+                    //Back Trail
+                    return Color.Transparent;
+            }
+        }
 
-            var world = Matrix.CreateTranslation(-Main.screenPosition.Vec3());
-            Matrix view = Main.GameViewMatrix.TransformationMatrix;
-            var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, -1, 1);
+        public void DrawPixelPrimitives(SpriteBatch spriteBatch)
+        {
+            BeamDrawer ??= new PrimitiveTrailCopy(WidthFunction, ColorFunction, null, true, TrailRegistry.LaserShader);
+            float easedProgess = Easing.OutCubic(Progress);
 
-            effect.Parameters["transformMatrix"].SetValue(world * view * projection);
-            effect.Parameters["sampleTexture"].SetValue(ModContent.Request<Texture2D>("LunarVeil/Assets/Trails/BeamTrail").Value);
-            effect.Parameters["alpha"].SetValue(1);
+            //Back Trail   
+            DrawMode = 1;
+            BeamDrawer.SpecialShader = BackTrailShader;
+            BeamDrawer.SpecialShader.UseColor(
+                Color.Lerp(BackCircleStartDrawColor, BackCircleEndDrawColor, easedProgess));
+            BeamDrawer.SpecialShader.SetShaderTexture(BackTrailTexture);
+            BeamDrawer.DrawPixelated(CirclePos, -Main.screenPosition, CirclePos.Length);
 
-            trail?.Render(effect);
-            trail2?.Render(effect);
+            //Front Trail
+            DrawMode = 0;
+            BeamDrawer.SpecialShader = FrontTrailShader;
+            BeamDrawer.SpecialShader.UseColor(Color.Lerp(FrontCircleStartDrawColor, FrontCircleEndDrawColor,
+                Easing.OutCirc(Progress)));
+            BeamDrawer.SpecialShader.SetShaderTexture(FrontTrailTexture);
+            BeamDrawer.DrawPixelated(CirclePos, -Main.screenPosition, CirclePos.Length);
+            Main.spriteBatch.ExitShaderRegion();
         }
     }
 }
+

@@ -18,6 +18,7 @@ Mods: {
 			MoonfuryRing.DisplayName: Moonfury Ring
 			PhantasmalCometProj.DisplayName: Phantasmal Comet Proj
 			PhantasmalRing.DisplayName: Phantasmal Ring
+			PhantasmalRingExplosion.DisplayName: Phantasmal Ring Explosion
 		}
 	}
 }
