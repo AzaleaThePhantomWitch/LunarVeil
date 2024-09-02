@@ -111,7 +111,6 @@
 	  <Folder Include="Content\Items\ModdedBiomeSets\Rainforest-Items\" />
 	  <Folder Include="Content\Items\ModdedBiomeSets\Noxian-Items\" />
 	  <Folder Include="Content\Items\ModdedBiomeSets\WitchTown-Items\" />
-	  <Folder Include="Content\Items\ModdedBiomeSets\SoulPrison-Items\" />
 	  <Folder Include="Content\Items\ModdedBiomeSets\SirenCity-Items\" />
 	  <Folder Include="Content\Items\ModdedBiomeSets\Vaellus-Items\" />
 	  <Folder Include="Content\Items\MiscelleniousSets\" />

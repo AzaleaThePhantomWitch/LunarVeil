@@ -86,3 +86,8 @@ FrostFractal: {
 	DisplayName: Frost Fractal
 	Tooltip: ""
 }
+
+CometRideGreatsword: {
+	DisplayName: Comet Ride Greatsword
+	Tooltip: ""
+}

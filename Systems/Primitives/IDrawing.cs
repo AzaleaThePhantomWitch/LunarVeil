@@ -6,6 +6,16 @@ using Terraria.ID;
 
 namespace LunarVeil.Systems.Primitives
 {
+
+    public interface IDrawPrimitive
+    {
+        void DrawPrimitives();
+    }
+    interface IDrawAdditive
+    {
+        void DrawAdditive(SpriteBatch spriteBatch);
+    }
+
     public interface IDrawing
     {
         void Draw(Vector2[] arr, float uvAdd = 0f, float uvMultiplier = 1f);

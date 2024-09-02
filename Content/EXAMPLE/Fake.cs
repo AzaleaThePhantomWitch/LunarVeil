@@ -1,4 +1,5 @@
 ﻿using LunarVeil.Content.Bases;
+using LunarVeil.Content.Items.ModdedBiomeSets.SoulPrisonItems;
 using LunarVeil.Content.Particles;
 using LunarVeil.Systems.MiscellaneousMath;
 using LunarVeil.Systems.Particles;
@@ -38,11 +39,15 @@ namespace LunarVeil.Content.EXAMPLE
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            Particle.NewBlackParticle<SnowflakeParticle>(position, -velocity, new Color(255, 255, 255, 0));
+           // Particle.NewBlackParticle<SnowflakeParticle>(position, -velocity, new Color(255, 255, 255, 0));
 
             int dir = AttackCounter;
             AttackCounter = -AttackCounter;
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, 1, dir);
+           
+           // Projectile.NewProjectile(source, Main.MouseWorld, Vector2.Zero, ModContent.ProjectileType<PhantasmalCometProj>(), damage, knockback, player.whoAmI, 0f, 0f);
+
+
             return false;
         }
 

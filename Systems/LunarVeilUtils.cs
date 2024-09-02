@@ -127,12 +127,17 @@ namespace LunarVeil.Systems
             SkyManager.Instance["LunarVeil:DesertSky"].Load();
             Filters.Scene["LunarVeil:DesertSky"] = new Filter((new ScreenShaderData("FilterMiniTower")).UseColor(0f, 0f, 0f).UseOpacity(0f), EffectPriority.VeryHigh);
 
-          
+
+
+            Asset<Effect> CometTrail = Assets.Request<Effect>("Assets/Effects/CometTrail", AssetRequestMode.ImmediateLoad);
+            Filters.Scene["LunarVeil:CometTrail"] = new Filter(new ScreenShaderData(CometTrail, "PrimitivesPass"), EffectPriority.VeryHigh);
+            Filters.Scene["LunarVeil:CometTrail"].Load();
 
 
 
-
-
+            Asset<Effect> FadingTrail = Assets.Request<Effect>("Assets/Effects/FadingTrail", AssetRequestMode.ImmediateLoad);
+            Filters.Scene["LunarVeil:FadingTrail"] = new Filter(new ScreenShaderData(FadingTrail, "PrimitivesPass"), EffectPriority.VeryHigh);
+            Filters.Scene["LunarVeil:FadingTrail"].Load();
 
 
 
