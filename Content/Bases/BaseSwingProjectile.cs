@@ -296,7 +296,7 @@ namespace LunarVeil.Content.Bases
         protected void OvalEasedSwingAI(EaseFunction easeFunction, float swingXRadius, float swingYRadius, float swingRange = MathHelper.PiOver2 + MathHelper.PiOver4)
         {
             float lerpValue = Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft, true);
-            float easedSwingProgress = easeFunction.Ease(lerpValue);
+            float easedSwingProgress = Easing.InOutExpo(lerpValue, 5f);
             float targetRotation = Projectile.velocity.ToRotation();
 
             int dir2 = (int)Projectile.ai[1];
