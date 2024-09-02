@@ -92,7 +92,7 @@ namespace LunarVeil.Content.Items.ModdedBiomeSets.SoulPrisonItems
                 
                     modifiers.FlatBonusDamage += 20;
                     modifiers.FlatBonusDamage += (int)(target.defense / 5f);
-                    Projectile.NewProjectile(player.GetSource_ItemUse(Item), target.Center, Vector2.Zero, ModContent.ProjectileType<MoonfuryRing>(), 0, 0, player.whoAmI);
+                    Projectile.NewProjectile(player.GetSource_ItemUse(Item), target.Center, Vector2.Zero, ModContent.ProjectileType<PhantasmalRing>(), 0, 0, player.whoAmI);
 
                     for (int i = 0; i < 16; i++)
                     {
@@ -283,7 +283,7 @@ namespace LunarVeil.Content.Items.ModdedBiomeSets.SoulPrisonItems
         }
     }
 
-    internal class MoonfuryRing : ModProjectile, IDrawPrimitive
+    internal class PhantasmalRing : ModProjectile, IDrawPrimitive
     {
         private List<Vector2> cache;
 
