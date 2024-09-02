@@ -47,9 +47,9 @@ namespace LunarVeil.Systems.MiscellaneousMath
         public static readonly EaseFunction EaseInOutElastic = new PolynomialEase(Easing.InOutElastic);
 
 
-        public static readonly EaseFunction EaseInExpo= new PolynomialEase((float f) => Easing.InExpo(f, 8f));
-        public static readonly EaseFunction EaseOutExpo = new PolynomialEase((float f) => Easing.OutExpo(f, 8f));
-        public static readonly EaseFunction EaseInOutExpo = new PolynomialEase((float f) => Easing.InOutExpo(f, 8f));
+        public static readonly EaseFunction EaseInExpo= new PolynomialEase((float f) => Easing.InExpo(f, 5f));
+        public static readonly EaseFunction EaseOutExpo = new PolynomialEase((float f) => Easing.OutExpo(f, 5f));
+        public static readonly EaseFunction EaseInOutExpo = new PolynomialEase((float f) => Easing.InOutExpo(f, 5f));
 
         public abstract float Ease(float time);
 	}
