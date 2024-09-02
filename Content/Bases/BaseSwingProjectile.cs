@@ -293,7 +293,7 @@ namespace LunarVeil.Content.Bases
 
         }
        
-        protected void OvalEasedSwingAI(EaseFunction easeFunction, float swingXRadius, float swingYRadius, float swingRange = MathHelper.PiOver2 + MathHelper.PiOver4)
+        protected void OvalEasedSwingAI(EaseFunction easeFunction, float swingXRadius, float swingYRadius, float swingRange = MathHelper.Pi + MathHelper.PiOver2 + MathHelper.PiOver4)
         {
             float lerpValue = Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft, true);
             float easedSwingProgress = Easing.InOutExpo(lerpValue, 5f);
