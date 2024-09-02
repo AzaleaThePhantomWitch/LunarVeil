@@ -174,6 +174,7 @@ namespace LunarVeil.Content.Items.ModdedBiomeSets.SoulPrisonItems
         {
             if (!stuck)
             {
+
                 //add hit sound effect here
                 for (int k = 0; k <= 8; k++)
                 {
@@ -195,7 +196,7 @@ namespace LunarVeil.Content.Items.ModdedBiomeSets.SoulPrisonItems
                 stuck = true;
                 Projectile.extraUpdates = 0;
                 Projectile.velocity = Vector2.Zero;
-                Projectile.timeLeft = 90;
+                Projectile.timeLeft = 1;
             }
 
             return false;
@@ -238,12 +239,12 @@ namespace LunarVeil.Content.Items.ModdedBiomeSets.SoulPrisonItems
         private void ManageTrail()
         {
             if (trail is null || trail.IsDisposed)
-                trail = new Trail(Main.instance.GraphicsDevice, 50, new RoundedTip(12), factor => (10 + factor * 25) * trailWidth, factor => new Color(120, 20 + (int)(100 * factor.X), 255) * factor.X * trailWidth);
+                trail = new Trail(Main.instance.GraphicsDevice, 50, new RoundedTip(12), factor => (10 + factor * 25) * trailWidth, factor => new Color(20, 20 + (int)(100 * factor.X), 255) * factor.X * trailWidth);
 
             trail.Positions = cache.ToArray();
 
             if (trail2 is null || trail2.IsDisposed)
-                trail2 = new Trail(Main.instance.GraphicsDevice, 50, new RoundedTip(6), factor => (80 + 0 + factor * 0) * trailWidth, factor => new Color(100, 20 + (int)(60 * factor.X), 255) * factor.X * 0.15f * trailWidth);
+                trail2 = new Trail(Main.instance.GraphicsDevice, 50, new RoundedTip(6), factor => (80 + 0 + factor * 0) * trailWidth, factor => new Color(10, 20 + (int)(60 * factor.X), 255) * factor.X * 0.15f * trailWidth);
 
             trail2.Positions = cache.ToArray();
 
@@ -256,7 +257,7 @@ namespace LunarVeil.Content.Items.ModdedBiomeSets.SoulPrisonItems
 
         public void DrawPrimitives()
         {
-            Effect effect = Filters.Scene["CometTrail"].GetShader().Shader;
+            Effect effect = Filters.Scene["LunarVeil:CometTrail"].GetShader().Shader;
 
             var world = Matrix.CreateTranslation(-Main.screenPosition.Vec3());
             Matrix view = Main.GameViewMatrix.TransformationMatrix;
@@ -265,7 +266,7 @@ namespace LunarVeil.Content.Items.ModdedBiomeSets.SoulPrisonItems
             effect.Parameters["time"].SetValue(Main.GameUpdateCount * 0.02f);
             effect.Parameters["repeats"].SetValue(8f);
             effect.Parameters["transformMatrix"].SetValue(world * view * projection);
-            effect.Parameters["sampleTexture"].SetValue(ModContent.Request<Texture2D>("LunarVeil/Assets/Trails/GlowTrail").Value);
+            effect.Parameters["sampleTexture"].SetValue(ModContent.Request<Texture2D>("LunarVeil/Assets/Trails/BeamTrail").Value);
             effect.Parameters["sampleTexture2"].SetValue(ModContent.Request<Texture2D>("LunarVeil/Assets/Trails/CrystalTrail").Value);
 
             trail?.Render(effect);
@@ -365,10 +366,10 @@ namespace LunarVeil.Content.Items.ModdedBiomeSets.SoulPrisonItems
         private void ManageTrail()
         {
             if (trail is null || trail.IsDisposed)
-                trail = new Trail(Main.instance.GraphicsDevice, 33, new NoTip(), factor => 38 * (1 - Progress), factor => new Color(100, 0, 255));
+                trail = new Trail(Main.instance.GraphicsDevice, 33, new NoTip(), factor => 38 * (1 - Progress), factor => new Color(0, 1000, 255));
 
             if (trail2 is null || trail2.IsDisposed)
-                trail2 = new Trail(Main.instance.GraphicsDevice, 33, new NoTip(), factor => 20 * (1 - Progress), factor => Color.Lerp(new Color(180, 180, 255), new Color(85, 85, 200), Progress));
+                trail2 = new Trail(Main.instance.GraphicsDevice, 33, new NoTip(), factor => 20 * (1 - Progress), factor => Color.Lerp(new Color(10, 180, 255), new Color(85, 105, 200), Progress));
             float nextplace = 33f / 32f;
             var offset = new Vector2((float)Math.Sin(nextplace), (float)Math.Cos(nextplace));
             offset *= Radius;
@@ -382,14 +383,14 @@ namespace LunarVeil.Content.Items.ModdedBiomeSets.SoulPrisonItems
 
         public void DrawPrimitives()
         {
-            Effect effect = Filters.Scene["FadingTrail"].GetShader().Shader;
+            Effect effect = Filters.Scene["LunarVeil:FadingTrail"].GetShader().Shader;
 
             var world = Matrix.CreateTranslation(-Main.screenPosition.Vec3());
             Matrix view = Main.GameViewMatrix.TransformationMatrix;
             var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, -1, 1);
 
             effect.Parameters["transformMatrix"].SetValue(world * view * projection);
-            effect.Parameters["sampleTexture"].SetValue(ModContent.Request<Texture2D>("LunarVeil/Assets/Trails/GlowTrail").Value);
+            effect.Parameters["sampleTexture"].SetValue(ModContent.Request<Texture2D>("LunarVeil/Assets/Trails/BeamTrail").Value);
             effect.Parameters["alpha"].SetValue(1);
 
             trail?.Render(effect);
