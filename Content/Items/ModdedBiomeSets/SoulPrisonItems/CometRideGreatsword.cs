@@ -132,11 +132,14 @@ namespace LunarVeil.Content.Items.ModdedBiomeSets.SoulPrisonItems
 
             if (!stuck)
             {
-                
+                if (!Main.dayTime)
+                {
+                    var da = Dust.NewDustPerfect(Projectile.Bottom + Vector2.One.RotatedByRandom(6.28f) * Main.rand.NextFloat(15), ModContent.DustType<Dusts.TSmokeDust>(), Vector2.Zero, 0, new Color(20, 190, 230), 0.3f);
+                    da.customData = Main.rand.NextFloat(0.6f, 1.3f);
+                    da.fadeIn = 10;
+                }
 
-                var da = Dust.NewDustPerfect(Projectile.Bottom + Vector2.One.RotatedByRandom(6.28f) * Main.rand.NextFloat(15), ModContent.DustType<Dusts.TSmokeDust>(), Vector2.Zero, 0, new Color(20, 140, 250), 0.3f);
-                da.customData = Main.rand.NextFloat(0.6f, 1.3f);
-                da.fadeIn = 10;
+             
                 Dust.NewDustPerfect(Projectile.Bottom + Vector2.One.RotatedByRandom(6.28f) * Main.rand.NextFloat(15), ModContent.DustType<Dusts.GlowDust>(), Vector2.Zero, 0, new Color(50, 200, 255), 0.4f).fadeIn = 10;
                 ManageCaches();
 
