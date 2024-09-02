@@ -316,14 +316,14 @@ namespace LunarVeil.Content.Items.ModdedBiomeSets.SoulPrisonItems
 
         //Radius
         private float StartRadius => 4;
-        private float EndRadius => 62;
-        private float Width => 64;
+        private float EndRadius => 44;
+        private float Width => 44;
 
         //Colors
-        private Color FrontCircleStartDrawColor => Color.Turquoise;
-        private Color FrontCircleEndDrawColor => Color.Black;
+        private Color FrontCircleStartDrawColor => Color.White;
+        private Color FrontCircleEndDrawColor => Color.Turquoise;
         private Color BackCircleStartDrawColor => Color.Lerp(Color.White, Color.Turquoise, 0.4f);
-        private Color BackCircleEndDrawColor => Color.Lerp(Color.Black, Color.Black, 0.7f);
+        private Color BackCircleEndDrawColor => Color.Lerp(Color.Turquoise, Color.Black, 0.7f);
         private Vector2[] CirclePos;
 
         public override void SetDefaults()
@@ -348,7 +348,7 @@ namespace LunarVeil.Content.Items.ModdedBiomeSets.SoulPrisonItems
 
         private void AI_ExpandCircle()
         {
-            float easedProgess = Easing.InOutCirc(Progress);
+            float easedProgess = Easing.OutCirc(Progress);
             float radius = MathHelper.Lerp(StartRadius, EndRadius, easedProgess);
             DrawCircle(radius);
         }
@@ -363,7 +363,7 @@ namespace LunarVeil.Content.Items.ModdedBiomeSets.SoulPrisonItems
                     Vector2 pos = Projectile.Center + rand;
                     Dust d = Dust.NewDustPerfect(pos, ModContent.DustType<GlowDust>(), Vector2.Zero,
                         newColor: BackCircleStartDrawColor,
-                        Scale: Main.rand.NextFloat(0.3f, 0.6f));
+                        Scale: Main.rand.NextFloat(0.1f, 0.3f));
                     d.noGravity = true;
                 }
                 SpawnDustCircle = true;
