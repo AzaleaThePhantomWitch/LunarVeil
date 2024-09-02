@@ -38,10 +38,17 @@ namespace LunarVeil.Content.Bases
         //The number of points in the trail
         protected int trailCount = 65;
 
+        protected float trailLengthOffset = 100;
+        //Amount of time spent winding up
+        protected float windUpTime;
+   
+
         //The distance from the player where the trail starts
         public float distanceToOwner = 0;
 
         public float hitstopTimer=0;
+        public float windupTimer = 0;
+
 
         //Brightness/Transparency of trail, 255 is fully opaque
         public int alpha = 255;
@@ -161,8 +168,9 @@ namespace LunarVeil.Content.Bases
         {
           
             Vector2 rotVector2 = Projectile.velocity;
-            Top = Projectile.Center + rotVector2 * (Projectile.scale * Projectile.height / 2 + trailTopWidth);
-            Bottom = Projectile.Center - rotVector2 * (Projectile.scale * Projectile.height / 2);
+            float height = trailLengthOffset;
+            Top = Projectile.Center + rotVector2 * (Projectile.scale * height / 2 + trailTopWidth);
+            Bottom = Projectile.Center - rotVector2 * (Projectile.scale * height / 2);
 
             if (hitstopTimer > 0)
                 return;
@@ -175,7 +183,7 @@ namespace LunarVeil.Content.Bases
 
             oldRotate[0] = Projectile.rotation - MathHelper.PiOver4;
             oldDistanceToOwner[0] = distanceToOwner;
-            oldLength[0] = Projectile.height * Projectile.scale;
+            oldLength[0] = height * Projectile.scale;
         }
 
         protected virtual void SwingAI()
@@ -219,6 +227,7 @@ namespace LunarVeil.Content.Bases
             Owner.itemTime = 2;
             Owner.itemAnimation = 2;
         }
+        
         public sealed override void AI()
         {
             base.AI();
@@ -228,11 +237,62 @@ namespace LunarVeil.Content.Bases
                 Projectile.timeLeft++;
                 hitstopTimer--;
             }
-            SwingAI();
+
+            if(windUpTime > 0 && windupTimer < windUpTime)
+            {
+                WindUpEasedSwingAI(EaseFunction.EaseInOutCirc, MathHelper.PiOver4);
+            }
+            else
+            {
+                SwingAI();
+            }
+       
             //Update Trails
             UpdateTrailing();
         }
 
+        protected void WindUpEasedSwingAI(EaseFunction easeFunction, float swingRange)
+        {
+            windupTimer++;
+            float progress = windupTimer / windUpTime;
+            float swingProgress = easeFunction.Ease(progress);
+            Projectile.timeLeft++;
+            Vector3 RGB = new Vector3(1.28f, 0f, 1.28f);
+            float multiplier = 0.2f;
+            RGB *= multiplier;
+
+            Lighting.AddLight(Projectile.position, RGB.X, RGB.Y, RGB.Z);
+
+            int dir = (int)Projectile.ai[1];
+
+            // the actual rotation it should have
+            float defRot = Projectile.velocity.ToRotation();
+            // starting rotation
+
+            //How wide is the swing, in radians
+            float start = defRot - (swingRange);
+
+            // ending rotation
+            float end = (defRot);
+
+            // current rotation obv
+            // angle lerp causes some weird things here, so just use a normal lerp
+            float rotation = dir == 1 ? MathHelper.Lerp(start, end, swingProgress) : MathHelper.Lerp(end, start, swingProgress);
+
+            // offsetted cuz sword sprite
+            Vector2 position = Owner.RotatedRelativePoint(Owner.MountedCenter);
+            position += rotation.ToRotationVector2() * holdOffset;
+            Projectile.Center = position;
+            Projectile.rotation = (position - Owner.Center).ToRotation() + MathHelper.PiOver4;
+
+            Owner.heldProj = Projectile.whoAmI;
+            Owner.ChangeDir(Projectile.velocity.X < 0 ? -1 : 1);
+            Owner.itemRotation = rotation * Owner.direction;
+            Owner.itemTime = 2;
+            Owner.itemAnimation = 2;
+
+        }
+       
         protected void OvalEasedSwingAI(EaseFunction easeFunction, float swingXRadius, float swingYRadius, float swingRange = MathHelper.PiOver2 + MathHelper.PiOver4)
         {
             float lerpValue = Utils.GetLerpValue(0f, SwingTime, Projectile.timeLeft, true);
@@ -243,7 +303,7 @@ namespace LunarVeil.Content.Bases
 
             float xOffset;
             float yOffset;
-            if (dir2 == 1)
+            if (dir2 == -1)
             {
                 xOffset = swingXRadius * MathF.Sin(easedSwingProgress * swingRange + swingRange);
                 yOffset = swingYRadius * MathF.Cos(easedSwingProgress * swingRange + swingRange);
@@ -256,7 +316,7 @@ namespace LunarVeil.Content.Bases
 
 
             Projectile.Center = Owner.Center + new Vector2(xOffset, yOffset).RotatedBy(targetRotation);
-            distanceToOwner = Vector2.Distance(Projectile.Center, Owner.Center) / 2;
+            distanceToOwner = Vector2.Distance(Projectile.Center, Owner.Center) / 4;
             Projectile.rotation = (Projectile.Center - Owner.Center).ToRotation() + MathHelper.PiOver4;
 
             Owner.heldProj = Projectile.whoAmI;
@@ -271,7 +331,7 @@ namespace LunarVeil.Content.Bases
 
             armPosition.Y += Owner.gfxOffY;
         }
-
+      
         protected void SimpleEasedSwingAI(EaseFunction easeFunction, float swingRange = MathHelper.PiOver2 + MathHelper.PiOver4)
         {
             Vector3 RGB = new Vector3(1.28f, 0f, 1.28f);

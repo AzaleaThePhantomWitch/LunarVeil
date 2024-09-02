@@ -3,6 +3,7 @@ using MonoMod.Cil;
 using System;
 using System.Reflection;
 using Terraria;
+using Terraria.IO;
 using Terraria.Map;
 using Terraria.ModLoader;
 
@@ -25,6 +26,7 @@ namespace LunarVeil.WorldGeneration
             //	throw new Exception("\nThis mod uses functionality only present in the latest tModLoader versions. Please update tModLoader to use this mod\n\n");
             //}
             IL_WorldGen.CreateNewWorld += WorldGen_EditWorldSize;
+            IL_WorldFile.LoadWorld += WorldGen_EditWorldSize;
             WorldGen_lastMaxTilesX = typeof(WorldGen).GetField("lastMaxTilesX", BindingFlags.Static | BindingFlags.NonPublic);
             WorldGen_lastMaxTilesY = typeof(WorldGen).GetField("lastMaxTilesY", BindingFlags.Static | BindingFlags.NonPublic);
         }
@@ -33,7 +35,9 @@ namespace LunarVeil.WorldGeneration
         {
             base.Unload();
             IL_WorldGen.CreateNewWorld -= WorldGen_EditWorldSize;
+            IL_WorldFile.LoadWorld -= WorldGen_EditWorldSize;
         }
+
         private void WorldGen_EditWorldSize(ILContext il)
         {
             var cursor = new ILCursor(il);

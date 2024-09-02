@@ -61,11 +61,10 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
         ref float ComboAtt => ref Projectile.ai[0];
 
         private float SwingRange2 = MathHelper.Pi + MathHelper.PiOver2 + MathHelper.PiOver4;
-        private float SwingYRadius = 64/1.5f;
+        private float SwingYRadius = 64 /1.5f;
         private float SwingXRadius = 128/1.5f;
-
+        private bool initSwingAI;
         public bool Hit;
-        int Timer;
 
         public override void SetStaticDefaults()
         {
@@ -74,95 +73,18 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
 
         public override void SetDefaults()
         {
-            //Set swing variables here
-            //How long the swing lasts in ticks
-            switch (ComboAtt)
-            {
-                case 0:         
-                    swingTime = 34;
 
-                    //How far the trail extends upward (away the player)
-                    trailTopWidth = 10;
+      
 
-                    //How far the trail extends downward (towards the player)
-                    trailBottomWidth = 250;
-
-                    //The number of points in the trail, higher means the trail is longer
-                    trailCount = 65;
-
-                    //The distance from the player where the trail starts
-                    distanceToOwner = 0;
-
-                    //Brightness/Transparency of trail, 255 is fully opaque
-                    alpha = 200;
-                    break;
-
-                case 1:
-                    swingTime = 34;
-                    trailBottomWidth = 250 / 2;
-                    break;
-
-                case 2:
-
-                    swingTime = 44;
-                    trailBottomWidth = 250/2;
-                    SwingRange2 = MathHelper.Pi + MathHelper.PiOver2 + MathHelper.PiOver2;
-                    break;
-
-                case 3:
-                    swingTime = 52;
-                    
-                    //How far the trail extends upward (away the player)
-                    trailTopWidth = 10;
-
-                    //How far the trail extends downward (towards the player)
-                    trailBottomWidth = 250;
-
-                    //The number of points in the trail, higher means the trail is longer
-                    trailCount = 65;
-
-                    //The distance from the player where the trail starts
-                    distanceToOwner = 0;
-
-                    //Brightness/Transparency of trail, 255 is fully opaque
-                    alpha = 200;
-                    break;
-
-                case 4:
-                    swingTime = 60;
-                    
-                    //How far the trail extends upward (away the player)
-                    trailTopWidth = 10;
-
-                    //How far the trail extends downward (towards the player)
-                    trailBottomWidth = 250;
-
-                    //The number of points in the trail, higher means the trail is longer
-                    trailCount = 65;
-
-                    //The distance from the player where the trail starts
-                    distanceToOwner = 0;
-
-                    //Brightness/Transparency of trail, 255 is fully opaque
-                    alpha = 200;
-                    break;
-
-                case 5:
-                    SwingYRadius = 32;
-                    SwingXRadius = 170;
-                    swingTime = 80;
-                    trailBottomWidth = 250 / 2;
-                    SwingRange2 = MathHelper.TwoPi + MathHelper.PiOver2 + MathHelper.PiOver2;
-                    break;
-            }
+            //           swingTime /= 2;
 
             Projectile.timeLeft = SwingTime;
             Projectile.penetrate = -1;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
             Projectile.DamageType = DamageClass.Melee;
-            Projectile.height = 100;
-            Projectile.width = 100;
+            Projectile.height = 38;
+            Projectile.width = 38;
             Projectile.friendly = true;
             Projectile.scale = 1f;
 
@@ -192,32 +114,126 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
             GradientTexture = null;
         }
     
-        protected override void SwingAI()
+        private void InitializeSwingAI()
         {
+            if (initSwingAI)
+                return;
+            initSwingAI = true;
+            //Set swing variables here
+            //How long the swing lasts in ticks
             switch (ComboAtt)
             {
-                case 0:               
-                    SimpleEasedSwingAI(EaseFunction.EaseQuinticInOut);
+                case 0:
+                    swingTime = 34;
+
+                    //How far the trail extends upward (away the player)
+                    trailTopWidth = 10;
+
+                    //How far the trail extends downward (towards the player)
+                    trailBottomWidth = 250;
+
+                    //The number of points in the trail, higher means the trail is longer
+                    trailCount = 65;
+
+                    //The distance from the player where the trail starts
+                    distanceToOwner = 0;
+
+                    //Brightness/Transparency of trail, 255 is fully opaque
+                    alpha = 200;
                     break;
 
                 case 1:
-                    OvalEasedSwingAI(EaseFunction.EaseQuinticInOut, SwingXRadius, SwingYRadius, SwingRange2);
+                    swingTime = 34;
+                    trailBottomWidth = 250;
                     break;
 
                 case 2:
-                    OvalEasedSwingAI(EaseFunction.EaseQuinticInOut, SwingXRadius, SwingYRadius, SwingRange2);
+
+                    swingTime = 34;
+                    trailBottomWidth = 250;
+                    SwingRange2 = MathHelper.Pi + MathHelper.PiOver2 + MathHelper.PiOver2;
                     break;
 
-                case 3:                
-                    SimpleEasedSwingAI(EaseFunction.EaseQuinticInOut);    
+                case 3:
+                    swingTime = 34;
+
+                    //How far the trail extends upward (away the player)
+                    trailTopWidth = 10;
+
+                    //How far the trail extends downward (towards the player)
+                    trailBottomWidth = 250;
+
+                    //The number of points in the trail, higher means the trail is longer
+                    trailCount = 65;
+
+                    //The distance from the player where the trail starts
+                    distanceToOwner = 0;
+
+                    //Brightness/Transparency of trail, 255 is fully opaque
+                    alpha = 200;
                     break;
 
-                case 4:               
-                    SimpleEasedSwingAI(EaseFunction.EaseQuinticInOut);
+                case 4:
+                    swingTime = 34;
+
+                    //How far the trail extends upward (away the player)
+                    trailTopWidth = 10;
+
+                    //How far the trail extends downward (towards the player)
+                    trailBottomWidth = 250;
+
+                    //The number of points in the trail, higher means the trail is longer
+                    trailCount = 65;
+
+                    //The distance from the player where the trail starts
+                    distanceToOwner = 0;
+
+                    //Brightness/Transparency of trail, 255 is fully opaque
+                    alpha = 200;
+
                     break;
 
                 case 5:
-                    OvalEasedSwingAI(EaseFunction.EaseQuinticInOut, SwingXRadius, SwingYRadius, SwingRange2);
+                    SwingYRadius = 32;
+                    SwingXRadius = 170;
+                    swingTime = 34;
+                    trailBottomWidth = 250;
+                    SwingRange2 = MathHelper.TwoPi + MathHelper.PiOver2 + MathHelper.PiOver2;
+                  //  windUpTime = 20 * Swing_Speed_Multiplier;
+
+                    break;
+            }
+            Projectile.timeLeft = SwingTime;
+            Projectile.localNPCHitCooldown = Projectile.timeLeft;
+        }
+        protected override void SwingAI()
+        {
+            InitializeSwingAI();
+            switch (ComboAtt)
+            {
+                case 0:               
+                    SimpleEasedSwingAI(EaseFunction.EaseInOutBack);
+                    break;
+
+                case 1:
+                    OvalEasedSwingAI(EaseFunction.EaseInOutExpo, SwingXRadius, SwingYRadius, SwingRange2);
+                    break;
+
+                case 2:
+                    OvalEasedSwingAI(EaseFunction.EaseInOutExpo, SwingXRadius, SwingYRadius, SwingRange2);
+                    break;
+
+                case 3:                
+                    SimpleEasedSwingAI(EaseFunction.EaseInOutBack);    
+                    break;
+
+                case 4:               
+                    SimpleEasedSwingAI(EaseFunction.EaseInOutBack);
+                    break;
+
+                case 5:
+                    SimpleEasedSwingAI(EaseFunction.EaseInOutExpo, swingRange: MathHelper.TwoPi * 2);
+                    //OvalEasedSwingAI(EaseFunction.EaseInOutCirc, SwingXRadius, SwingYRadius, SwingRange2);
                     break;
             }
         }
@@ -238,21 +254,33 @@ namespace LunarVeil.Content.Items.VanillaBiomeSets.IceItems
                 hitstopTimer = 6 * Swing_Speed_Multiplier;
             }
         }
-        /*
+
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawSlashTrail();
-            float rot = Projectile.rotation % 80 / 80f * 6.28f;
-            float x = (float)Math.Cos(-rot) * 120;
+            /*
+            switch (ComboAtt)
+            {
+                case 1:
+                case 2:
+                case 5:
+                    DrawSlashTrail();
+                    float rot = Projectile.rotation;
+                    float x = (float)Math.Cos(-rot) * 60;
 
-            Texture2D tex = ModContent.Request<Texture2D>(Texture).Value;
-            Player owner = Main.player[Projectile.owner];
+                    Texture2D tex = ModContent.Request<Texture2D>(Texture).Value;
+                    Player owner = Main.player[Projectile.owner];
 
-            var target = new Rectangle((int)(owner.Center.X - Main.screenPosition.X), (int)(owner.Center.Y - Main.screenPosition.Y), (int)Math.Abs(x / 120f * tex.Size().Length()), 40);
+                    var target = new Rectangle(
+                        (int)(owner.Center.X - Main.screenPosition.X), 
+                        (int)(owner.Center.Y - Main.screenPosition.Y), 
+                        (int)Math.Abs(x / 120 * tex.Size().Length()), 80);
 
-            Main.spriteBatch.Draw(tex, target, null, lightColor, -rot, new Vector2(0, tex.Height), SpriteEffects.None, default);
+                    Main.spriteBatch.Draw(tex, target, null, lightColor, rot, new Vector2(0, tex.Height), SpriteEffects.None, default);
 
-            return false;
-        }*/
+                    return false;
+            }
+        */
+            return base.PreDraw(ref lightColor);
+        }
     }
 }
